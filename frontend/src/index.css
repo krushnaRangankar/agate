@@ -4,7 +4,10 @@
 
 @layer base {
   body {
-    @apply bg-[#0B0B0B] text-slate-200 antialiased overflow-hidden font-sans;
+    /* Industrial slate ground. Note this is a faintly blue-tinted dark, a small
+       deliberate departure from the strictly neutral greys of the §5.11 monochrome
+       ramp — the tint is what reads as "industrial" rather than "charcoal". */
+    @apply bg-[#0a0d12] text-slate-200 antialiased overflow-hidden font-sans;
     background-image:
       radial-gradient(ellipse 80% 50% at 50% -20%, rgba(166, 166, 166, 0.08), transparent 70%),
       radial-gradient(ellipse 60% 40% at 100% 100%, rgba(119, 119, 119, 0.05), transparent 60%);
@@ -31,7 +34,7 @@
 
 /* Glassmorphism System */
 .glass-panel {
-  background: rgba(19, 19, 19, 0.82);
+  background: rgba(18, 23, 33, 0.82);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.07);
@@ -39,7 +42,7 @@
 }
 
 .glass-panel-glow {
-  background: rgba(19, 19, 19, 0.88);
+  background: rgba(18, 23, 33, 0.88);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(166, 166, 166, 0.25);
@@ -47,7 +50,7 @@
 }
 
 .glass-card {
-  background: linear-gradient(135deg, rgba(26, 26, 26, 0.75) 0%, rgba(19, 19, 19, 0.85) 100%);
+  background: linear-gradient(135deg, rgba(26, 32, 45, 0.75) 0%, rgba(18, 23, 33, 0.85) 100%);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.08);

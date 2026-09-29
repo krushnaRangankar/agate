@@ -545,10 +545,16 @@ export default function WellMap({
  </>
  )}
 
- {/* Regional Well Markers with Project B Color Scheme:
- - Selected well: Bright green (#22c55e)
- - Inside radius: Bright yellow (#facc15)
- - Outside radius: Sky blue (#38bdf8)
+ {/* Regional Well Markers.
+
+ The map is the one surface that keeps its colour (see index.css:14-30). These are
+ written as arbitrary hex values deliberately: every chromatic Tailwind family is
+ remapped to a single grey ramp in tailwind.config.js, so `bg-cyan-500` and
+ `bg-emerald-400` would BOTH render grey and the three states would become
+ indistinguishable. Any change here must use arbitrary values to survive.
+ - Selected well: cyan (#06b6d4)
+ - Inside radius: emerald (#34d399)
+ - Outside radius: slate (#475569)
  */}
  {wellsWithDistance.map(well => {
  const loc = well.surface_location;
@@ -572,25 +578,25 @@ export default function WellMap({
  <div className="relative flex items-center justify-center cursor-pointer group transition-all duration-300">
  {isActive && (
  <>
- <span className="animate-ping absolute inline-flex h-9 w-9 rounded-full bg-[#22c55e] opacity-50"></span>
- <span className="absolute inline-flex h-7 w-7 rounded-full bg-[#22c55e]/25 border border-[#22c55e]/80"></span>
+ <span className="animate-ping absolute inline-flex h-9 w-9 rounded-full bg-[#06b6d4] opacity-50"></span>
+ <span className="absolute inline-flex h-7 w-7 rounded-full bg-[#06b6d4]/25 border border-[#06b6d4]/80"></span>
  </>
  )}
 
  {!isActive && isInside && (
- <span className="absolute inline-flex h-6 w-6 rounded-full bg-[#facc15]/20 border border-[#facc15]/60 animate-pulse"></span>
+ <span className="absolute inline-flex h-6 w-6 rounded-full bg-[#34d399]/20 border border-[#34d399]/60 animate-pulse"></span>
  )}
  
  <div className={`relative z-10 rounded-full border-2 transition-all transform group-hover:scale-125 flex items-center justify-center
  ${isActive 
- ? 'bg-[#22c55e] border-white w-5 h-5 shadow-[0_0_18px_rgba(34,197,94,0.95)] ring-2 ring-[#22c55e]/60': isInside 
- ? 'bg-[#facc15] border-white/90 w-4 h-4 shadow-[0_0_12px_rgba(250,204,21,0.9)] ring-2 ring-[#facc15]/50': 'bg-[#38bdf8] border-[#bae6fd]/90 w-3 h-3 shadow-[0_0_8px_rgba(56,189,248,0.7)] hover:scale-125'}`}>
+ ? 'bg-[#06b6d4] border-white w-5 h-5 shadow-[0_0_18px_rgba(6,182,212,0.95)] ring-2 ring-[#06b6d4]/60': isInside
+ ? 'bg-[#34d399] border-white/90 w-4 h-4 shadow-[0_0_12px_rgba(52,211,153,0.9)] ring-2 ring-[#34d399]/50': 'bg-[#475569] border-[#94a3b8]/90 w-3 h-3 shadow-[0_0_8px_rgba(71,85,105,0.7)] hover:scale-125'}`}>
  {isActive ? (
  <div className="w-1.5 h-1.5 rounded-full bg-slate-950"></div>
  ) : isInside ? (
  <div className="w-1.5 h-1.5 rounded-full bg-slate-950/80"></div>
  ) : (
- <div className="w-1 h-1 rounded-full bg-[#082f49]"></div>
+ <div className="w-1 h-1 rounded-full bg-[#1e293b]"></div>
  )}
  </div>
  </div>
@@ -774,7 +780,7 @@ export default function WellMap({
  <div className="bg-slate-900/90 border border-slate-750 rounded-xl p-2 space-y-1 text-[11px] font-mono">
  <div className="flex items-center justify-between">
  <span className="text-slate-400 flex items-center">
- <span className="w-2 h-2 rounded-full bg-[#facc15] shadow-[0_0_6px_rgba(250,204,21,0.8)] mr-1.5"></span>
+ <span className="w-2 h-2 rounded-full bg-[#34d399] shadow-[0_0_6px_rgba(52,211,153,0.8)] mr-1.5"></span>
  In-Radius Offsets:
  </span>
  <span className="text-amber-300 font-bold font-sans">
@@ -794,13 +800,13 @@ export default function WellMap({
  {/* Map Rig Color Legend */}
  <div className="flex items-center justify-between text-[9.5px] font-mono text-slate-300 px-1 pt-0.5">
  <span className="flex items-center">
- <span className="w-2.5 h-2.5 rounded-full bg-[#22c55e] mr-1 shadow-[0_0_6px_rgba(34,197,94,0.8)]"></span> Selected Well
+ <span className="w-2.5 h-2.5 rounded-full bg-[#06b6d4] mr-1 shadow-[0_0_6px_rgba(6,182,212,0.8)]"></span> Selected Well
  </span>
  <span className="flex items-center">
- <span className="w-2.5 h-2.5 rounded-full bg-[#facc15] mr-1 shadow-[0_0_6px_rgba(250,204,21,0.8)]"></span> Inside Radius
+ <span className="w-2.5 h-2.5 rounded-full bg-[#34d399] mr-1 shadow-[0_0_6px_rgba(52,211,153,0.8)]"></span> Inside Radius
  </span>
  <span className="flex items-center">
- <span className="w-2.5 h-2.5 rounded-full bg-[#38bdf8] mr-1 shadow-[0_0_6px_rgba(56,189,248,0.8)]"></span> Outside
+ <span className="w-2.5 h-2.5 rounded-full bg-[#475569] mr-1 shadow-[0_0_6px_rgba(71,85,105,0.8)]"></span> Outside
  </span>
  </div>
  </div>

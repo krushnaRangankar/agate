@@ -67,13 +67,39 @@ import { getWellColor } from'./lib/wellColors';
 import { REGIONS_CONFIG, getRegionBadge, getRegionIdFromWellId, isRegionCalibrated, getRegionProvenance, getRegionDisplayLabel } from'./lib/regionalGeology';
 
 const WELL_DEFAULT_TELEMETRY = {
- // Upper Assam Basin'OIL-BAGHJAN-1': { well_id: 'OIL-BAGHJAN-1', depth_tvd: 2240.0, rop: 16.5, wob: 14.0, rpm: 105.0, torque: 13200.0, mud_weight: 11.2, ecd: 11.6, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2800.0 },'OIL-BAGHJAN-4': { well_id: 'OIL-BAGHJAN-4', depth_tvd: 2380.0, rop: 18.2, wob: 15.0, rpm: 110.0, torque: 14100.0, mud_weight: 11.4, ecd: 11.8, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2950.0 },'OIL-NAHARKATIYA-1': { well_id: 'OIL-NAHARKATIYA-1', depth_tvd: 2020.0, rop: 14.0, wob: 12.5, rpm: 95.0, torque: 11800.0, mud_weight: 10.8, ecd: 11.2, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2600.0 },'OIL-MORAN-1': { well_id: 'OIL-MORAN-1', depth_tvd: 2550.0, rop: 15.0, wob: 13.0, rpm: 100.0, torque: 12500.0, mud_weight: 11.0, ecd: 11.4, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2750.0 },'OIL-DIKOM-1': { well_id: 'OIL-DIKOM-1', depth_tvd: 2200.0, rop: 17.0, wob: 14.5, rpm: 105.0, torque: 13500.0, mud_weight: 11.3, ecd: 11.7, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2850.0 },'OIL-TENGAKHAT-1': { well_id: 'OIL-TENGAKHAT-1', depth_tvd: 2100.0, rop: 16.0, wob: 13.5, rpm: 100.0, torque: 12800.0, mud_weight: 11.1, ecd: 11.5, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2700.0 },'OIL-KOTHALONI-1': { well_id: 'OIL-KOTHALONI-1', depth_tvd: 2300.0, rop: 15.5, wob: 14.0, rpm: 105.0, torque: 13000.0, mud_weight: 11.2, ecd: 11.6, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2800.0 },'OIL-HAPJAN-1': { well_id: 'OIL-HAPJAN-1', depth_tvd: 2400.0, rop: 14.5, wob: 13.0, rpm: 100.0, torque: 12500.0, mud_weight: 11.0, ecd: 11.4, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2750.0 },'OIL-SHALMARI-1': { well_id: 'OIL-SHALMARI-1', depth_tvd: 2150.0, rop: 17.5, wob: 14.5, rpm: 110.0, torque: 13500.0, mud_weight: 11.3, ecd: 11.7, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2850.0 },'OIL-KUSIJAN-1': { well_id: 'OIL-KUSIJAN-1', depth_tvd: 2280.0, rop: 16.0, wob: 14.0, rpm: 102.0, torque: 13100.0, mud_weight: 11.1, ecd: 11.5, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2780.0 },'OIL-HEBEDA-1': { well_id: 'OIL-HEBEDA-1', depth_tvd: 2220.0, rop: 16.2, wob: 13.8, rpm: 104.0, torque: 12900.0, mud_weight: 11.0, ecd: 11.4, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2760.0 },
+ // Upper Assam Basin
+   'OIL-BAGHJAN-1': { well_id: 'OIL-BAGHJAN-1', depth_tvd: 2240.0, rop: 16.5, wob: 14.0, rpm: 105.0, torque: 13200.0, mud_weight: 11.2, ecd: 11.6, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2800.0},
+   'OIL-BAGHJAN-4': { well_id: 'OIL-BAGHJAN-4', depth_tvd: 2380.0, rop: 18.2, wob: 15.0, rpm: 110.0, torque: 14100.0, mud_weight: 11.4, ecd: 11.8, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2950.0},
+   'OIL-NAHARKATIYA-1': { well_id: 'OIL-NAHARKATIYA-1', depth_tvd: 2020.0, rop: 14.0, wob: 12.5, rpm: 95.0, torque: 11800.0, mud_weight: 10.8, ecd: 11.2, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2600.0},
+   'OIL-MORAN-1': { well_id: 'OIL-MORAN-1', depth_tvd: 2550.0, rop: 15.0, wob: 13.0, rpm: 100.0, torque: 12500.0, mud_weight: 11.0, ecd: 11.4, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2750.0},
+   'OIL-DIKOM-1': { well_id: 'OIL-DIKOM-1', depth_tvd: 2200.0, rop: 17.0, wob: 14.5, rpm: 105.0, torque: 13500.0, mud_weight: 11.3, ecd: 11.7, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2850.0},
+   'OIL-TENGAKHAT-1': { well_id: 'OIL-TENGAKHAT-1', depth_tvd: 2100.0, rop: 16.0, wob: 13.5, rpm: 100.0, torque: 12800.0, mud_weight: 11.1, ecd: 11.5, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2700.0},
+   'OIL-KOTHALONI-1': { well_id: 'OIL-KOTHALONI-1', depth_tvd: 2300.0, rop: 15.5, wob: 14.0, rpm: 105.0, torque: 13000.0, mud_weight: 11.2, ecd: 11.6, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2800.0},
+   'OIL-HAPJAN-1': { well_id: 'OIL-HAPJAN-1', depth_tvd: 2400.0, rop: 14.5, wob: 13.0, rpm: 100.0, torque: 12500.0, mud_weight: 11.0, ecd: 11.4, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2750.0},
+   'OIL-SHALMARI-1': { well_id: 'OIL-SHALMARI-1', depth_tvd: 2150.0, rop: 17.5, wob: 14.5, rpm: 110.0, torque: 13500.0, mud_weight: 11.3, ecd: 11.7, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2850.0},
+   'OIL-KUSIJAN-1': { well_id: 'OIL-KUSIJAN-1', depth_tvd: 2280.0, rop: 16.0, wob: 14.0, rpm: 102.0, torque: 13100.0, mud_weight: 11.1, ecd: 11.5, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2780.0},
+   'OIL-HEBEDA-1': { well_id: 'OIL-HEBEDA-1', depth_tvd: 2220.0, rop: 16.2, wob: 13.8, rpm: 104.0, torque: 12900.0, mud_weight: 11.0, ecd: 11.4, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2760.0},
 
- // Rajasthan Basin'OIL-RAJ-BAGHEWALA-1': { well_id: 'OIL-RAJ-BAGHEWALA-1', depth_tvd: 2100.0, rop: 10.5, wob: 12.0, rpm: 90.0, torque: 14500.0, mud_weight: 10.5, ecd: 11.0, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2100.0 },'OIL-RAJ-BAGHEWALA-2': { well_id: 'OIL-RAJ-BAGHEWALA-2', depth_tvd: 2150.0, rop: 11.0, wob: 12.5, rpm: 92.0, torque: 14800.0, mud_weight: 10.6, ecd: 11.1, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2150.0 },'OIL-RAJ-TANOT-1': { well_id: 'OIL-RAJ-TANOT-1', depth_tvd: 1950.0, rop: 11.2, wob: 13.0, rpm: 95.0, torque: 14200.0, mud_weight: 10.4, ecd: 10.9, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2050.0 },'OIL-RAJ-TANOT-2': { well_id: 'OIL-RAJ-TANOT-2', depth_tvd: 2000.0, rop: 11.5, wob: 13.2, rpm: 96.0, torque: 14300.0, mud_weight: 10.5, ecd: 11.0, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2080.0 },'OIL-RAJ-DANDEWALA-1': { well_id: 'OIL-RAJ-DANDEWALA-1', depth_tvd: 2050.0, rop: 10.8, wob: 12.8, rpm: 94.0, torque: 14400.0, mud_weight: 10.4, ecd: 10.9, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2060.0 },
+ // Rajasthan Basin
+   'OIL-RAJ-BAGHEWALA-1': { well_id: 'OIL-RAJ-BAGHEWALA-1', depth_tvd: 2100.0, rop: 10.5, wob: 12.0, rpm: 90.0, torque: 14500.0, mud_weight: 10.5, ecd: 11.0, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2100.0},
+   'OIL-RAJ-BAGHEWALA-2': { well_id: 'OIL-RAJ-BAGHEWALA-2', depth_tvd: 2150.0, rop: 11.0, wob: 12.5, rpm: 92.0, torque: 14800.0, mud_weight: 10.6, ecd: 11.1, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2150.0},
+   'OIL-RAJ-TANOT-1': { well_id: 'OIL-RAJ-TANOT-1', depth_tvd: 1950.0, rop: 11.2, wob: 13.0, rpm: 95.0, torque: 14200.0, mud_weight: 10.4, ecd: 10.9, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2050.0},
+   'OIL-RAJ-TANOT-2': { well_id: 'OIL-RAJ-TANOT-2', depth_tvd: 2000.0, rop: 11.5, wob: 13.2, rpm: 96.0, torque: 14300.0, mud_weight: 10.5, ecd: 11.0, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2080.0},
+   'OIL-RAJ-DANDEWALA-1': { well_id: 'OIL-RAJ-DANDEWALA-1', depth_tvd: 2050.0, rop: 10.8, wob: 12.8, rpm: 94.0, torque: 14400.0, mud_weight: 10.4, ecd: 10.9, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 2060.0},
 
- // KG Deepwater'OIL-KG-DEEPWATER-1': { well_id: 'OIL-KG-DEEPWATER-1', depth_tvd: 3200.0, rop: 8.5, wob: 18.0, rpm: 85.0, torque: 18500.0, mud_weight: 13.2, ecd: 13.8, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 4100.0 },'OIL-KG-DWN-98-2': { well_id: 'OIL-KG-DWN-98-2', depth_tvd: 3350.0, rop: 8.2, wob: 18.5, rpm: 82.0, torque: 19100.0, mud_weight: 13.4, ecd: 14.0, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 4250.0 },'OIL-KG-D6-OFFSHORE': { well_id: 'OIL-KG-D6-OFFSHORE', depth_tvd: 3450.0, rop: 7.8, wob: 19.0, rpm: 80.0, torque: 19800.0, mud_weight: 13.6, ecd: 14.2, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 4400.0 },'OIL-KG-YANAM-1': { well_id: 'OIL-KG-YANAM-1', depth_tvd: 2950.0, rop: 9.5, wob: 16.5, rpm: 90.0, torque: 17200.0, mud_weight: 12.8, ecd: 13.3, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 3850.0 },'OIL-KG-AMALAPURAM-1': { well_id: 'OIL-KG-AMALAPURAM-1', depth_tvd: 2850.0, rop: 10.2, wob: 16.0, rpm: 92.0, torque: 16800.0, mud_weight: 12.5, ecd: 13.0, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 3700.0 },
+ // KG Deepwater
+   'OIL-KG-DEEPWATER-1': { well_id: 'OIL-KG-DEEPWATER-1', depth_tvd: 3200.0, rop: 8.5, wob: 18.0, rpm: 85.0, torque: 18500.0, mud_weight: 13.2, ecd: 13.8, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 4100.0},
+   'OIL-KG-DWN-98-2': { well_id: 'OIL-KG-DWN-98-2', depth_tvd: 3350.0, rop: 8.2, wob: 18.5, rpm: 82.0, torque: 19100.0, mud_weight: 13.4, ecd: 14.0, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 4250.0},
+   'OIL-KG-D6-OFFSHORE': { well_id: 'OIL-KG-D6-OFFSHORE', depth_tvd: 3450.0, rop: 7.8, wob: 19.0, rpm: 80.0, torque: 19800.0, mud_weight: 13.6, ecd: 14.2, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 4400.0},
+   'OIL-KG-YANAM-1': { well_id: 'OIL-KG-YANAM-1', depth_tvd: 2950.0, rop: 9.5, wob: 16.5, rpm: 90.0, torque: 17200.0, mud_weight: 12.8, ecd: 13.3, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 3850.0},
+   'OIL-KG-AMALAPURAM-1': { well_id: 'OIL-KG-AMALAPURAM-1', depth_tvd: 2850.0, rop: 10.2, wob: 16.0, rpm: 92.0, torque: 16800.0, mud_weight: 12.5, ecd: 13.0, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 3700.0},
 
- // Mizoram Fold Belt'OIL-MZ-AIZAWL-1': { well_id: 'OIL-MZ-AIZAWL-1', depth_tvd: 2800.0, rop: 7.5, wob: 22.0, rpm: 80.0, torque: 21500.0, mud_weight: 12.5, ecd: 13.0, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 3800.0 },'OIL-MZ-MAMIT-1': { well_id: 'OIL-MZ-MAMIT-1', depth_tvd: 2920.0, rop: 7.2, wob: 22.5, rpm: 78.0, torque: 22100.0, mud_weight: 12.7, ecd: 13.2, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 3950.0 },'OIL-MZ-KOLASIB-1': { well_id: 'OIL-MZ-KOLASIB-1', depth_tvd: 2750.0, rop: 7.8, wob: 21.5, rpm: 82.0, torque: 20900.0, mud_weight: 12.4, ecd: 12.9, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 3750.0 },'OIL-MZ-LUNGLEI-1': { well_id: 'OIL-MZ-LUNGLEI-1', depth_tvd: 3100.0, rop: 6.8, wob: 23.0, rpm: 75.0, torque: 22800.0, mud_weight: 12.9, ecd: 13.5, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 4100.0 },'OIL-MZ-CHAMPHAI-1': { well_id: 'OIL-MZ-CHAMPHAI-1', depth_tvd: 3250.0, rop: 6.5, wob: 23.5, rpm: 72.0, torque: 23400.0, mud_weight: 13.1, ecd: 13.7, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 4250.0 },
+ // Mizoram Fold Belt
+   'OIL-MZ-AIZAWL-1': { well_id: 'OIL-MZ-AIZAWL-1', depth_tvd: 2800.0, rop: 7.5, wob: 22.0, rpm: 80.0, torque: 21500.0, mud_weight: 12.5, ecd: 13.0, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 3800.0},
+   'OIL-MZ-MAMIT-1': { well_id: 'OIL-MZ-MAMIT-1', depth_tvd: 2920.0, rop: 7.2, wob: 22.5, rpm: 78.0, torque: 22100.0, mud_weight: 12.7, ecd: 13.2, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 3950.0},
+   'OIL-MZ-KOLASIB-1': { well_id: 'OIL-MZ-KOLASIB-1', depth_tvd: 2750.0, rop: 7.8, wob: 21.5, rpm: 82.0, torque: 20900.0, mud_weight: 12.4, ecd: 12.9, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 3750.0},
+   'OIL-MZ-LUNGLEI-1': { well_id: 'OIL-MZ-LUNGLEI-1', depth_tvd: 3100.0, rop: 6.8, wob: 23.0, rpm: 75.0, torque: 22800.0, mud_weight: 12.9, ecd: 13.5, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 4100.0},
+   'OIL-MZ-CHAMPHAI-1': { well_id: 'OIL-MZ-CHAMPHAI-1', depth_tvd: 3250.0, rop: 6.5, wob: 23.5, rpm: 72.0, torque: 23400.0, mud_weight: 13.1, ecd: 13.7, flow_out_pct: 100.0, pit_gain_bbl: 0.0, spp_psi: 4250.0},
 };
 
 // Module name -> route, for the cockpit's own launch buttons. Mirrors the
@@ -1098,7 +1124,7 @@ function App() {
  const telemetryRail = isTelemetryCollapsed && mobileActiveTab !== 'telemetry';
 
  return (
- <div className={`h-full w-full flex flex-col ${dashboardTheme === 'terminal'? 'bg-[#070707] text-[#A3A3A3] font-mono select-text': 'bg-[#0B0B0B] text-slate-200 font-sans'} overflow-hidden relative`}>
+ <div className={`h-full w-full flex flex-col ${dashboardTheme === 'terminal'? 'bg-[#070707] text-[#A3A3A3] font-mono select-text': 'bg-[#0a0d12] text-slate-200 font-sans'} overflow-hidden relative`}>
  
  {/* Terminal Mode Matrix Rain Effect (Opt-in) */}
  {dashboardTheme === 'terminal'&& <MatrixRain opacity={0.10} />}
@@ -1675,8 +1701,17 @@ function App() {
  </div>
  )}
 
- {/* Main Content Area */}
- <main className="flex-1 relative flex flex-col lg:flex-row min-h-0 overflow-hidden pb-16 lg:pb-0">
+ {/* Main Content Area.
+
+ Split-screen grid at lg and above: map on the left, telemetry drawer on the right.
+ The column template is driven by `telemetryRail` rather than a fixed col-span pair,
+ because the drawer collapses by tracking the GRID TRACK — a fixed `col-span-4` would
+ leave the 44px rail sitting in a ~460px dead column. Below lg this stays a flex
+ column, where the drawer is a full-screen tab.
+
+ `grid-rows-[minmax(0,1fr)]` is load-bearing: without it the implicit row sizes to
+ content and the map loses its height. */}
+ <main className={`flex-1 relative flex flex-col min-h-0 overflow-hidden pb-16 lg:pb-0 lg:grid lg:grid-rows-[minmax(0,1fr)] transition-[grid-template-columns] duration-200 ease-out ${telemetryRail ? 'lg:grid-cols-[1fr_44px]' : 'lg:grid-cols-[2fr_1fr]'}`}>
  
  {/* Map Container */}
  <div className={`flex-1 bg-slate-900 relative overflow-hidden flex flex-col ${mobileActiveTab === 'map'? 'flex': 'hidden lg:flex'}`}>
@@ -2228,7 +2263,7 @@ function App() {
  )}
 
  {/* Right-Hand Drawer / Mobile Telemetry Tab */}
- <aside className={`${mobileActiveTab === 'telemetry'? 'flex w-full flex-1': telemetryRail ? 'hidden lg:flex lg:w-11': 'hidden lg:flex lg:w-[460px]'} ${telemetryRail ? 'telemetry-collapsed': ''} border-l border-slate-800/80 bg-[#131313]/95 backdrop-blur-xl flex flex-col shadow-2xl z-20 shrink-0 relative h-full min-h-0 overflow-hidden transition-[width] duration-200 ease-out`}>
+ <aside className={`${mobileActiveTab === 'telemetry'? 'flex w-full flex-1': 'hidden lg:flex'} ${telemetryRail ? 'telemetry-collapsed': ''} border-l border-slate-800/80 bg-[#121721]/95 backdrop-blur-xl flex flex-col shadow-2xl z-20 shrink-0 relative h-full min-h-0 overflow-hidden`}>
 
  {/* Collapsed rail: keeps the well visible and gives an obvious way back.
  Sibling content is hidden by the .telemetry-collapsed rule in index.css. */}
@@ -2563,7 +2598,7 @@ function App() {
  <span className="text-[10px] font-mono text-slate-400">Dynamic Trend</span>
  </div>
 
- <div className="h-60 w-full flex items-center justify-center rounded-xl overflow-hidden bg-[#0B0B0B]/90 border border-slate-800/80">
+ <div className="h-60 w-full flex items-center justify-center rounded-xl overflow-hidden bg-[#0a0d12]/90 border border-slate-800/80">
  <Plot
  data={[
  {
@@ -2768,7 +2803,7 @@ function App() {
  </footer>
 
  {/* Fixed Mobile Bottom Navigation Bar (< lg) */}
- <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0B0B0B]/95 backdrop-blur-xl border-t border-slate-800 px-2 py-1 flex items-center justify-around h-16 shadow-[0_-4px_25px_rgba(0,0,0,0.6)]">
+ <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0a0d12]/95 backdrop-blur-xl border-t border-slate-800 px-2 py-1 flex items-center justify-around h-16 shadow-[0_-4px_25px_rgba(0,0,0,0.6)]">
  <button
  onClick={() => setMobileActiveTab('map')}
  className={`flex flex-col items-center justify-center flex-1 py-1 rounded-xl transition min-h-[44px] relative ${

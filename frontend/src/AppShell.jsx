@@ -40,7 +40,7 @@ export default function AppShell() {
 
   return (
     <WellProvider>
-      <div className="flex h-screen w-screen overflow-hidden bg-[#0B0B0B] text-slate-200">
+      <div className="flex h-screen w-screen overflow-hidden bg-[#0a0d12] text-slate-200">
         <Sidebar backendConnected={backendConnected} networkOnline={networkOnline} />
         <main className="min-w-0 flex-1 overflow-hidden">
           <Outlet context={{ backendConnected, networkOnline }} />
