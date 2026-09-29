@@ -87,14 +87,14 @@ const KnowledgeSearch = ({ isOpen, onClose, suggestedQuery ='', activeWellId ='O
  };
 
  return (
- <div className="fixed top-14 right-0 w-full sm:w-[460px] max-w-full h-[calc(100vh-3.5rem)] bg-slate-900 border-l border-slate-700 shadow-2xl z-40 flex flex-col animate-in slide-in-from-right">
+ <div className="fixed top-14 right-0 w-full sm:w-[460px] max-w-full h-[calc(100vh-3.5rem)] border-l border-slate-700 shadow-2xl z-40 flex flex-col animate-in slide-in-from-right">
  {/* Header */}
- <div className="flex items-center justify-between p-4 border-b border-slate-800 bg-slate-900/80 backdrop-blur">
+ <div className="flex items-center justify-between p-4 border-b border-slate-800 backdrop-blur">
  <div className="flex items-center space-x-2 text-slate-200">
  <BookOpen size={18} className="text-status-fluid"/>
  <h2 className="font-semibold tracking-wide">Knowledge Base (Hybrid RAG)</h2>
  {isOfflineMode && (
- <span className="flex items-center space-x-1 text-[10px] bg-cyan-950/80 text-cyan-400 border border-cyan-700/50 px-2 py-0.5 rounded-full font-mono">
+ <span className="flex items-center space-x-1 text-[10px] text-cyan-400 px-2 py-0.5 font-mono">
  <HardDrive size={10} />
  <span>Rig Edge Offline</span>
  </span>
@@ -106,7 +106,7 @@ const KnowledgeSearch = ({ isOpen, onClose, suggestedQuery ='', activeWellId ='O
  </div>
 
  {/* Search Input & Two-Stage Analog Toggle */}
- <div className="p-4 border-b border-slate-800 bg-slate-950/50 space-y-2.5">
+ <div className="p-4 border-b border-slate-800 space-y-2.5">
  <div className="relative">
  <Search size={16} className="absolute left-3 top-3 text-slate-500"/>
  <input 
@@ -117,7 +117,7 @@ const KnowledgeSearch = ({ isOpen, onClose, suggestedQuery ='', activeWellId ='O
  </div>
 
  {/* Prompt 4: Two-Stage Retrieval Toggle */}
- <div className="flex items-center justify-between bg-slate-900/90 border border-slate-800 px-2.5 py-1.5 rounded-lg">
+ <div className="flex items-center justify-between border border-slate-800 px-2.5 py-1.5 rounded-none">
  <label className="flex items-center space-x-2 text-[11px] text-slate-300 cursor-pointer select-none">
  <input 
  type="checkbox" checked={preFilterToAnalogs}
@@ -137,7 +137,7 @@ const KnowledgeSearch = ({ isOpen, onClose, suggestedQuery ='', activeWellId ='O
  </div>
 
  {/* Exclude Synthetic Data Toggle */}
- <div className="flex items-center justify-between bg-slate-900/90 border border-slate-800 px-2.5 py-1.5 rounded-lg">
+ <div className="flex items-center justify-between border border-slate-800 px-2.5 py-1.5 rounded-none">
  <label className="flex items-center space-x-2 text-[11px] text-slate-300 cursor-pointer select-none">
  <input 
  type="checkbox" checked={excludeSynthetic}
@@ -158,19 +158,19 @@ const KnowledgeSearch = ({ isOpen, onClose, suggestedQuery ='', activeWellId ='O
  </div>
 
  {/* Results Area */}
- <div className="flex-1 overflow-y-auto custom-scrollbar p-4 bg-slate-950 space-y-4">
+ <div className="flex-1 overflow-y-auto custom-scrollbar p-4 space-y-4">
  {/* AI Executive Synthesis Trigger & Card */}
  {results.length > 0 && (
  <div className="bg-gradient-to-r from-cyan-950/40 via-blue-950/30 to-purple-950/40 border border-cyan-500/30 rounded-sm p-3">
  <div className="flex items-center justify-between mb-2">
  <div className="flex items-center space-x-2">
- <Sparkles size={15} className="text-cyan-400 animate-pulse"/>
+ <Sparkles size={15} className="text-cyan-400"/>
  <span className="text-xs font-semibold text-cyan-200 uppercase tracking-wider">AI Executive Briefing</span>
  </div>
  <button
  onClick={generateAiBriefing}
  disabled={isSynthesizing}
- className="flex items-center space-x-1.5 px-2.5 py-1 bg-cyan-500/20 hover:bg-cyan-500/30 active:scale-95 text-cyan-300 border border-cyan-500/40 rounded-lg text-xs font-medium transition cursor-pointer disabled:opacity-50">
+ className="flex items-center space-x-1.5 px-2.5 py-1 bg-cyan-500/20 hover:bg-cyan-500/30 active:scale-95 text-cyan-300 border border-cyan-500/40 rounded-none text-xs font-medium transition cursor-pointer disabled:opacity-50">
  {isSynthesizing ? (
  <>
  <Loader2 size={12} className="animate-spin text-cyan-400"/>
@@ -197,7 +197,7 @@ const KnowledgeSearch = ({ isOpen, onClose, suggestedQuery ='', activeWellId ='O
  </span>
  )}
  </div>
- <p className="text-slate-300 leading-relaxed bg-slate-900/80 p-2.5 rounded-lg border border-slate-800">
+ <p className="text-slate-300 leading-relaxed bg-slate-900/80 p-2.5 rounded-none border border-slate-800">
  {aiBriefing.summary}
  </p>
  {aiBriefing.recommendations && aiBriefing.recommendations.length > 0 && (
@@ -231,7 +231,7 @@ const KnowledgeSearch = ({ isOpen, onClose, suggestedQuery ='', activeWellId ='O
  ) : (
  <div className="space-y-4">
  {results.map((result, idx) => (
- <div key={idx} className="bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-slate-700 transition-colors">
+ <div key={idx} className="bg-slate-900 border border-slate-800 rounded-none p-4 hover:border-slate-700 transition-colors">
  <div className="flex items-start justify-between mb-2">
  <div>
  <div className="flex items-center gap-1.5 mb-1.5 flex-wrap">
@@ -293,23 +293,23 @@ const KnowledgeSearch = ({ isOpen, onClose, suggestedQuery ='', activeWellId ='O
  <span className="text-cyan-400 font-bold">{((result.hybrid_score ?? result.similarity_score) * 100).toFixed(1)}% Total</span>
  </div>
  <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-[10px] font-mono">
- <div className="bg-slate-950/80 px-2 py-1 rounded border border-slate-800 flex justify-between" title="Formation Match: 31.3% AHP weight">
+ <div className=" px-2 py-1 rounded border border-slate-800 flex justify-between" title="Formation Match: 31.3% AHP weight">
  <span className="text-slate-400">Formation (31%):</span>
  <strong className="text-cyan-300">{(result.score_breakdown.formation_match * 100).toFixed(0)}%</strong>
  </div>
- <div className="bg-slate-950/80 px-2 py-1 rounded border border-slate-800 flex justify-between" title="Depth Proximity: 31.3% AHP weight">
+ <div className=" px-2 py-1 rounded border border-slate-800 flex justify-between" title="Depth Proximity: 31.3% AHP weight">
  <span className="text-slate-400">Depth (31%):</span>
  <strong className="text-emerald-300">{(result.score_breakdown.depth_proximity * 100).toFixed(0)}%</strong>
  </div>
- <div className="bg-slate-950/80 px-2 py-1 rounded border border-slate-800 flex justify-between" title="Event Type Match: 17.6% AHP weight">
+ <div className=" px-2 py-1 rounded border border-slate-800 flex justify-between" title="Event Type Match: 17.6% AHP weight">
  <span className="text-slate-400">Type (18%):</span>
  <strong className="text-amber-300">{(result.score_breakdown.event_type_match * 100).toFixed(0)}%</strong>
  </div>
- <div className="bg-slate-950/80 px-2 py-1 rounded border border-slate-800 flex justify-between" title="BM25 Lexical Score: 9.9% AHP weight">
+ <div className=" px-2 py-1 rounded border border-slate-800 flex justify-between" title="BM25 Lexical Score: 9.9% AHP weight">
  <span className="text-slate-400">BM25 (10%):</span>
  <strong className="text-purple-300">{(result.score_breakdown.bm25 * 100).toFixed(0)}%</strong>
  </div>
- <div className="bg-slate-950/80 px-2 py-1 rounded border border-slate-800 flex justify-between" title="Vector Semantic Score: 9.9% AHP weight">
+ <div className=" px-2 py-1 rounded border border-slate-800 flex justify-between" title="Vector Semantic Score: 9.9% AHP weight">
  <span className="text-slate-400">Vector (10%):</span>
  <strong className="text-blue-300">{(result.score_breakdown.vector * 100).toFixed(0)}%</strong>
  </div>

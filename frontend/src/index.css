@@ -4,10 +4,10 @@
 
 @layer base {
   body {
-    /* Industrial slate ground. Note this is a faintly blue-tinted dark, a small
-       deliberate departure from the strictly neutral greys of the §5.11 monochrome
-       ramp — the tint is what reads as "industrial" rather than "charcoal". */
-    @apply bg-[#0a0d12] text-slate-200 antialiased overflow-hidden font-sans;
+    /* Unified drafting ground. One flat colour for the whole app.
+       Panels no longer carry their own fill, so vertical rhythm comes from 1px
+       rules and spacing rather than from stacked boxes. */
+    @apply bg-[#07090e] text-slate-200 antialiased overflow-hidden font-sans;
     background-image:
       radial-gradient(ellipse 80% 50% at 50% -20%, rgba(166, 166, 166, 0.08), transparent 70%),
       radial-gradient(ellipse 60% 40% at 100% 100%, rgba(119, 119, 119, 0.05), transparent 60%);
@@ -32,30 +32,31 @@
    map's values in WellMap.jsx — otherwise markers and the search-radius circle
    render in colour on a grey basemap. The two move together. */
 
-/* Instrument panel system.
+/* Structural rules, not cards.
  *
- * Replaces the previous glassmorphism set. The translucent fills, large drop
- * shadows and soft glows are what gave panels a floating marketing-card cast.
- * These are now opaque and flat, separated by a 1px solid border on the same
- * slate-800 (#2b2b2b) that `border-slate-800` resolves to, so panels using these
- * classes and panels using the utility directly read identically.
+ * These classes used to carry a fill (`#121721`) and a shadow. Both are gone: the
+ * fill is `transparent` and the only separation is a 1px rule, so a panel reads as
+ * a region of one continuous drafting surface rather than a box floating on it.
+ * This is what makes stacked panels stop looking like "cards inside cards".
  *
- * backdrop-filter is gone rather than merely reduced: with an opaque fill a blur
- * behind it has no visible effect, and leaving it would imply these are still
- * translucent. The class names are kept so the ~12 call sites need no edit.
+ * `border-neutral-800` in the Tailwind config resolves to grey[800] = #2b2b2b, the
+ * same value as `border-slate-800` -- both families are remapped to one ramp, so
+ * the two spellings are interchangeable here.
+ *
+ * The class names are kept so the ~12 call sites need no edit.
  */
 .glass-panel {
-  background: #121721;
+  background: transparent;
   border: 1px solid #2b2b2b;
 }
 
 .glass-panel-glow {
-  background: #121721;
-  border: 1px solid #3a3a3a;
+  background: transparent;
+  border: 1px solid #2b2b2b;
 }
 
 .glass-card {
-  background: #121721;
+  background: transparent;
   border: 1px solid #2b2b2b;
 }
 

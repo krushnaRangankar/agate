@@ -11,11 +11,11 @@ const DataTransparencyModal = ({ isOpen, onClose }) => {
       onClick={onClose}
     >
       <div 
-        className="bg-slate-900 border border-slate-700/80 w-full max-w-2xl rounded shadow-2xl overflow-hidden flex flex-col max-h-[92vh] animate-in zoom-in-95 duration-150"
+        className=" border border-slate-700/80 w-full max-w-2xl rounded shadow-2xl overflow-hidden flex flex-col max-h-[92vh] animate-in zoom-in-95 duration-150"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
-        <div className="px-5 py-4 bg-slate-950 border-b border-slate-800 flex justify-between items-center">
+        <div className="px-5 py-4 border-b border-slate-800 flex justify-between items-center">
           <div className="flex items-center space-x-3">
             <div className="p-2 bg-cyan-500/10 rounded-sm border border-cyan-500/20 text-cyan-400">
               <ShieldCheck size={20} />
@@ -31,7 +31,7 @@ const DataTransparencyModal = ({ isOpen, onClose }) => {
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
+            className="p-1.5 rounded-none text-slate-400 hover:text-white hover:bg-slate-800 transition"
             aria-label="Close"
           >
             <X size={18} />
@@ -58,15 +58,15 @@ const DataTransparencyModal = ({ isOpen, onClose }) => {
               <strong className="text-white">Genuine published methods:</strong> Eaton's pore pressure/fracture gradient method (1975) [SPE-5544-MS], Teale's Mechanical Specific Energy (1965), and Jorden & Shirley's d-exponent (1966) with Rehm & McClendon mud-weight normalization (1971).
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1 text-[11px] font-mono">
-              <div className="p-2 rounded bg-slate-900 border border-slate-800 text-slate-300">
+              <div className="p-2 rounded border border-slate-800 text-slate-300">
                 <span className="text-cyan-400 block font-bold">Eaton (1975)</span>
                 <span>N = 3.0 acoustic exponent</span>
               </div>
-              <div className="p-2 rounded bg-slate-900 border border-slate-800 text-slate-300">
+              <div className="p-2 rounded border border-slate-800 text-slate-300">
                 <span className="text-emerald-400 block font-bold">Teale (1965)</span>
                 <span>MSE with η = 0.35 factor</span>
               </div>
-              <div className="p-2 rounded bg-slate-900 border border-slate-800 text-slate-300">
+              <div className="p-2 rounded border border-slate-800 text-slate-300">
                 <span className="text-amber-400 block font-bold">d-exponent</span>
                 <span>Jorden-Shirley + Rehm</span>
               </div>
@@ -88,7 +88,7 @@ const DataTransparencyModal = ({ isOpen, onClose }) => {
             </div>
 
             {/* Basin Subsection A: Upper Assam */}
-            <div className="p-3 rounded-lg bg-slate-900/90 border border-slate-800 space-y-1.5">
+            <div className="p-3 rounded-none border border-slate-800 space-y-1.5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
@@ -123,7 +123,7 @@ const DataTransparencyModal = ({ isOpen, onClose }) => {
             </div>
 
             {/* Basin Subsection B: Multi-Region Expansion */}
-            <div className="p-3 rounded-lg bg-emerald-950/20 border border-emerald-500/30 space-y-1.5">
+            <div className="p-3 rounded-none bg-emerald-950/20 border border-emerald-500/30 space-y-1.5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
@@ -179,11 +179,11 @@ const DataTransparencyModal = ({ isOpen, onClose }) => {
         </div>
 
         {/* Modal Footer */}
-        <div className="px-5 py-3 bg-slate-950 border-t border-slate-800 flex justify-between items-center text-xs text-slate-400">
+        <div className="px-5 py-3 border-t border-slate-800 flex justify-between items-center text-xs text-slate-400">
           <span className="font-mono text-[11px]">OIL India SIH 2026 Submission</span>
           <button
             onClick={onClose}
-            className="px-4 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-medium transition"
+            className="px-4 py-1.5 rounded-none bg-slate-800 hover:bg-slate-700 text-white font-medium transition"
           >
             Acknowledge & Close
           </button>

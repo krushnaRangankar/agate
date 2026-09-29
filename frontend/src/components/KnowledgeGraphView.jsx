@@ -266,7 +266,7 @@ export default function KnowledgeGraphView() {
 
       <div className="flex min-h-0 flex-1 gap-4">
         {/* Canvas */}
-        <div className="relative min-h-0 flex-1 overflow-hidden rounded-lg border border-slate-800 bg-slate-950/60">
+        <div className="relative min-h-0 flex-1 overflow-hidden rounded-none border border-slate-800">
           {loading && (
             <div className="flex h-full items-center justify-center gap-2 text-xs text-slate-500">
               <Loader2 className="h-4 w-4 animate-spin" /> Loading graph…
@@ -351,7 +351,7 @@ export default function KnowledgeGraphView() {
           </div>
 
           {hovered && (
-            <div className="pointer-events-none absolute right-3 top-3 max-w-[240px] rounded-md border border-slate-700 bg-slate-900/95 px-2.5 py-1.5 text-[10px] text-slate-300">
+            <div className="pointer-events-none absolute right-3 top-3 max-w-[240px] rounded-md border border-slate-700 px-2.5 py-1.5 text-[10px] text-slate-300">
               <div className="font-mono text-cyan-300">{hovered.id}</div>
               <div className="text-slate-500">{hovered.label}</div>
             </div>
@@ -359,7 +359,7 @@ export default function KnowledgeGraphView() {
         </div>
 
         {/* Inspector */}
-        <aside className="w-72 shrink-0 overflow-y-auto rounded-lg border border-slate-800 bg-slate-950/60 p-3">
+        <aside className="w-72 shrink-0 overflow-y-auto rounded-none border border-slate-800 p-3">
           {!selected && (
             <p className="text-[11px] leading-relaxed text-slate-500">
               Select a node to inspect it and its immediate neighbourhood.

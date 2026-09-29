@@ -592,9 +592,9 @@ export default function WellMap({
  ? 'bg-[#06b6d4] border-white w-5 h-5 shadow-[0_0_18px_rgba(6,182,212,0.95)] ring-2 ring-[#06b6d4]/60': isInside
  ? 'bg-[#34d399] border-white/90 w-4 h-4 shadow-[0_0_12px_rgba(52,211,153,0.9)] ring-2 ring-[#34d399]/50': 'bg-[#475569] border-[#94a3b8]/90 w-3 h-3 shadow-[0_0_8px_rgba(71,85,105,0.7)] hover:scale-125'}`}>
  {isActive ? (
- <div className="w-1.5 h-1.5 rounded-full bg-slate-950"></div>
+ <div className="w-1.5 h-1.5 rounded-full"></div>
  ) : isInside ? (
- <div className="w-1.5 h-1.5 rounded-full bg-slate-950/80"></div>
+ <div className="w-1.5 h-1.5 rounded-full"></div>
  ) : (
  <div className="w-1 h-1 rounded-full bg-[#1e293b]"></div>
  )}
@@ -706,12 +706,12 @@ export default function WellMap({
  Regional Exploration Map
  </h3>
  <div className="flex items-center space-x-1.5">
- <span className="bg-cyan-950/60 text-cyan-300 border border-cyan-500/30 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold">
+ <span className="text-cyan-300 px-2 py-0.5 text-[10px] font-mono font-bold">
  {wells.length} Wells
  </span>
  <button
  onClick={() => setIsCollapsed(!isCollapsed)}
- className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition" title={isCollapsed ? "Expand Search Controls": "Collapse Search Controls"}
+ className="p-1 rounded-none text-slate-400 hover:text-white hover:bg-slate-800 transition" title={isCollapsed ? "Expand Search Controls": "Collapse Search Controls"}
  >
  {isCollapsed ? <ChevronDown size={15} /> : <ChevronUp size={15} />}
  </button>
@@ -721,7 +721,7 @@ export default function WellMap({
  {!isCollapsed && (
  <div className="space-y-3 pt-1">
  {/* Region Indicator Pill */}
- <div className="flex flex-col space-y-1.5 bg-slate-900/80 px-2.5 py-1.5 rounded-lg border border-slate-800">
+ <div className="flex flex-col space-y-1.5 px-2.5 py-1.5 rounded-none border border-slate-800">
  <div className="flex items-center justify-between text-[11px]">
  <span className="text-slate-400 flex items-center">
  <Compass size={13} className="mr-1.5 text-cyan-400"/>
@@ -761,7 +761,7 @@ export default function WellMap({
  <button
  key={preset.val}
  type="button" onClick={() => setRadius(preset.val)}
- className={`text-[10px] py-1 px-1.5 rounded-lg border font-mono transition-all text-center ${
+ className={`text-[10px] py-1 px-1.5 rounded-none border font-mono transition-all text-center ${
  Math.abs(radius - preset.val) < 2
  ? 'bg-cyan-500/25 border-cyan-400 text-cyan-200 font-bold': 'bg-slate-800/80 border-slate-700 text-slate-400 hover:text-slate-200 hover:border-slate-600'}`}
  >
@@ -774,10 +774,10 @@ export default function WellMap({
  type="range" min="10.0" max={selectedRegion === 'north_sea'|| selectedRegion === 'all'? 300.0 : 120.0} 
  step="5.0" value={radius}
  onChange={(e) => setRadius(parseFloat(e.target.value))}
- className="w-full accent-cyan-400 bg-slate-800 rounded-lg appearance-none cursor-pointer h-1.5 mt-1"/>
+ className="w-full accent-cyan-400 bg-slate-800 rounded-none appearance-none cursor-pointer h-1.5 mt-1"/>
 
  {/* Live Dynamic Inspection HUD */}
- <div className="bg-slate-900/90 border border-slate-750 rounded-sm p-2 space-y-1 text-[11px] font-mono">
+ <div className=" border border-slate-750 rounded-sm p-2 space-y-1 text-[11px] font-mono">
  <div className="flex items-center justify-between">
  <span className="text-slate-400 flex items-center">
  <span className="w-2 h-2 rounded-full bg-[#34d399] shadow-[0_0_6px_rgba(52,211,153,0.8)] mr-1.5"></span>

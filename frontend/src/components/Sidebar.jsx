@@ -119,7 +119,7 @@ export default function Sidebar({ backendConnected, networkOnline }) {
 
   return (
     <aside
-      className={`flex h-full shrink-0 flex-col border-r border-slate-800 bg-slate-950/80 transition-[width] duration-200 ease-out ${
+      className={`flex h-full shrink-0 flex-col border-r border-slate-800 transition-[width] duration-200 ease-out ${
         collapsed ? 'w-14' : 'w-60'
       }`}
     >

@@ -271,12 +271,12 @@ const CorrelationPanel = ({ isOpen, onClose, activeWell, offsetWell, isFullScree
 
     return (
         <div className={`fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm animate-in fade-in duration-200 ${isFullScreen ? 'p-0 w-screen h-screen' : 'p-2 sm:p-4'}`}>
-            <div className={`bg-slate-900 border border-slate-700 shadow-2xl overflow-hidden flex flex-col ${isFullScreen ? 'w-screen h-screen rounded-none border-none max-h-none h-full' : 'w-full max-w-6xl h-[96vh] sm:h-[92vh] rounded-sm'}`}>
+            <div className={` border border-slate-700 shadow-2xl overflow-hidden flex flex-col ${isFullScreen ? 'w-screen h-screen rounded-none border-none max-h-none h-full' : 'w-full max-w-6xl h-[96vh] sm:h-[92vh] rounded-sm'}`}>
                 
                 {/* Header with Navigation Tabs */}
-                <div className="px-3 sm:px-6 py-2.5 sm:py-3.5 bg-slate-950 border-b border-slate-800 flex flex-wrap justify-between items-center gap-3">
+                <div className="px-3 sm:px-6 py-2.5 sm:py-3.5 border-b border-slate-800 flex flex-wrap justify-between items-center gap-3">
                     <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
-                        <div className="p-2 bg-indigo-500/10 rounded-lg border border-indigo-500/20 text-indigo-400 shrink-0">
+                        <div className="p-2 bg-indigo-500/10 rounded-none border border-indigo-500/20 text-indigo-400 shrink-0">
                             <Layers size={18} />
                         </div>
                         <div className="min-w-0">
@@ -284,7 +284,7 @@ const CorrelationPanel = ({ isOpen, onClose, activeWell, offsetWell, isFullScree
                                 <h3 className="text-sm sm:text-base font-bold text-white tracking-wide truncate">
                                     Offset Well Correlation
                                 </h3>
-                                <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-cyan-950 border border-cyan-800 text-cyan-300 font-mono">
+                                <span className="text-[11px] px-2.5 py-0.5-cyan-800 text-cyan-300 font-mono">
                                     {activeWell}
                                 </span>
                             </div>
@@ -295,7 +295,7 @@ const CorrelationPanel = ({ isOpen, onClose, activeWell, offsetWell, isFullScree
                     </div>
 
                     {/* Tab Switcher */}
-                    <div className="flex items-center bg-slate-900 p-1 rounded-lg border border-slate-800 space-x-1 overflow-x-auto max-w-full">
+                    <div className="flex items-center p-1 rounded-none border border-slate-800 space-x-1 overflow-x-auto max-w-full">
                         <button
                             onClick={() => setActiveTab('dtw')}
                             className={`whitespace-nowrap px-2.5 sm:px-3 py-1 rounded-md text-[11px] sm:text-xs font-semibold transition cursor-pointer ${
@@ -356,7 +356,7 @@ const CorrelationPanel = ({ isOpen, onClose, activeWell, offsetWell, isFullScree
                         {/* Fullscreen Toggle */}
                         <button
                             onClick={handleToggleFullscreen}
-                            className="p-1.5 rounded-lg border border-slate-700 text-slate-400 hover:text-white hover:bg-slate-800 transition min-h-[34px] min-w-[34px] flex items-center justify-center cursor-pointer"
+                            className="p-1.5 rounded-none border border-slate-700 text-slate-400 hover:text-white hover:bg-slate-800 transition min-h-[34px] min-w-[34px] flex items-center justify-center cursor-pointer"
                             title={isFullScreen ? "Window Mode" : "Full Screen"}
                         >
                             {isFullScreen ? <Minimize2 size={15} /> : <Maximize2 size={15} />}
@@ -365,7 +365,7 @@ const CorrelationPanel = ({ isOpen, onClose, activeWell, offsetWell, isFullScree
                         {/* Pop out to New Tab */}
                         <button
                             onClick={() => window.open(`${window.location.origin}${window.location.pathname}?module=correlation&well=${encodeURIComponent(activeWell)}&fullscreen=true`, '_blank')}
-                            className="p-1.5 rounded-lg border border-slate-700 text-slate-400 hover:text-white hover:bg-slate-800 transition min-h-[34px] min-w-[34px] flex items-center justify-center cursor-pointer"
+                            className="p-1.5 rounded-none border border-slate-700 text-slate-400 hover:text-white hover:bg-slate-800 transition min-h-[34px] min-w-[34px] flex items-center justify-center cursor-pointer"
                             title="Open in Dedicated Browser Tab (Full Screen)"
                         >
                             <ExternalLink size={15} />
@@ -378,7 +378,7 @@ const CorrelationPanel = ({ isOpen, onClose, activeWell, offsetWell, isFullScree
                                 }
                                 onClose();
                             }}
-                            className="p-1.5 rounded-lg border border-slate-700 text-slate-400 hover:text-white hover:bg-slate-800 transition min-h-[34px] min-w-[34px] flex items-center justify-center cursor-pointer"
+                            className="p-1.5 rounded-none border border-slate-700 text-slate-400 hover:text-white hover:bg-slate-800 transition min-h-[34px] min-w-[34px] flex items-center justify-center cursor-pointer"
                             title="Close View"
                         >
                             <X size={18} />
@@ -391,7 +391,7 @@ const CorrelationPanel = ({ isOpen, onClose, activeWell, offsetWell, isFullScree
                     <div className="flex-1 flex flex-col overflow-hidden">
                         {data && (
                             <>
-                                <div className="bg-slate-950/70 border-b border-slate-800/80 px-5 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs">
+                                <div className=" border-b border-slate-800/80 px-5 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs">
                                     <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
                                         <div className="flex items-center space-x-2">
                                             <span className="w-3.5 h-1 rounded bg-[#A6A6A6] inline-block"></span>
@@ -437,21 +437,21 @@ const CorrelationPanel = ({ isOpen, onClose, activeWell, offsetWell, isFullScree
                         )}
 
                         {showHelp && (
-                            <div className="bg-slate-900/95 border-b border-indigo-500/30 p-4 text-xs animate-in slide-in-from-top-2">
+                            <div className=" border-b border-indigo-500/30 p-4 text-xs animate-in slide-in-from-top-2">
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                                    <div className="bg-slate-950/70 p-3 rounded-lg border border-slate-800">
+                                    <div className=" p-3 rounded-none border border-slate-800">
                                         <h6 className="text-cyan-400 font-semibold mb-1">1. Gamma Ray Curves</h6>
                                         <p className="text-slate-300 leading-relaxed">
                                             Shows rock radioactivity (0–120 API). Low GR marks permeable sandstone reservoirs; high GR marks dense shale seals.
                                         </p>
                                     </div>
-                                    <div className="bg-slate-950/70 p-3 rounded-lg border border-slate-800">
+                                    <div className=" p-3 rounded-none border border-slate-800">
                                         <h6 className="text-amber-400 font-semibold mb-1">2. Colored Horizon Tie-Lines</h6>
                                         <p className="text-slate-300 leading-relaxed">
                                             Connects the identical geological horizon in both wells. Slope indicates regional dip and displacement across faults.
                                         </p>
                                     </div>
-                                    <div className="bg-slate-950/70 p-3 rounded-lg border border-slate-800">
+                                    <div className=" p-3 rounded-none border border-slate-800">
                                         <h6 className="text-emerald-400 font-semibold mb-1">3. DTW Alignment</h6>
                                         <p className="text-slate-300 leading-relaxed">
                                             Stretches curves to align matching formations horizontally, allowing drillers to compare lithology and bed thickness.
@@ -461,7 +461,7 @@ const CorrelationPanel = ({ isOpen, onClose, activeWell, offsetWell, isFullScree
                             </div>
                         )}
                         
-                        <div className="flex-1 relative bg-slate-950 p-4">
+                        <div className="flex-1 relative p-4">
                             {isLoading ? (
                                 <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-400">
                                     <Loader2 size={32} className="animate-spin mb-4 text-cyan-400" />
@@ -472,7 +472,7 @@ const CorrelationPanel = ({ isOpen, onClose, activeWell, offsetWell, isFullScree
                                     <p>{error}</p>
                                 </div>
                             ) : data ? (
-                                <div className="w-full h-full bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
+                                <div className="w-full h-full border border-slate-800 rounded-none overflow-hidden">
                                     <Plot
                                         data={traces}
                                         revision={isAligned ? 1 : 0}
@@ -524,7 +524,7 @@ const CorrelationPanel = ({ isOpen, onClose, activeWell, offsetWell, isFullScree
 
                 {/* TAB 2: CASING & CEMENTING CORRELATION */}
                 {activeTab === 'casing' && (
-                    <div className="flex-1 overflow-y-auto p-6 bg-slate-950 space-y-6">
+                    <div className="flex-1 overflow-y-auto p-6 space-y-6">
                         {casingLoading ? (
                             <div className="h-64 flex flex-col items-center justify-center text-slate-400">
                                 <Loader2 size={32} className="animate-spin mb-4 text-cyan-400" />
@@ -540,7 +540,7 @@ const CorrelationPanel = ({ isOpen, onClose, activeWell, offsetWell, isFullScree
                                     </div>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300">
                                         {casingData.recommended_practices?.map((rec, i) => (
-                                            <div key={i} className="flex items-start space-x-2 bg-slate-900/60 p-2.5 rounded border border-slate-800">
+                                            <div key={i} className="flex items-start space-x-2 p-2.5 rounded border border-slate-800">
                                                 <CheckCircle2 size={14} className="text-cyan-400 mt-0.5 shrink-0" />
                                                 <span>{rec}</span>
                                             </div>
@@ -551,7 +551,7 @@ const CorrelationPanel = ({ isOpen, onClose, activeWell, offsetWell, isFullScree
                                 {/* Comparison across wells */}
                                 <div className="space-y-6">
                                     {casingData.comparison?.map((well, wIdx) => (
-                                        <div key={wIdx} className="bg-slate-900 border border-slate-800 rounded-sm overflow-hidden">
+                                        <div key={wIdx} className=" border border-slate-800 rounded-sm overflow-hidden">
                                             <div className="px-5 py-3 bg-slate-800/60 border-b border-slate-700/60 flex items-center justify-between">
                                                 <div className="flex items-center space-x-3">
                                                     <span className={`w-3 h-3 rounded-full ${well.role.includes('Active') ? 'bg-cyan-400' : 'bg-amber-400'}`}></span>
@@ -563,7 +563,7 @@ const CorrelationPanel = ({ isOpen, onClose, activeWell, offsetWell, isFullScree
 
                                             <div className="overflow-x-auto">
                                                 <table className="w-full text-left text-xs text-slate-300">
-                                                    <thead className="bg-slate-950/80 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
+                                                    <thead className=" text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
                                                         <tr>
                                                             <th className="px-4 py-2.5">Casing String</th>
                                                             <th className="px-3 py-2.5">Hole / OD</th>
@@ -612,7 +612,7 @@ const CorrelationPanel = ({ isOpen, onClose, activeWell, offsetWell, isFullScree
 
                 {/* TAB 3: STRATIGRAPHIC CROSS-SECTION (3 OFFSET WELLS FENCE DIAGRAM) */}
                 {activeTab === 'cross_section' && (
-                    <div className="flex-1 overflow-y-auto p-6 bg-slate-950 flex flex-col space-y-4">
+                    <div className="flex-1 overflow-y-auto p-6 flex flex-col space-y-4">
                         {stratLoading ? (
                             <div className="h-64 flex flex-col items-center justify-center text-slate-400">
                                 <Loader2 size={32} className="animate-spin mb-4 text-cyan-400" />
@@ -621,7 +621,7 @@ const CorrelationPanel = ({ isOpen, onClose, activeWell, offsetWell, isFullScree
                         ) : stratData ? (
                             <>
                                 {/* Geological Summary Banner */}
-                                <div className="p-3.5 rounded-sm bg-slate-900 border border-slate-800 text-xs flex items-center justify-between">
+                                <div className="p-3.5 rounded-sm border border-slate-800 text-xs flex items-center justify-between">
                                     <div className="flex items-center space-x-2 text-slate-300">
                                         <Info size={15} className="text-cyan-400 shrink-0" />
                                         <span>{stratData.geological_summary}</span>
@@ -632,13 +632,13 @@ const CorrelationPanel = ({ isOpen, onClose, activeWell, offsetWell, isFullScree
                                 </div>
 
                                 {/* Fence Diagram Visual Canvas */}
-                                <div className="flex-1 bg-slate-900 border border-slate-800 rounded-sm p-6 flex flex-col">
+                                <div className="flex-1 border border-slate-800 rounded-sm p-6 flex flex-col">
                                     {/* Well Headers */}
                                     <div className="grid grid-cols-3 gap-8 mb-4 border-b border-slate-800 pb-3">
                                         {stratData.wells?.map((w, i) => (
-                                            <div key={i} className={`text-center p-3 rounded-lg border ${w.is_active ? 'bg-cyan-950/40 border-cyan-500/50' : 'bg-slate-950/60 border-slate-800'}`}>
+                                            <div key={i} className={`text-center p-3 rounded-none border ${w.is_active ? 'bg-cyan-950/40 border-cyan-500/50' : ' border-slate-800'}`}>
                                                 <div className="flex items-center justify-center space-x-2">
-                                                    <span className={`w-2.5 h-2.5 rounded-full ${w.is_active ? 'bg-cyan-400 animate-pulse' : 'bg-amber-400'}`}></span>
+                                                    <span className={`w-2.5 h-2.5 rounded-full ${w.is_active ? 'bg-cyan-400' : 'bg-amber-400'}`}></span>
                                                     <h5 className="font-bold text-sm text-white font-mono">{w.name}</h5>
                                                 </div>
                                                 <div className="text-[11px] text-slate-400 mt-1 flex justify-center space-x-4 font-mono">
@@ -677,7 +677,7 @@ const CorrelationPanel = ({ isOpen, onClose, activeWell, offsetWell, isFullScree
                                                                         {form.lithology}
                                                                     </div>
                                                                 </div>
-                                                                <span className="text-[10px] font-mono text-slate-400 bg-slate-900 px-1.5 py-0.5 rounded">
+                                                                <span className="text-[10px] font-mono text-slate-400 px-1.5 py-0.5">
                                                                     Top: {form.top_tvd}m
                                                                 </span>
                                                             </div>
@@ -713,7 +713,7 @@ const CorrelationPanel = ({ isOpen, onClose, activeWell, offsetWell, isFullScree
                                         </h6>
                                         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
                                             {stratData.tie_lines?.map((tl, tlIdx) => (
-                                                <div key={tlIdx} className="p-2.5 rounded bg-slate-950/80 border border-slate-800 flex flex-col justify-between">
+                                                <div key={tlIdx} className="p-2.5 rounded border border-slate-800 flex flex-col justify-between">
                                                     <div className="flex items-center space-x-2 mb-1">
                                                         <span className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: tl.color }}></span>
                                                         <span className="font-bold text-white truncate">{tl.formation}</span>

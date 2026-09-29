@@ -852,18 +852,18 @@ const Trajectory3DViewer = ({ isOpen, onClose, activeWellId, offsetWells = [], c
 
  return (
  <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 backdrop-blur-md animate-in fade-in p-1 sm:p-4">
- <div className="bg-slate-900 border border-slate-700/80 w-full max-w-7xl h-[96vh] sm:h-[92vh] rounded shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95">
+ <div className=" border border-slate-700/80 w-full max-w-7xl h-[96vh] sm:h-[92vh] rounded shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95">
  
  {/* Header Bar with Controls */}
- <div className="flex flex-wrap justify-between items-center px-3 sm:px-6 py-2.5 sm:py-3.5 border-b border-slate-800 bg-slate-900/90 gap-2">
+ <div className="flex flex-wrap justify-between items-center px-3 sm:px-6 py-2.5 sm:py-3.5 border-b border-slate-800 gap-2">
  <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
- <div className="p-2 bg-cyan-500/10 border border-cyan-500/30 rounded-lg text-cyan-400 shrink-0">
+ <div className="p-2 bg-cyan-500/10 border border-cyan-500/30 rounded-none text-cyan-400 shrink-0">
  <Compass size={18} />
  </div>
  <div className="min-w-0">
  <h2 className="text-sm sm:text-base font-bold text-slate-100 flex flex-wrap items-center gap-1.5 sm:gap-2">
  <span>3D Directional Wellbore</span>
- <span className="text-[11px] px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-mono font-medium">
+ <span className="text-[11px] px-2 py-0.5 text-cyan-300 font-mono font-medium">
  {activeWellId}
  </span>
  <SourceTag source={activeWellId} compact={true} />
@@ -876,8 +876,8 @@ const Trajectory3DViewer = ({ isOpen, onClose, activeWellId, offsetWells = [], c
 
  {/* Anti-collision Quick Badge */}
  {ca && (
- <div className={`flex items-center space-x-1.5 px-2.5 py-1 rounded-lg border text-[11px] font-semibold ${
- ca.status === 'CRITICAL'? 'bg-red-500/15 border-red-500/40 text-red-300 animate-pulse': ca.status === 'CAUTION'? 'bg-amber-500/15 border-amber-500/40 text-amber-300': 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300'}`}>
+ <div className={`flex items-center space-x-1.5 px-2.5 py-1 rounded-none border text-[11px] font-semibold ${
+ ca.status === 'CRITICAL'? 'bg-red-500/15 border-red-500/40 text-red-300': ca.status === 'CAUTION'? 'bg-amber-500/15 border-amber-500/40 text-amber-300': 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300'}`}>
  {ca.status === 'CRITICAL'? <ShieldAlert size={14} /> : <AlertTriangle size={14} />}
  <span><b>{ca.min_distance_m}m</b> to {ca.offset_well_id}</span>
  <span className="opacity-75">({ca.status})</span>
@@ -893,14 +893,14 @@ const Trajectory3DViewer = ({ isOpen, onClose, activeWellId, offsetWells = [], c
  </button>
  <button 
  onClick={onClose} 
- className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center" title="Close 3D View">
+ className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-none transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center" title="Close 3D View">
  <X size={20} />
  </button>
  </div>
  </div>
 
  {/* Secondary Toolbar: Camera & Layer Toggles */}
- <div className="flex items-center justify-between px-3 sm:px-6 py-2 bg-slate-950 border-b border-slate-800/80 text-xs text-slate-300 gap-2 overflow-x-auto max-w-full">
+ <div className="flex items-center justify-between px-3 sm:px-6 py-2 border-b border-slate-800/80 text-xs text-slate-300 gap-2 overflow-x-auto max-w-full">
  {/* View Presets */}
  <div className="flex items-center space-x-1.5">
  <span className="text-slate-400 font-medium mr-1 flex items-center gap-1">
@@ -958,11 +958,11 @@ const Trajectory3DViewer = ({ isOpen, onClose, activeWellId, offsetWells = [], c
 
  {/* 3D Canvas Area */}
  <div 
- className={`flex-1 relative overflow-hidden ${theme === 'geo'? 'bg-[#E9E9E9]': 'bg-slate-950'}`}
+ className={`flex-1 relative overflow-hidden ${theme === 'geo'? 'bg-[#E9E9E9]': ''}`}
  onMouseDown={handleMouseDown}
  >
  {/* Regional Hazard Card */}
- <div className="absolute top-4 left-4 z-20 w-72 glass-panel border border-slate-700/80 p-3 rounded-sm shadow-2xl bg-slate-900/85 backdrop-blur-md">
+ <div className="absolute top-4 left-4 z-20 w-72 glass-panel border border-slate-700/80 p-3 rounded-sm shadow-2xl backdrop-blur-md">
  <div className="flex items-center justify-between border-b border-slate-700 pb-2 mb-2">
  <div className="flex items-center space-x-1.5">
  <Layers size={15} className="text-amber-400"/>
@@ -981,13 +981,13 @@ const Trajectory3DViewer = ({ isOpen, onClose, activeWellId, offsetWells = [], c
  </div>
 
  {isLoading ? (
- <div className={`absolute inset-0 flex flex-col items-center justify-center text-slate-400 z-10 ${theme === 'geo'? 'bg-[#E9E9E9]/90': 'bg-slate-950/90'}`}>
+ <div className={`absolute inset-0 flex flex-col items-center justify-center text-slate-400 z-10 ${theme === 'geo'? 'bg-[#E9E9E9]/90': ''}`}>
  <Loader2 size={36} className="animate-spin mb-3 text-cyan-400"/>
  <p className="text-sm font-medium">Computing 3D Directional Trajectories & Anti-Collision Vectors...</p>
  <p className="text-xs text-slate-400 mt-1">Calculating minimum 3D Euclidean distances across subsurface depths</p>
  </div>
  ) : sceneError ? (
- <div className={`absolute inset-0 flex flex-col items-center justify-center px-6 text-center z-10 ${theme === 'geo'? 'bg-[#E9E9E9]/95': 'bg-slate-950/95'}`}>
+ <div className={`absolute inset-0 flex flex-col items-center justify-center px-6 text-center z-10 ${theme === 'geo'? 'bg-[#E9E9E9]/95': ''}`}>
  <ShieldAlert size={36} className="mb-3 text-rose-400"/>
  <p className="text-sm font-semibold text-rose-300">3D subsurface scene could not be assembled</p>
  <p className="text-xs text-slate-400 mt-1.5 max-w-lg break-words">{sceneError}</p>
@@ -1013,7 +1013,7 @@ const Trajectory3DViewer = ({ isOpen, onClose, activeWellId, offsetWells = [], c
  </div>
 
  {/* Footer Legend Bar */}
- <div className="px-6 py-2 bg-slate-900 border-t border-slate-800 flex flex-wrap items-center justify-between text-xs text-slate-400">
+ <div className="px-6 py-2 border-t border-slate-800 flex flex-wrap items-center justify-between text-xs text-slate-400">
  <div className="flex items-center space-x-4">
  <div className="flex items-center gap-1.5">
  <span className="w-2.5 h-2.5 rounded-full bg-cyan-400"></span>

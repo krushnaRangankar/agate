@@ -154,7 +154,7 @@ export default function DocumentsView() {
         )}
 
         {uploadResult && (
-          <div className="mb-3 rounded-md border border-slate-800 bg-slate-950/60 p-3 text-[11px]">
+          <div className="mb-3 rounded-md border border-slate-800 p-3 text-[11px]">
             <div className="flex items-center gap-2">
               <StatusPill status={uploadResult.status} />
               <span className="text-slate-300">{uploadResult.message}</span>
@@ -168,7 +168,7 @@ export default function DocumentsView() {
           </div>
         )}
 
-        <div className="min-h-0 flex-1 overflow-y-auto rounded-lg border border-slate-800 bg-slate-950/60">
+        <div className="min-h-0 flex-1 overflow-y-auto rounded-none border border-slate-800">
           {loading && (
             <div className="flex h-32 items-center justify-center gap-2 text-xs text-slate-500">
               <Loader2 className="h-4 w-4 animate-spin" /> Loading library…
@@ -220,7 +220,7 @@ export default function DocumentsView() {
       </div>
 
       {/* Chunk inspector */}
-      <aside className="w-80 shrink-0 overflow-y-auto rounded-lg border border-slate-800 bg-slate-950/60 p-3">
+      <aside className="w-80 shrink-0 overflow-y-auto rounded-none border border-slate-800 p-3">
         {!openDoc && (
           <p className="text-[11px] leading-relaxed text-slate-500">
             Select a document to inspect its extracted chunks and embedding coverage.

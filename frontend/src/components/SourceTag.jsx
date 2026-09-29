@@ -145,7 +145,7 @@ const SourceTag = ({ source, compact = false, showIcon = true, className = "" })
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border text-[10px] font-mono font-medium tracking-tight transition-all duration-150 cursor-help select-none ${config.bgColor} ${config.textColor} ${config.borderColor} ${className}`}
+      className={`inline-flex items-center gap-1.5 px-2 py-0.5 text-[10px] font-mono font-medium tracking-tight transition-all duration-150 cursor-help select-none ${config.bgColor} ${config.textColor} ${config.borderColor} ${className}`}
       title={config.tooltip}
     >
       {showIcon && <Icon size={10} className="shrink-0 opacity-80" />}

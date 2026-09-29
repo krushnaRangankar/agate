@@ -52,10 +52,10 @@ function Message({ message }) {
   return (
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
       <div
-        className={`max-w-[85%] rounded-lg px-3.5 py-2.5 text-[12px] leading-relaxed ${
+        className={`max-w-[85%] rounded-none px-3.5 py-2.5 text-[12px] leading-relaxed ${
           isUser
             ? 'bg-cyan-500/15 text-slate-100 ring-1 ring-inset ring-cyan-500/25'
-            : 'bg-slate-900/80 text-slate-200 ring-1 ring-inset ring-slate-800'
+            : ' text-slate-200 ring-1 ring-inset ring-slate-800'
         }`}
       >
         {isUser ? (
@@ -189,7 +189,7 @@ export default function ChatPanel() {
   return (
     <div className="flex h-full gap-4 p-5">
       {/* Session rail */}
-      <aside className="flex w-56 shrink-0 flex-col rounded-lg border border-slate-800 bg-slate-950/60 p-2">
+      <aside className="flex w-56 shrink-0 flex-col rounded-none border border-slate-800 p-2">
         <button
           type="button"
           onClick={newSession}
@@ -234,7 +234,7 @@ export default function ChatPanel() {
 
         <div className="min-h-0 flex-1 space-y-3 overflow-y-auto pr-1">
           {messages.length === 0 && (
-            <div className="rounded-lg border border-slate-800 bg-slate-950/60 p-4">
+            <div className="rounded-none border border-slate-800 p-4">
               <p className="text-[12px] text-slate-400">
                 Ask about historical drilling experience on nearby wells — hazards, mitigations,
                 formations, or depths. Answers cite the records they were grounded in.

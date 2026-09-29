@@ -158,12 +158,12 @@ const LookAheadRadar = ({ isOpen, onClose, activeWellId ='OIL-BAGHJAN-1', curren
 
  return (
  <div className={`fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm animate-in fade-in duration-200 ${isFullScreen ? 'p-0 w-screen h-screen': 'p-2 sm:p-4'}`}>
- <div className={`bg-slate-900 border border-slate-700 shadow-2xl overflow-hidden flex flex-col ${isFullScreen ? 'w-screen h-screen rounded-none border-none max-h-none h-full': 'w-full max-w-5xl rounded-sm max-h-[96vh] sm:max-h-[92vh]'}`}>
+ <div className={` border border-slate-700 shadow-2xl overflow-hidden flex flex-col ${isFullScreen ? 'w-screen h-screen rounded-none border-none max-h-none h-full': 'w-full max-w-5xl rounded-sm max-h-[96vh] sm:max-h-[92vh]'}`}>
  
  {/* Header */}
- <div className="px-3 sm:px-6 py-3 sm:py-4 bg-slate-950 border-b border-slate-800 flex justify-between items-center gap-2">
+ <div className="px-3 sm:px-6 py-3 sm:py-4 border-b border-slate-800 flex justify-between items-center gap-2">
  <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
- <div className="p-1.5 sm:p-2 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400 shrink-0">
+ <div className="p-1.5 sm:p-2 rounded-none bg-amber-500/10 border border-amber-500/30 text-amber-400 shrink-0">
  <Radar size={22} className={loading ? "animate-spin": ""} />
  </div>
  <div className="min-w-0">
@@ -176,7 +176,7 @@ const LookAheadRadar = ({ isOpen, onClose, activeWellId ='OIL-BAGHJAN-1', curren
  <select
  value={targetWellId}
  onChange={(e) => handleWellChange(e.target.value)}
- className="bg-slate-800 border border-slate-700 text-cyan-300 text-xs font-mono font-bold rounded-lg px-2 py-1 outline-none hover:border-cyan-500 focus:border-cyan-400 cursor-pointer transition max-w-[140px] truncate" title="Switch Target Well for Offset Radar Analysis">
+ className="bg-slate-800 border border-slate-700 text-cyan-300 text-xs font-mono font-bold rounded-none px-2 py-1 outline-none hover:border-cyan-500 focus:border-cyan-400 cursor-pointer transition max-w-[140px] truncate" title="Switch Target Well for Offset Radar Analysis">
  <optgroup label={getRegionDisplayLabel('assam','Upper Assam')}>
  <option value="OIL-BAGHJAN-1">BAGHJAN-1</option>
  <option value="OIL-BAGHJAN-4">BAGHJAN-4</option>
@@ -215,11 +215,11 @@ const LookAheadRadar = ({ isOpen, onClose, activeWellId ='OIL-BAGHJAN-1', curren
 
  <SourceTag source={targetWellId} compact={true} />
 
- <span className="text-[11px] px-2 py-0.5 rounded-full bg-slate-800 border border-slate-700 text-slate-300 font-mono">
+ <span className="text-[11px] px-2 py-0.5-slate-700 text-slate-300 font-mono">
  {Math.round(simulatedDepth)}m
  </span>
  {isOfflineEngine && (
- <span className="flex items-center space-x-1 text-[10px] bg-cyan-950/80 text-cyan-400 border border-cyan-700/50 px-2 py-0.5 rounded-full font-mono">
+ <span className="flex items-center space-x-1 text-[10px] text-cyan-400 px-2 py-0.5 font-mono">
  <HardDrive size={10} />
  <span>Rig Edge Offline</span>
  </span>
@@ -242,7 +242,7 @@ const LookAheadRadar = ({ isOpen, onClose, activeWellId ='OIL-BAGHJAN-1', curren
  <button 
  onClick={() => fetchLookAhead()}
  disabled={loading}
- className="px-2.5 sm:px-3 py-1.5 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 hover:text-white font-medium text-xs flex items-center space-x-1.5 transition shadow-sm disabled:opacity-50 min-h-[36px]" title="Trigger active radar horizon sweep">
+ className="px-2.5 sm:px-3 py-1.5 rounded-none bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 hover:text-white font-medium text-xs flex items-center space-x-1.5 transition shadow-sm disabled:opacity-50 min-h-[36px]" title="Trigger active radar horizon sweep">
  <RefreshCw size={13} className={loading ? 'animate-spin text-cyan-400': ''} />
  <span className="hidden sm:inline">{loading ? 'Scanning...': 'Re-scan Radar'}</span>
  <span className="sm:hidden">{loading ? '...': 'Scan'}</span>
@@ -251,7 +251,7 @@ const LookAheadRadar = ({ isOpen, onClose, activeWellId ='OIL-BAGHJAN-1', curren
  {/* Toggle Fullscreen Button */}
  <button
  onClick={handleToggleFullscreen}
- className="p-1.5 rounded-lg border border-slate-700 hover:bg-slate-800 text-slate-400 hover:text-white transition min-h-[36px] min-w-[36px] flex items-center justify-center cursor-pointer" title={isFullScreen ? "Exit Fullscreen (Window Mode)": "Expand to Full Screen"}
+ className="p-1.5 rounded-none border border-slate-700 hover:bg-slate-800 text-slate-400 hover:text-white transition min-h-[36px] min-w-[36px] flex items-center justify-center cursor-pointer" title={isFullScreen ? "Exit Fullscreen (Window Mode)": "Expand to Full Screen"}
  >
  {isFullScreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
  </button>
@@ -259,7 +259,7 @@ const LookAheadRadar = ({ isOpen, onClose, activeWellId ='OIL-BAGHJAN-1', curren
  {/* Pop out to New Tab */}
  <button
  onClick={() => window.open(`${window.location.origin}${window.location.pathname}?module=radar&well=${encodeURIComponent(targetWellId)}&fullscreen=true`,'_blank')}
- className="p-1.5 rounded-lg border border-slate-700 hover:bg-slate-800 text-slate-400 hover:text-white transition min-h-[36px] min-w-[36px] flex items-center justify-center" title="Open in Dedicated Browser Tab (Full Screen)">
+ className="p-1.5 rounded-none border border-slate-700 hover:bg-slate-800 text-slate-400 hover:text-white transition min-h-[36px] min-w-[36px] flex items-center justify-center" title="Open in Dedicated Browser Tab (Full Screen)">
  <ExternalLink size={16} />
  </button>
 
@@ -270,19 +270,19 @@ const LookAheadRadar = ({ isOpen, onClose, activeWellId ='OIL-BAGHJAN-1', curren
  }
  onClose();
  }}
- className="p-1.5 rounded-lg border border-slate-700 hover:bg-slate-800 text-slate-400 hover:text-white transition min-h-[36px] min-w-[36px] flex items-center justify-center" title="Close View">
+ className="p-1.5 rounded-none border border-slate-700 hover:bg-slate-800 text-slate-400 hover:text-white transition min-h-[36px] min-w-[36px] flex items-center justify-center" title="Close View">
  <X size={18} />
  </button>
  </div>
  </div>
 
  {/* Controls Bar */}
- <div className="px-3 sm:px-6 py-2.5 sm:py-3 bg-slate-950/60 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs">
+ <div className="px-3 sm:px-6 py-2.5 sm:py-3 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs">
  <div className="flex items-center space-x-4">
  <div className="flex items-center space-x-2 text-slate-300">
  <Sliders size={14} className="text-cyan-400"/>
  <span>Look-Ahead Horizon:</span>
- <div className="flex items-center space-x-1 bg-slate-900 border border-slate-800 rounded-md p-1">
+ <div className="flex items-center space-x-1 border border-slate-800 rounded-md p-1">
  {[150, 250, 350, 500].map(dist => (
  <button
  key={dist}
@@ -334,14 +334,14 @@ const LookAheadRadar = ({ isOpen, onClose, activeWellId ='OIL-BAGHJAN-1', curren
  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
  
  {/* Horizon Threat Gauge */}
- <div className="p-4 rounded-sm bg-slate-950/80 border border-slate-800 flex flex-col justify-between">
+ <div className="p-4 rounded-sm border border-slate-800 flex flex-col justify-between">
  <div>
  <span className="text-xs uppercase tracking-wider text-slate-400 font-medium">Unified ML Hazard Forecast</span>
  <div className="flex items-baseline justify-between mt-2">
  <span className="text-2xl font-black font-mono" style={{ color: riskColor }}>
  {(riskScore * 100).toFixed(0)}%
  </span>
- <span className="text-xs px-2.5 py-1 rounded-full font-bold border" style={{ color: riskColor, borderColor:`${riskColor}50`, backgroundColor:`${riskColor}15`}}>
+ <span className="text-xs px-2.5 py-1 font-bold" style={{ color: riskColor, borderColor:`${riskColor}50`, backgroundColor:`${riskColor}15`}}>
  {riskLabel}
  </span>
  </div>
@@ -358,7 +358,7 @@ const LookAheadRadar = ({ isOpen, onClose, activeWellId ='OIL-BAGHJAN-1', curren
  </div>
 
  {/* Upcoming Formation Top */}
- <div className="p-4 rounded-sm bg-slate-950/80 border border-slate-800 flex flex-col justify-between">
+ <div className="p-4 rounded-sm border border-slate-800 flex flex-col justify-between">
  <div>
  <span className="text-xs uppercase tracking-wider text-slate-400 font-medium flex items-center space-x-1.5">
  <Layers size={14} className="text-amber-400"/>
@@ -398,7 +398,7 @@ const LookAheadRadar = ({ isOpen, onClose, activeWellId ='OIL-BAGHJAN-1', curren
  </div>
 
  {/* Historical Incident Breakdown */}
- <div className="p-4 rounded-sm bg-slate-950/80 border border-slate-800 flex flex-col justify-between">
+ <div className="p-4 rounded-sm border border-slate-800 flex flex-col justify-between">
  <div>
  <span className="text-xs uppercase tracking-wider text-slate-400 font-medium flex items-center space-x-1.5">
  <Compass size={14} className="text-cyan-400"/>
@@ -406,15 +406,15 @@ const LookAheadRadar = ({ isOpen, onClose, activeWellId ='OIL-BAGHJAN-1', curren
  </span>
 
  <div className="grid grid-cols-3 gap-2 mt-3 text-center">
- <div className="p-2 rounded-lg bg-red-950/30 border border-red-900/40">
+ <div className="p-2 rounded-none bg-red-950/30 border border-red-900/40">
  <span className="text-xs text-red-400 block font-medium">Kicks</span>
  <strong className="text-lg font-mono text-red-300">{data?.kick_events_count || 0}</strong>
  </div>
- <div className="p-2 rounded-lg bg-amber-950/30 border border-amber-900/40">
+ <div className="p-2 rounded-none bg-amber-950/30 border border-amber-900/40">
  <span className="text-xs text-amber-400 block font-medium">Losses</span>
  <strong className="text-lg font-mono text-amber-300">{data?.loss_events_count || 0}</strong>
  </div>
- <div className="p-2 rounded-lg bg-purple-950/30 border border-purple-900/40">
+ <div className="p-2 rounded-none bg-purple-950/30 border border-purple-900/40">
  <span className="text-xs text-purple-400 block font-medium">Stuck</span>
  <strong className="text-lg font-mono text-purple-300">{data?.stuck_events_count || 0}</strong>
  </div>
@@ -429,7 +429,7 @@ const LookAheadRadar = ({ isOpen, onClose, activeWellId ='OIL-BAGHJAN-1', curren
  </div>
 
  {/* Driller Proactive Advisory Action Plan */}
- <div className="p-5 rounded-sm bg-slate-950/90 border border-slate-800">
+ <div className="p-5 rounded-sm border border-slate-800">
  <div className="flex items-center space-x-2 mb-4">
  <Zap size={18} className="text-amber-400"/>
  <h3 className="text-sm font-bold text-white uppercase tracking-wider">
@@ -446,9 +446,9 @@ const LookAheadRadar = ({ isOpen, onClose, activeWellId ='OIL-BAGHJAN-1', curren
  return (
  <div 
  key={idx}
- className={`p-3.5 rounded-lg border flex items-start space-x-3 transition ${
+ className={`p-3.5 rounded-none border flex items-start space-x-3 transition ${
  isCrit 
- ? 'bg-red-950/20 border-red-900/50 text-red-100': 'bg-slate-900/80 border-slate-800 text-slate-200'}`}
+ ? 'bg-red-950/20 border-red-900/50 text-red-100': ' border-slate-800 text-slate-200'}`}
  >
  <div className="mt-0.5">
  {isCrit ? (
@@ -475,7 +475,7 @@ const LookAheadRadar = ({ isOpen, onClose, activeWellId ='OIL-BAGHJAN-1', curren
  </div>
 
  {/* Correlated Historical Incidents in the Upcoming Horizon */}
- <div className="p-5 rounded-sm bg-slate-950/90 border border-slate-800">
+ <div className="p-5 rounded-sm border border-slate-800">
  <div className="flex items-center justify-between mb-4">
  <div className="flex items-center space-x-2">
  <AlertTriangle size={18} className="text-cyan-400"/>
@@ -491,7 +491,7 @@ const LookAheadRadar = ({ isOpen, onClose, activeWellId ='OIL-BAGHJAN-1', curren
  {data?.events && data.events.length > 0 ? (
  <div className="space-y-3">
  {data.events.map((ev, i) => (
- <div key={i} className="p-3.5 rounded-lg bg-slate-900 border border-slate-800 text-xs hover:border-slate-700 transition">
+ <div key={i} className="p-3.5 rounded-none bg-slate-900 border border-slate-800 text-xs hover:border-slate-700 transition">
  <div className="flex items-center justify-between mb-2">
  <div className="flex items-center space-x-2">
  <span className={`px-2 py-0.5 rounded text-xs font-bold font-mono border ${getWellColor(ev.well_id).badge}`}>
@@ -556,14 +556,14 @@ const LookAheadRadar = ({ isOpen, onClose, activeWellId ='OIL-BAGHJAN-1', curren
  </div>
 
  {/* Footer */}
- <div className="px-6 py-3.5 bg-slate-950 border-t border-slate-800 flex justify-between items-center text-xs text-slate-400">
+ <div className="px-6 py-3.5 border-t border-slate-800 flex justify-between items-center text-xs text-slate-400">
  <div className="flex items-center space-x-2">
  <Info size={14} className="text-cyan-400"/>
  <span>Look-Ahead Radar updates in real-time as bit advances via WITSML telemetry feed.</span>
  </div>
  <button
  onClick={onClose}
- className="px-4 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-medium transition">
+ className="px-4 py-1.5 rounded-none bg-slate-800 hover:bg-slate-700 text-white font-medium transition">
  Close Radar
  </button>
  </div>

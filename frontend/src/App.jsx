@@ -125,6 +125,17 @@ const HAZARD_CARDS = [
   { key: 'cementing',        label: 'Cementing',     icon: Layers,    probability: 0.05, indicator: 'Annulus isolation intact' },
 ];
 
+// Look-ahead horizon per well. Hoisted out of the old floating radar card so the
+// flat instrumentation strip can read it without an inline IIFE.
+const WELL_RADAR_PREVIEWS = {
+ 'OIL-BAGHJAN-1': 'Barail Kick Horizon',   'OIL-BAGHJAN-4': 'Barail Gas Sand',
+ 'OIL-NAHARKATIYA-1': 'Barail Sand-Shale', 'OIL-MORAN-1': 'Deep Barail Interval',
+ 'OIL-DIKOM-1': 'Barail Sandstone Top',    'OIL-TENGAKHAT-1': 'Barail Main Sand',
+ 'OIL-KOTHALONI-1': 'Barail Argillaceous', 'OIL-HAPJAN-1': 'Barail Coal Sequence',
+ 'OIL-SHALMARI-1': 'Barail Laminated Sand',
+};
+const RADAR_FALLBACK_HORIZON = 'Barail Horizon';
+
 function App() {
  const navigate = useNavigate();
  // Legacy ?module=<name> deep-link support, kept only for the two modules that
@@ -243,11 +254,14 @@ function App() {
  const [mobileActiveTab, setMobileActiveTab] = useState('map'); //'map'|'telemetry'|'simulator'// Telemetry drawer collapse. Persisted so the preference survives a reload -
  // an engineer who wants the map full-width should not have to re-collapse it
  // on every visit. Desktop only; on mobile the drawer is a tab.
+ // Defaults to COLLAPSED on a first visit: the map is the primary surface and this
+ // drawer is reference material, so it opens on demand. An explicit expand ('0')
+ // is still honoured on later visits, so the choice sticks.
  const [isTelemetryCollapsed, setIsTelemetryCollapsed] = useState(() => {
  try {
- return localStorage.getItem('agate_telemetry_collapsed') === '1';
+ return localStorage.getItem('agate_telemetry_collapsed') !== '0';
  } catch {
- return false;
+ return true;
  }
  });
 
@@ -1152,12 +1166,12 @@ function App() {
  )}
 
  {/* Top Navigation Bar - Mission Control Bar */}
- <header className={`h-13 sm:h-14 border-b ${dashboardTheme === 'terminal'? 'border-emerald-500/40 bg-[#0E0E0E]/95': 'border-slate-800/80 bg-[#131313]/95'} backdrop-blur-xl flex items-center justify-between px-3 sm:px-4 lg:px-5 z-40 shrink-0 shadow-[0_4px_25px_rgba(0,0,0,0.5)] relative w-full overflow-hidden`}>
+ <header className={`h-13 sm:h-14 border-b ${dashboardTheme === 'terminal'? 'border-emerald-500/40': 'border-slate-800/80'} flex items-center justify-between px-3 sm:px-4 lg:px-5 z-40 shrink-0 relative w-full overflow-hidden`}>
  {/* Rig-edge link indicator (branding now lives in the sidebar) */}
  <div className="flex items-center shrink-0 mr-3">
  <div className="relative flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-sm bg-gradient-to-br from-cyan-500/20 via-blue-500/10 to-indigo-500/10 border border-cyan-500/40 text-cyan-400 shrink-0">
- <Activity size={18} className="text-cyan-400 animate-pulse-subtle"/>
- <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-[#131313] animate-ping"/>
+ <Activity size={18} className="text-cyan-400-subtle"/>
+ <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-[#131313]"/>
  <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-[#131313]"/>
  </div>
  </div>
@@ -1168,7 +1182,7 @@ function App() {
  <select 
  value={selectedRegion} 
  onChange={(e) => handleSelectRegion(e.target.value)}
- className="bg-slate-900 border border-slate-700/80 text-slate-200 text-[10px] font-mono font-medium rounded-lg px-1.5 py-1.5 outline-none max-w-[100px] truncate shadow-inner focus:border-cyan-500">
+ className="bg-slate-900 border border-slate-700/80 text-slate-200 text-[10px] font-mono font-medium rounded-none px-1.5 py-1.5 outline-none max-w-[100px] truncate shadow-inner focus:border-cyan-500">
  <option value="all">All Regions</option>
  <option value="assam">{getRegionDisplayLabel('assam','Assam')}</option>
  <option value="rajasthan">{getRegionDisplayLabel('rajasthan','Rajasthan')}</option>
@@ -1181,7 +1195,7 @@ function App() {
  <select 
  value={selectedWell} 
  onChange={(e) => handleSelectWell(e.target.value)}
- className="bg-slate-900 border border-slate-700/80 text-slate-200 text-[10px] font-mono font-medium rounded-lg px-1.5 py-1.5 outline-none max-w-[125px] truncate shadow-inner focus:border-cyan-500">
+ className="bg-slate-900 border border-slate-700/80 text-slate-200 text-[10px] font-mono font-medium rounded-none px-1.5 py-1.5 outline-none max-w-[125px] truncate shadow-inner focus:border-cyan-500">
  {(selectedRegion === 'all'|| selectedRegion === 'assam') && (
  <optgroup label="Upper Assam Basin (Volve / Benchmark Calibrated)">
  <option value="OIL-BAGHJAN-1">BAGHJAN-1</option>
@@ -1246,14 +1260,14 @@ function App() {
  {/* Quick Upload Icon Button */}
  <button
  onClick={() => setIsUploadModalOpen(true)}
- className="p-1.5 bg-slate-900/90 hover:bg-slate-800 active:bg-slate-750 border border-slate-700/80 text-slate-300 rounded-lg transition shadow-sm" title="Upload Document">
+ className="p-1.5 bg-slate-900/90 hover:bg-slate-800 active:bg-slate-750 border border-slate-700/80 text-slate-300 rounded-none transition shadow-sm" title="Upload Document">
  <FileUp size={16} />
  </button>
 
  {/* Mobile Settings Button */}
  <button 
  onClick={() => setIsSettingsOpen(!isSettingsOpen)}
- className={`p-1.5 bg-slate-900/90 hover:bg-slate-800 active:bg-slate-750 border rounded-lg transition shadow-sm ${
+ className={`p-1.5 bg-slate-900/90 hover:bg-slate-800 active:bg-slate-750 border rounded-none transition shadow-sm ${
  isSettingsOpen ? 'border-cyan-500 text-cyan-400 bg-cyan-500/15': 'border-slate-700/80 text-slate-300'}`}
  title="System Settings" aria-label="Settings">
  <Settings size={16} className={`transition-transform duration-300 ${isSettingsOpen ? 'rotate-90 text-cyan-400': ''}`} />
@@ -1262,7 +1276,7 @@ function App() {
  {/* Mobile Menu Toggle Button */}
  <button
  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
- className="p-1.5 bg-slate-900/90 hover:bg-slate-800 active:bg-slate-750 border border-slate-700/80 text-slate-200 rounded-lg transition shadow-sm" aria-label="Toggle Menu">
+ className="p-1.5 bg-slate-900/90 hover:bg-slate-800 active:bg-slate-750 border border-slate-700/80 text-slate-200 rounded-none transition shadow-sm" aria-label="Toggle Menu">
  {isMobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
  </button>
  </div>
@@ -1276,7 +1290,7 @@ function App() {
  <select 
  value={role} 
  onChange={handleRoleChange}
- className="bg-slate-900 hover:bg-slate-850 border border-slate-700 text-slate-200 text-[11px] font-medium rounded-lg px-2 py-1 outline-none focus:border-cyan-500 transition shadow-inner cursor-pointer">
+ className="bg-slate-900 hover:bg-slate-850 border border-slate-700 text-slate-200 text-[11px] font-medium rounded-none px-2 py-1 outline-none focus:border-cyan-500 transition shadow-inner cursor-pointer">
  <option value="Field Engineer">Field Engineer</option>
  <option value="Office Reviewer">Office Reviewer</option>
  </select>
@@ -1284,7 +1298,7 @@ function App() {
 
  {/* Active Region Selector */}
  <div className="flex items-center space-x-1 border-l border-slate-800/80 pl-1.5 xl:pl-2 shrink-0">
- <div className="flex items-center space-x-1.5 bg-slate-900 hover:bg-slate-850 px-2 py-1 rounded-lg transition-colors border border-slate-700 shadow-inner">
+ <div className="flex items-center space-x-1.5 bg-slate-900 hover:bg-slate-850 px-2 py-1 rounded-none transition-colors border border-slate-700 shadow-inner">
  <MapIcon size={13} className="text-emerald-400 shrink-0"/>
  <select 
  value={selectedRegion} 
@@ -1302,7 +1316,7 @@ function App() {
 
  {/* Active Field / Well Selector with Regional Portfolio Extensibility */}
  <div className="flex items-center space-x-1 border-l border-slate-800/80 pl-1.5 xl:pl-2 shrink-0">
- <div className="flex items-center space-x-1.5 bg-slate-900 hover:bg-slate-850 px-2 py-1 rounded-lg transition-colors border border-slate-700 shadow-inner">
+ <div className="flex items-center space-x-1.5 bg-slate-900 hover:bg-slate-850 px-2 py-1 rounded-none transition-colors border border-slate-700 shadow-inner">
  <Database size={13} className="text-cyan-400 shrink-0"/>
  <select 
  value={selectedWell} 
@@ -1376,14 +1390,14 @@ function App() {
  <div className="flex items-center border-l border-slate-800/80 pl-1.5 xl:pl-2 shrink-0">
  {isBackendConnected ? (
  <div 
- className="flex items-center space-x-1.5 px-2 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[11px] font-mono font-medium whitespace-nowrap" title="Telemetry Live at 1.0Hz — Cloud & Edge Synchronized">
- <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+ className="flex items-center space-x-1.5 px-2 py-1 rounded-none bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[11px] font-mono font-medium whitespace-nowrap" title="Telemetry Live at 1.0Hz — Cloud & Edge Synchronized">
+ <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
  <span>Cloud Sync 1.0Hz</span>
  </div>
  ) : (
  <div 
- className="flex items-center space-x-1.5 px-2 py-1 rounded-lg bg-cyan-500/15 border border-cyan-500/40 text-cyan-300 text-[11px] font-mono font-medium whitespace-nowrap" title="Rig Edge Offline Mode Active — Continuous Physics & Hazard Monitoring Uninterrupted">
- <ShieldCheck size={12} className="text-cyan-400 animate-pulse"/>
+ className="flex items-center space-x-1.5 px-2 py-1 rounded-none bg-cyan-500/15 border border-cyan-500/40 text-cyan-300 text-[11px] font-mono font-medium whitespace-nowrap" title="Rig Edge Offline Mode Active — Continuous Physics & Hazard Monitoring Uninterrupted">
+ <ShieldCheck size={12} className="text-cyan-400"/>
  <span>Rig Edge (1.0Hz)</span>
  </div>
  )}
@@ -1395,7 +1409,7 @@ function App() {
  {/* Search */}
  <button 
  onClick={() => setIsKnowledgeSearchOpen(!isKnowledgeSearchOpen)}
- className={`p-1.5 rounded-lg transition-colors border shrink-0 ${isKnowledgeSearchOpen ? 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30': 'bg-slate-900/80 hover:bg-slate-800 border-slate-700/80 hover:text-white'}`}
+ className={`p-1.5 rounded-none transition-colors border shrink-0 ${isKnowledgeSearchOpen ? 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30': 'bg-slate-900/80 hover:bg-slate-800 border-slate-700/80 hover:text-white'}`}
  title="Search Knowledge Base">
  <Search size={14} />
  </button>
@@ -1403,14 +1417,14 @@ function App() {
  {/* Methodology Modal Trigger */}
  <button
  onClick={() => setIsTransparencyOpen(true)}
- className="p-1.5 rounded-lg bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/80 hover:border-cyan-500/40 transition shadow-sm shrink-0" title="Data & Methodology Disclosures (Physics 80% / ML 20% / Volve Adaptation)">
+ className="p-1.5 rounded-none bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/80 hover:border-cyan-500/40 transition shadow-sm shrink-0" title="Data & Methodology Disclosures (Physics 80% / ML 20% / Volve Adaptation)">
  <Info size={14} className="text-cyan-400"/>
  </button>
 
  {/* Terminal Mode Quick Toggle (Prompt 6: Opt-in Theme) */}
  <button 
  onClick={() => setDashboardTheme(prev => prev === 'terminal'? 'standard': 'terminal')} 
- className={`p-1.5 rounded-lg transition-colors border shrink-0 flex items-center space-x-1 font-mono text-xs ${
+ className={`p-1.5 rounded-none transition-colors border shrink-0 flex items-center space-x-1 font-mono text-xs ${
  dashboardTheme === 'terminal'? 'text-emerald-300 bg-emerald-500/20 border-emerald-500/50': 'bg-slate-900/80 hover:bg-slate-800 border-slate-700/80 hover:text-white text-slate-400'}`}
  title={dashboardTheme === 'terminal'? 'Terminal Mode: ON (Click to switch to Standard)': 'Switch to Terminal / Tiling-WM Visual Mode'}
  >
@@ -1437,10 +1451,10 @@ function App() {
  <div 
  className="fixed inset-0 z-40" onClick={() => setIsSettingsOpen(false)} 
  />
- <div className="absolute top-11 right-0 w-80 bg-slate-900/98 backdrop-blur-xl border border-slate-700/90 shadow-2xl rounded p-4 z-50 animate-in fade-in zoom-in-95">
+ <div className="absolute top-11 right-0 w-80 backdrop-blur-xl border border-slate-700/90 shadow-2xl rounded p-4 z-50 animate-in fade-in zoom-in-95">
  <div className="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
  <div className="flex items-center space-x-2">
- <div className="p-1.5 rounded-lg bg-cyan-500/15 border border-cyan-500/30">
+ <div className="p-1.5 rounded-none bg-cyan-500/15 border border-cyan-500/30">
  <Settings size={15} className="text-cyan-400"/>
  </div>
  <div>
@@ -1448,7 +1462,7 @@ function App() {
  <p className="text-[10px] text-slate-400">Platform preferences & display</p>
  </div>
  </div>
- <button onClick={() => setIsSettingsOpen(false)} className="text-slate-400 hover:text-white transition p-1 rounded-lg hover:bg-slate-800">
+ <button onClick={() => setIsSettingsOpen(false)} className="text-slate-400 hover:text-white transition p-1 rounded-none hover:bg-slate-800">
  <XCircle size={16} />
  </button>
  </div>
@@ -1457,7 +1471,7 @@ function App() {
  <div className="p-3 rounded-sm bg-gradient-to-br from-amber-950/40 via-slate-900 to-slate-950 border border-amber-500/40">
  <div className="flex items-center justify-between mb-2">
  <div className="flex items-center space-x-2">
- <div className="p-1.5 rounded-lg bg-amber-500/20 border border-amber-500/40">
+ <div className="p-1.5 rounded-none bg-amber-500/20 border border-amber-500/40">
  <Cpu size={15} className="text-amber-400"/>
  </div>
  <div>
@@ -1471,7 +1485,7 @@ function App() {
  </p>
  </div>
  </div>
- <span className="px-2 py-0.5 rounded-full text-[9px] font-mono font-bold bg-amber-500/15 border border-amber-500/40 text-amber-300 shadow-sm">
+ <span className="px-2 py-0.5 text-[9px] font-mono font-bold-amber-500/40 text-amber-300 shadow-sm">
  {aiStatus?.active_provider === 'offline'? 'OFFLINE': 'ACTIVE'}
  </span>
  </div>
@@ -1485,7 +1499,7 @@ function App() {
  setIsSettingsOpen(false);
  setIsAiModalOpen(true);
  }}
- className="w-full py-1.5 px-3 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 active:bg-amber-500/40 border border-amber-500/50 text-amber-200 text-xs font-semibold flex items-center justify-center space-x-2 transition shadow-sm cursor-pointer group">
+ className="w-full py-1.5 px-3 rounded-none bg-amber-500/20 hover:bg-amber-500/30 active:bg-amber-500/40 border border-amber-500/50 text-amber-200 text-xs font-semibold flex items-center justify-center space-x-2 transition shadow-sm cursor-pointer group">
  <Bot size={13} className="text-amber-400 group-hover:scale-110 transition-transform"/>
  <span>Open Claude AI Configuration & Test</span>
  </button>
@@ -1500,7 +1514,7 @@ function App() {
  <select 
  value={basemapStyle} 
  onChange={(e) => handleBasemapChange(e.target.value)}
- className="bg-slate-800 text-xs font-mono border border-slate-700 rounded-lg px-2 py-1 text-slate-200 outline-none focus:border-cyan-500 cursor-pointer">
+ className="bg-slate-800 text-xs font-mono border border-slate-700 rounded-none px-2 py-1 text-slate-200 outline-none focus:border-cyan-500 cursor-pointer">
  <option value="dark">Dark Matter</option>
  <option value="satellite">Satellite</option>
  <option value="terrain">Topographic</option>
@@ -1516,7 +1530,7 @@ function App() {
  </div>
  <button
  onClick={() => setDashboardTheme(prev => prev === 'terminal'? 'standard': 'terminal')}
- className={`px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold transition border ${
+ className={`px-2.5 py-1 rounded-none text-[10px] font-mono font-bold transition border ${
  dashboardTheme === 'terminal'? 'bg-emerald-500 text-black border-emerald-400': 'bg-slate-800 text-slate-300 border-slate-700 hover:text-white'}`}
  >
  {dashboardTheme === 'terminal'? 'ENABLED': 'DISABLED'}
@@ -1532,7 +1546,7 @@ function App() {
  <select
  value={telemetryRateHz}
  onChange={(e) => setTelemetryRateHz(parseFloat(e.target.value))}
- className="bg-slate-800 text-xs font-mono border border-slate-700 rounded-lg px-2 py-1 text-slate-200 outline-none focus:border-cyan-500 cursor-pointer">
+ className="bg-slate-800 text-xs font-mono border border-slate-700 rounded-none px-2 py-1 text-slate-200 outline-none focus:border-cyan-500 cursor-pointer">
  <option value={1.0}>1.0 Hz (Realtime)</option>
  <option value={0.5}>0.5 Hz (Balanced)</option>
  <option value={2.0}>2.0 Hz (High Speed)</option>
@@ -1540,7 +1554,7 @@ function App() {
  </div>
 
  {/* Operating Mode Status */}
- <div className="p-2.5 rounded-sm bg-slate-950 border border-slate-800 flex items-center justify-between text-[11px] font-mono">
+ <div className="p-2.5 rounded-sm border border-slate-800 flex items-center justify-between text-[11px] font-mono">
  <span className="text-slate-400">System Mode:</span>
  <span className={`font-semibold ${isBackendConnected ? 'text-emerald-400': 'text-cyan-400'}`}>
  {isBackendConnected ? 'Cloud Sync Active': 'Rig Edge Autonomous'}
@@ -1554,13 +1568,61 @@ function App() {
  </div>
  </header>
 
+ {/* Flat instrumentation strip.
+
+ These readouts used to float on the map as five bordered cards. A data stream
+ belongs with the chrome, not on top of the survey: over the satellite basemap the
+ numerals had nothing behind them, and five cards over the map was the densest
+ remaining piece of "card clutter". Now they are one inline row on the drafting
+ ground, each field separated by a 1px rule and nothing else. */}
+ <div className="hidden sm:flex items-stretch border-b border-slate-800 bg-[#07090e] shrink-0 font-mono text-[11px]">
+ <div className="flex items-baseline gap-2 px-3 py-1.5 border-r border-slate-800">
+ <span className="text-slate-500 uppercase tracking-wider text-[10px]">TVD</span>
+ <span className="text-sm font-semibold text-white whitespace-nowrap">{telemetryData ? telemetryData.depth_tvd.toFixed(1) : '---'}</span>
+ <span className="text-slate-500 text-[10px]">m</span>
+ </div>
+ <div className="flex items-baseline gap-2 px-3 py-1.5 border-r border-slate-800">
+ <span className="text-slate-500 uppercase tracking-wider text-[10px]">ROP</span>
+ <span className="text-sm font-semibold text-white whitespace-nowrap">{telemetryData ? telemetryData.rop.toFixed(1) : '---'}</span>
+ <span className="text-slate-500 text-[10px]">m/h</span>
+ </div>
+ <div className="flex items-baseline gap-2 px-3 py-1.5 border-r border-slate-800">
+ <span className={`uppercase tracking-wider text-[10px] ${showAlerts && alertState.active ? 'text-rose-400': 'text-slate-500'}`}>Torque</span>
+ <span className={`text-sm font-semibold whitespace-nowrap ${showAlerts && alertState.active ? 'text-rose-300': 'text-white'}`}>{telemetryData ? telemetryData.torque.toFixed(0) : '---'}</span>
+ <span className="text-slate-500 text-[10px]">lbf-ft</span>
+ </div>
+ <button
+ onClick={() => openModuleInNewTab('radar')}
+ className="flex items-center gap-2 px-3 py-1.5 border-r border-slate-800 hover:bg-slate-900/60 transition cursor-pointer text-left"
+ title="Open the Ahead-of-the-Bit Radar">
+ <Radar size={12} className="text-slate-500 shrink-0"/>
+ <span className="text-slate-500 uppercase tracking-wider text-[10px]">Ahead</span>
+ <span className="text-slate-300 whitespace-nowrap truncate max-w-[190px]">{WELL_RADAR_PREVIEWS[selectedWell] || RADAR_FALLBACK_HORIZON}</span>
+ </button>
+ <div className="flex items-center gap-1 px-3 py-1.5 ml-auto">
+ {BASEMAP_OPTIONS.map(opt => {
+ const Icon = opt.icon;
+ const isSelected = basemapStyle === opt.id;
+ return (
+ <button
+ key={opt.id} type="button"
+ onClick={() => handleBasemapChange(opt.id)}
+ title={`Switch to ${opt.label} basemap`}
+ className={`p-1 border transition cursor-pointer ${isSelected ? 'border-slate-600 text-white': 'border-transparent text-slate-500 hover:text-slate-300'}`}>
+ <Icon size={12} />
+ </button>
+ );
+ })}
+ </div>
+ </div>
+
  {/* Mobile Slide-Down Drawer Sheet */}
  {isMobileMenuOpen && (
- <div className="lg:hidden fixed inset-x-0 top-14 z-40 bg-slate-900/98 backdrop-blur-xl border-b border-slate-800 shadow-2xl p-4 space-y-3 animate-in slide-in-from-top-3 max-h-[85vh] overflow-y-auto">
+ <div className="lg:hidden fixed inset-x-0 top-14 z-40 backdrop-blur-xl border-b border-slate-800 shadow-2xl p-4 space-y-3 animate-in slide-in-from-top-3 max-h-[85vh] overflow-y-auto">
  {/* Status & Role in Mobile Menu */}
- <div className="flex items-center justify-between bg-slate-950 p-2.5 rounded-sm border border-slate-800">
+ <div className="flex items-center justify-between p-2.5 rounded-sm border border-slate-800">
  <div className="flex items-center space-x-2">
- <span className={`w-2 h-2 rounded-full ${isBackendConnected ? 'bg-emerald-400': 'bg-cyan-400'} animate-pulse`}></span>
+ <span className={`w-2 h-2 rounded-full ${isBackendConnected ? 'bg-emerald-400': 'bg-cyan-400'}`}></span>
  <span className="text-xs font-mono text-slate-300">{isBackendConnected ? 'Cloud Sync Active': 'Rig Edge Active'}</span>
  </div>
  <div className="flex items-center space-x-2">
@@ -1698,13 +1760,13 @@ function App() {
  <main className={`flex-1 relative flex flex-col min-h-0 overflow-hidden pb-16 lg:pb-0 lg:grid lg:grid-rows-[minmax(0,1fr)] transition-[grid-template-columns] duration-200 ease-out ${telemetryRail ? 'lg:grid-cols-[1fr_44px]' : 'lg:grid-cols-[2fr_1fr]'}`}>
  
  {/* Map Container */}
- <div className={`flex-1 bg-slate-900 relative overflow-hidden flex flex-col ${mobileActiveTab === 'map'? 'flex': 'hidden lg:flex'}`}>
+ <div className={`flex-1 relative overflow-hidden flex flex-col ${mobileActiveTab === 'map'? 'flex': 'hidden lg:flex'}`}>
  
  {/* Proactive Depth-Proximity Lookahead Warning Banner (CORRECTION 3: Reuses /api/wells/{id}/lookahead) */}
  {proximityWarning?.active && (
  <div className="absolute top-2 left-2 right-2 sm:top-3 sm:left-4 sm:right-4 z-30 bg-gradient-to-r from-amber-950/95 via-amber-900/90 to-amber-950/95 border-2 border-amber-500/80 p-3 sm:p-3.5 rounded-sm shadow-2xl backdrop-blur-md flex items-center justify-between gap-3 animate-in slide-in-from-top-3">
  <div className="flex items-center space-x-2.5 sm:space-x-3 min-w-0">
- <div className="p-2 sm:p-2.5 bg-amber-500/20 rounded-lg border border-amber-500/40 text-amber-300 animate-pulse shrink-0">
+ <div className="p-2 sm:p-2.5 bg-amber-500/20 rounded-none border border-amber-500/40 text-amber-300 shrink-0">
  <AlertTriangle size={20} />
  </div>
  <div className="min-w-0">
@@ -1725,7 +1787,7 @@ function App() {
  <div className="flex items-center space-x-1.5 shrink-0">
  <button
  onClick={() => openModuleInNewTab('radar')}
- className="px-2.5 sm:px-3.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center space-x-1 shadow-lg shadow-amber-500/30 transition cursor-pointer">
+ className="px-2.5 sm:px-3.5 py-1.5 rounded-none bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center space-x-1 shadow-lg shadow-amber-500/30 transition cursor-pointer">
  <Radar size={13} />
  <span className="hidden sm:inline">Inspect Ahead-of-Bit Radar</span>
  <span className="sm:hidden">Radar</span>
@@ -1733,7 +1795,7 @@ function App() {
  </button>
  <button
  onClick={() => setProximityWarning(null)}
- className="p-1 rounded-lg text-amber-300/70 hover:text-white hover:bg-amber-900/50 transition" title="Dismiss alert">
+ className="p-1 rounded-none text-amber-300/70 hover:text-white hover:bg-amber-900/50 transition" title="Dismiss alert">
  <X size={15} />
  </button>
  </div>
@@ -1741,7 +1803,7 @@ function App() {
  )}
 
  {/* Mobile Compact Drilling HUD Bar (Visible only on < sm) */}
- <div className="absolute top-3 left-3 right-3 z-10 flex sm:hidden items-center justify-between bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-sm px-3 py-2 shadow-xl">
+ <div className="absolute top-3 left-3 right-3 z-10 flex sm:hidden items-center justify-between backdrop-blur-md border border-slate-700/80 rounded-sm px-3 py-2 shadow-xl">
  <div className="flex items-center space-x-3 text-xs">
  <div>
  <span className="text-[9px] text-slate-400 block font-mono uppercase">TVD</span>
@@ -1755,7 +1817,7 @@ function App() {
  <div className="w-px h-6 bg-slate-800"/>
  <div>
  <span className="text-[9px] text-slate-400 block font-mono uppercase">Torque</span>
- <span className={`font-bold font-mono ${showAlerts && alertState.active ? 'text-status-danger animate-pulse': 'text-status-warning'}`}>
+ <span className={`font-bold font-mono ${showAlerts && alertState.active ? 'text-status-danger': 'text-status-warning'}`}>
  {telemetryData ? telemetryData.torque.toFixed(0) : "---"}
  </span>
  </div>
@@ -1763,7 +1825,7 @@ function App() {
  <div className="flex items-center space-x-1.5">
  <button
  onClick={() => openModuleInNewTab('radar')}
- className="p-2 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/30 active:bg-amber-500/20" title="Ahead-of-Bit Radar (New Tab)">
+ className="p-2 rounded-none bg-amber-500/10 text-amber-400 border border-amber-500/30 active:bg-amber-500/20" title="Ahead-of-Bit Radar (New Tab)">
  <Radar size={15} />
  </button>
  <button
@@ -1771,13 +1833,13 @@ function App() {
  const nextStyle = basemapStyle === 'dark'? 'satellite': basemapStyle === 'satellite'? 'terrain': 'dark';
  handleBasemapChange(nextStyle);
  }}
- className="p-2 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 active:bg-cyan-500/20" title={`Current map: ${basemapStyle}. Tap to toggle map type.`}
+ className="p-2 rounded-none bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 active:bg-cyan-500/20" title={`Current map: ${basemapStyle}. Tap to toggle map type.`}
  >
  <MapIcon size={15} />
  </button>
  <button
  onClick={() => handleSimControl(simStatus.is_running ? 'pause': 'play')}
- className={`p-2 rounded-lg font-bold text-xs transition active:scale-95 ${
+ className={`p-2 rounded-none font-bold text-xs transition active:scale-95 ${
  simStatus.is_running
  ? 'bg-amber-500 text-slate-950': 'bg-emerald-500 text-slate-950'}`}
  title="Toggle simulation">
@@ -1786,128 +1848,14 @@ function App() {
  </div>
  </div>
 
- {/* Active Drilling Status Card overlay (Hidden on < sm) */}
- <div className="absolute top-3 left-3 z-10 hidden sm:flex gap-2 items-start flex-wrap">
- {/* TVD */}
- <div className="glass-panel p-2.5 rounded-sm border-slate-750 min-w-[180px] relative overflow-hidden group">
- <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent"/>
- <div className="flex items-center justify-between mb-1.5">
- <span className="text-[10px] uppercase text-white font-mono font-bold tracking-wider flex items-center gap-1.5">
- <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"/>
- Current TVD
- </span>
- <span className="text-[10px] text-white font-mono">Bit Depth</span>
- </div>
- <div className="text-2xl font-mono font-semibold tracking-tight text-white flex items-baseline gap-1.5 whitespace-nowrap">
- {telemetryData ? telemetryData.depth_tvd.toFixed(1) : "---"}
- <span className="text-xs font-mono font-normal text-white">m</span>
- </div>
- </div>
- 
- {/* ROP */}
- <div className="glass-panel p-2.5 rounded-sm border-slate-750 min-w-[145px] relative overflow-hidden group">
- <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent"/>
- <div className="flex items-center justify-between mb-1.5">
- <span className="text-[10px] uppercase text-white font-mono font-bold tracking-wider flex items-center gap-1.5">
- <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"/>
- ROP
- </span>
- <span className="text-[10px] text-white font-mono">Penetration</span>
- </div>
- <div className="text-2xl font-mono font-semibold tracking-tight text-white flex items-baseline gap-1.5 whitespace-nowrap">
- {telemetryData ? telemetryData.rop.toFixed(1) : "---"}
- <span className="text-xs font-mono font-normal text-white">m/h</span>
- </div>
- </div>
+ {/* Simulator control bar, docked to the map's bottom edge.
 
- {/* Torque */}
- <div className={`glass-panel p-2.5 rounded-sm min-w-[165px] relative overflow-hidden transition-all duration-500 ${
- showAlerts && alertState.active 
- ? 'border-status-danger/80 bg-rose-950/30': 'border-slate-750'}`}>
- <div className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent ${
- showAlerts && alertState.active ? 'via-rose-500/80': 'via-amber-400/50'} to-transparent`} />
- <div className="flex items-center justify-between mb-1.5">
- <span className="text-[10px] uppercase font-mono font-bold tracking-wider flex items-center gap-1.5 text-white">
- <span className={`w-1.5 h-1.5 rounded-full ${showAlerts && alertState.active ? 'bg-rose-500 animate-ping': 'bg-amber-400'}`} />
- Torque
- </span>
- <span className="text-[10px] text-white font-mono">Surface</span>
- </div>
- <div className={`text-2xl font-mono font-semibold tracking-tight flex items-baseline gap-1.5 whitespace-nowrap ${
- showAlerts && alertState.active ? 'text-white animate-pulse': 'text-white'}`}>
- {telemetryData ? telemetryData.torque.toFixed(0) : "---"}
- <span className="text-xs font-mono font-normal text-white">lbf-ft</span>
- </div>
- </div>
-
- {/* Ahead-of-the-Bit Hazard Radar Overlay Card */}
- {(() => {
- const WELL_RADAR_PREVIEWS = {'OIL-BAGHJAN-1': { horizon: 'Barail Kick Horizon', top: '2,400m'},'OIL-BAGHJAN-4': { horizon: 'Barail Gas Sand', top: '2,420m'},'OIL-NAHARKATIYA-1': { horizon: 'Barail Sand-Shale', top: '2,040m'},'OIL-MORAN-1': { horizon: 'Deep Barail Interval', top: '2,580m'},'OIL-DIKOM-1': { horizon: 'Barail Sandstone Top', top: '2,240m'},'OIL-TENGAKHAT-1': { horizon: 'Barail Main Sand', top: '2,120m'},'OIL-KOTHALONI-1': { horizon: 'Barail Argillaceous', top: '2,320m'},'OIL-HAPJAN-1': { horizon: 'Barail Coal Sequence', top: '2,360m'},'OIL-SHALMARI-1': { horizon: 'Barail Laminated Sand', top: '2,210m'},
- };
- const preview = WELL_RADAR_PREVIEWS[selectedWell] || { horizon: 'Barail Horizon', top: '2,400m'};
- return (
- <button 
- onClick={() => openModuleInNewTab('radar')}
- className="glass-panel hover:border-amber-500/60 p-2.5 rounded-sm min-w-[230px] text-left transition-all duration-300 group cursor-pointer relative overflow-hidden border-amber-500/30" title="Open Ahead-of-the-Bit Radar in New Fullscreen Tab">
- <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-amber-400/50 to-transparent"/>
- <div className="flex items-center justify-between text-xs uppercase text-white font-bold mb-1.5">
- <span className="flex items-center space-x-1.5 font-mono text-[11px]">
- <Radar size={14} className="animate-spin-slow text-white"/>
- <span>Lookahead Radar</span>
- </span>
- <span className="text-[10px] bg-amber-500/20 px-2 py-0.5 rounded-full font-mono text-white border border-amber-500/30">+250m</span>
- </div>
- <div className="text-sm font-semibold text-white group-hover:text-white transition truncate">
- {preview.horizon}
- </div>
- <div className="text-[11px] text-white mt-1.5 flex items-center justify-between font-mono">
- <span>Top: ~{preview.top}</span>
- <span className="text-white font-bold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
- Scan →
- </span>
- </div>
- </button>
- );
- })()}
-
- {/* Map Types / Basemap Switcher Card (Placed directly next to Lookahead Radar) */}
- <div 
- id="basemap-style-switcher" className="glass-panel p-2.5 rounded-sm border-slate-750 min-w-[215px] relative overflow-hidden group flex flex-col justify-between">
- <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent"/>
- <div className="flex items-center justify-between mb-1.5">
- <span className="text-[10px] uppercase text-cyan-400 font-mono font-bold tracking-wider flex items-center gap-1.5">
- <MapIcon size={12} className="text-cyan-400"/>
- <span>Map Types</span>
- </span>
- <span className="text-[10px] bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 px-2 py-0.5 rounded-full font-mono capitalize font-bold">
- {basemapStyle}
- </span>
- </div>
- <div className="flex items-center gap-1 bg-slate-900/90 p-1 rounded-lg border border-slate-800 mt-1">
- {BASEMAP_OPTIONS.map(opt => {
- const isSelected = basemapStyle === opt.id;
- const Icon = opt.icon;
- return (
- <button
- key={opt.id}
- type="button" id={`basemap-btn-${opt.id}`}
- onClick={() => handleBasemapChange(opt.id)}
- title={`Switch to ${opt.label} basemap`}
- className={`flex-1 flex items-center justify-center space-x-1 py-1.5 px-2 rounded-md text-[11px] font-medium transition-all cursor-pointer
- ${isSelected 
- ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/50 shadow-sm font-semibold': 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent'}`}
- >
- <Icon size={12} className={isSelected ? 'text-cyan-400': 'text-slate-400'} />
- <span>{opt.label}</span>
- </button>
- );
- })}
- </div>
- </div>
- </div>
-
- {/* In-App Telemetry Feed Controller (Desktop Tactical Cyber-Console) */}
- <div className="absolute bottom-6 left-4 z-20 glass-panel border border-slate-700/80 p-3.5 rounded shadow-2xl hidden lg:flex flex-wrap items-center gap-3.5 max-w-[calc(100%-5rem)]">
+ This was a floating card (`glass-panel ... rounded shadow-2xl`, inset 24px) sitting
+ on top of the map. It is now an edge-docked toolbar: full width, 1px top rule, no
+ fill of its own beyond the drafting ground, no rounding and no shadow. The controls
+ are unchanged -- they were not deleted, because they drive the scripted demo and
+ have no other home on desktop. */}
+ <div className="absolute bottom-0 left-0 right-0 z-20 bg-[#07090e] border-t border-slate-800 px-3 py-1.5 hidden lg:flex flex-wrap items-center gap-3">
  <div className="flex items-center space-x-2 border-r border-slate-800 pr-3.5">
  <button
  onClick={() => handleSimControl(simStatus.is_running ? 'pause': 'play')}
@@ -1921,7 +1869,7 @@ function App() {
 
  <button
  onClick={() => handleSimControl('reset')}
- className="p-1.5 rounded-lg border border-slate-700/80 hover:bg-slate-800 text-slate-400 hover:text-white transition" title="Reset TVD to 2240m">
+ className="p-1.5 rounded-none border border-slate-700/80 hover:bg-slate-800 text-slate-400 hover:text-white transition" title="Reset TVD to 2240m">
  <RotateCcw size={14} />
  </button>
  </div>
@@ -1932,7 +1880,7 @@ function App() {
  <button
  key={speed}
  onClick={() => handleSpeedChange(speed)}
- className={`px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition ${
+ className={`px-2.5 py-1 rounded-none text-xs font-mono font-bold transition ${
  simSpeed === speed
  ? 'bg-cyan-500 text-slate-950': 'bg-slate-900/80 text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-700/60'}`}
  title={`${speed}x Simulation Speed`}
@@ -1953,7 +1901,7 @@ function App() {
  setIsDraggingSeek(false);
  handleSeek(parseFloat(e.target.value));
  }}
- className="flex-1 accent-cyan-500 cursor-pointer h-1.5 bg-slate-800 rounded-lg appearance-none"/>
+ className="flex-1 accent-cyan-500 cursor-pointer h-1.5 bg-slate-800 rounded-none appearance-none"/>
  <span className="text-xs font-mono font-bold text-cyan-400 w-14 text-right">
  {(isDraggingSeek ? seekDepth : (telemetryData?.depth_tvd || 2240)).toFixed(0)}m
  </span>
@@ -1965,7 +1913,7 @@ function App() {
  
  <button
  onClick={() => handleScenarioInject('normal')}
- className={`px-2.5 py-1 rounded-lg text-xs font-medium transition border ${
+ className={`px-2.5 py-1 rounded-none text-xs font-medium transition border ${
  simStatus.active_scenario === 'normal'? 'bg-emerald-500/20 border-emerald-500/70 text-emerald-300': 'bg-slate-900/80 border-slate-700/60 text-slate-400 hover:text-white'}`}
  title="Nominal baseline circulating parameters">
  Normal
@@ -1973,7 +1921,7 @@ function App() {
 
  <button
  onClick={() => handleScenarioInject('gas_kick')}
- className={`px-2.5 py-1 rounded-lg text-xs font-medium transition border flex items-center space-x-1 ${
+ className={`px-2.5 py-1 rounded-none text-xs font-medium transition border flex items-center space-x-1 ${
  simStatus.active_scenario === 'gas_kick'? 'bg-amber-500/25 border-amber-500/80 text-amber-300': 'bg-amber-950/20 border-amber-800/40 text-amber-400 hover:bg-amber-900/30'}`}
  title="Simulate formation gas influx (flow-out increase, pit gain, SPP drop)">
  <Flame size={12} className="text-amber-400"/>
@@ -1982,7 +1930,7 @@ function App() {
 
  <button
  onClick={() => handleScenarioInject('lost_circulation')}
- className={`px-2.5 py-1 rounded-lg text-xs font-medium transition border flex items-center space-x-1 ${
+ className={`px-2.5 py-1 rounded-none text-xs font-medium transition border flex items-center space-x-1 ${
  simStatus.active_scenario === 'lost_circulation'? 'bg-cyan-500/25 border-cyan-500/80 text-cyan-300': 'bg-cyan-950/20 border-cyan-800/40 text-cyan-400 hover:bg-cyan-900/30'}`}
  title="Simulate mud loss (flow-out deficit, pit volume drop, ECD decrease)">
  <Droplets size={12} className="text-cyan-400"/>
@@ -1991,7 +1939,7 @@ function App() {
 
  <button
  onClick={() => handleScenarioInject('stuck_pipe')}
- className={`px-2.5 py-1 rounded-lg text-xs font-medium transition border flex items-center space-x-1 ${
+ className={`px-2.5 py-1 rounded-none text-xs font-medium transition border flex items-center space-x-1 ${
  simStatus.active_scenario === 'stuck_pipe'? 'bg-rose-500/25 border-rose-500/80 text-rose-300': 'bg-rose-950/20 border-rose-800/40 text-rose-400 hover:bg-rose-900/30'}`}
  title="Simulate mechanical packoff (torque spike, zero ROP, motor stall)">
  <Anchor size={12} className="text-rose-400"/>
@@ -2013,7 +1961,7 @@ function App() {
  key={sc.id}
  id={`demo-scenario-btn-${sc.id}`}
  onClick={() => handleSelectDemoScenario(sc)}
- className={`px-2 py-1 rounded-lg text-[10px] font-bold tracking-tight transition border flex items-center space-x-1 ${
+ className={`px-2 py-1 rounded-none text-[10px] font-bold tracking-tight transition border flex items-center space-x-1 ${
  isActive
  ? 'bg-amber-500/30 border-amber-400 text-amber-200': 'bg-slate-900/90 border-slate-700/80 text-slate-300 hover:border-amber-500/50 hover:text-white'}`}
  title={`${sc.title}\nWell: ${sc.well_id} | Depth: ${sc.depth}m | Formation: ${sc.formation}\nClick to load scenario in 1 click`}
@@ -2029,7 +1977,7 @@ function App() {
  No eRTMAC connection exists yet, so this panel stands in for the rig feed. */}
  <div className="flex items-center border-l border-slate-800 pl-3">
  <span
- className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border text-[10px] font-mono font-medium tracking-tight bg-amber-500/10 text-amber-300 border-amber-500/40 cursor-help select-none" title="Simulated rig telemetry. No live eRTMAC feed is connected — this panel generates the sensor stream (ROP, WOB, torque, pit gain, mud weight) that the physics + ML risk engine then scores. The hazard signatures are calibrated to Assam-Arakan lithology, but no reading here came off a real rig.">
+ className="inline-flex items-center gap-1.5 px-2 py-0.5 text-[10px] font-mono font-medium tracking-tight text-amber-300 cursor-help select-none" title="Simulated rig telemetry. No live eRTMAC feed is connected — this panel generates the sensor stream (ROP, WOB, torque, pit gain, mud weight) that the physics + ML risk engine then scores. The hazard signatures are calibrated to Assam-Arakan lithology, but no reading here came off a real rig.">
  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0"></span>
  SIMULATED FEED
  </span>
@@ -2037,7 +1985,7 @@ function App() {
 
  {/* Active Status Badge */}
  <div className="flex items-center space-x-2 border-l border-slate-800 pl-3">
- <span className={`w-2 h-2 rounded-full ${simStatus.is_running ? 'bg-emerald-400 animate-ping': 'bg-slate-600'}`}></span>
+ <span className={`w-2 h-2 rounded-full ${simStatus.is_running ? 'bg-emerald-400': 'bg-slate-600'}`}></span>
  <span className="text-[11px] font-mono text-slate-300">
  {simStatus.active_scenario !== 'normal'? (
  <span className="text-amber-400 font-bold uppercase">{simStatus.active_scenario.replace('_','')} (ACTIVE)</span>
@@ -2064,15 +2012,15 @@ function App() {
 
  {/* Dedicated Mobile Simulator Screen (Visible when mobileActiveTab === 'simulator'on < lg) */}
  {mobileActiveTab === 'simulator'&& (
- <div className="lg:hidden flex-1 w-full bg-slate-950 p-4 overflow-y-auto space-y-4">
- <div className="bg-slate-900 border border-slate-800 rounded p-4 shadow-xl">
+ <div className="lg:hidden flex-1 w-full p-4 overflow-y-auto space-y-4">
+ <div className=" border border-slate-800 rounded p-4 shadow-xl">
  <div className="flex items-center justify-between pb-3 border-b border-slate-800">
  <div className="flex items-center space-x-2">
  <Sliders size={18} className="text-cyan-400"/>
  <h2 className="font-bold text-white text-sm">Drilling Simulator Engine</h2>
  </div>
  <div className="flex items-center space-x-1.5">
- <span className={`w-2.5 h-2.5 rounded-full ${simStatus.is_running ? 'bg-emerald-400 animate-ping': 'bg-slate-600'}`}></span>
+ <span className={`w-2.5 h-2.5 rounded-full ${simStatus.is_running ? 'bg-emerald-400': 'bg-slate-600'}`}></span>
  <span className="text-xs font-mono font-bold text-slate-300">
  {simStatus.is_running ? 'RUNNING': 'PAUSED'}
  </span>
@@ -2133,7 +2081,7 @@ function App() {
  setIsDraggingSeek(false);
  handleSeek(parseFloat(e.target.value));
  }}
- className="w-full accent-cyan-500 cursor-pointer h-2.5 bg-slate-800 rounded-lg appearance-none my-2"/>
+ className="w-full accent-cyan-500 cursor-pointer h-2.5 bg-slate-800 rounded-none appearance-none my-2"/>
  <div className="flex justify-between text-[10px] font-mono text-slate-500">
  <span>0m</span>
  <span>1,750m</span>
@@ -2143,7 +2091,7 @@ function App() {
  </div>
 
  {/* Scenario Injection Section */}
- <div className="bg-slate-900 border border-slate-800 rounded p-4 shadow-xl">
+ <div className=" border border-slate-800 rounded p-4 shadow-xl">
  <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
  Inject Hazard Scenarios (ML Risk Engine)
  </div>
@@ -2247,7 +2195,7 @@ function App() {
  )}
 
  {/* Right-Hand Drawer / Mobile Telemetry Tab */}
- <aside className={`${mobileActiveTab === 'telemetry'? 'flex w-full flex-1': 'hidden lg:flex'} ${telemetryRail ? 'telemetry-collapsed': ''} border-l border-slate-800/80 bg-[#121721]/95 backdrop-blur-xl flex flex-col shadow-2xl z-20 shrink-0 relative h-full min-h-0 overflow-hidden`}>
+ <aside className={`${mobileActiveTab === 'telemetry'? 'flex w-full flex-1': 'hidden lg:flex'} ${telemetryRail ? 'telemetry-collapsed': ''} border-l border-slate-800/80 flex flex-col z-20 shrink-0 relative h-full min-h-0 overflow-hidden`}>
 
  {/* Collapsed rail: keeps the well visible and gives an obvious way back.
  Sibling content is hidden by the .telemetry-collapsed rule in index.css. */}
@@ -2261,7 +2209,7 @@ function App() {
  >
  Telemetry & ML Risk
  </span>
- <span className="mt-auto h-2 w-2 rounded-full bg-cyan-400 animate-pulse"/>
+ <span className="mt-auto h-2 w-2 rounded-full bg-cyan-400"/>
  </button>
  )}
  
@@ -2274,7 +2222,7 @@ function App() {
  <XCircle size={16} />
  </button>
  <div className="flex items-start space-x-2.5">
- <div className="p-1.5 rounded-lg bg-amber-500/20 border border-amber-500/40 text-amber-300 animate-pulse mt-0.5 shrink-0">
+ <div className="p-1.5 rounded-none bg-amber-500/20 border border-amber-500/40 text-amber-300 mt-0.5 shrink-0">
  <Activity size={16} />
  </div>
  <div className="min-w-0 pr-6">
@@ -2314,12 +2262,12 @@ function App() {
  <XCircle size={18} />
  </button>
  <div className="flex items-center gap-2.5 mb-2">
- <div className="p-1.5 rounded-lg bg-rose-500/20 border border-rose-500/40 text-rose-300 animate-pulse">
+ <div className="p-1.5 rounded-none bg-rose-500/20 border border-rose-500/40 text-rose-300">
  <AlertTriangle size={18} />
  </div>
  <h2 className="font-display font-bold text-sm tracking-wide uppercase text-white">Proactive Hazard Influx Alert</h2>
  </div>
- <div className="bg-black/30 p-2.5 rounded-lg text-xs mb-2.5 border border-rose-500/20">
+ <div className="bg-black/30 p-2.5 rounded-none text-xs mb-2.5 border border-rose-500/20">
  <p className="font-medium text-rose-100 flex items-center justify-between">
  <span>Composite Hazard Probability:</span>
  <span className="text-rose-300 font-mono font-bold text-sm">
@@ -2345,7 +2293,7 @@ function App() {
  
  {/* RAG Context Display */}
  {ragContext ? (
- <div className="bg-slate-900/90 text-slate-200 p-2.5 rounded-lg text-xs border border-slate-700/80 shadow-inner">
+ <div className=" text-slate-200 p-2.5 rounded-none text-xs border border-slate-700/80 shadow-inner">
  <div className="flex items-center justify-between mb-1.5">
  <div className="flex items-center gap-1.5 text-amber-400">
  <TrendingDown size={14} />
@@ -2360,7 +2308,7 @@ function App() {
  <p><span className="text-slate-400">Mitigation:</span> <span className="text-emerald-400 font-medium">{ragContext.mitigation_applied}</span></p>
  </div>
  ) : (
- <div className="text-xs text-rose-200 animate-pulse font-mono">Searching Institutional Memory Vector DB...</div>
+ <div className="text-xs text-rose-200 font-mono">Searching Institutional Memory Vector DB...</div>
  )}
  </div>
  )}
@@ -2368,13 +2316,13 @@ function App() {
  {/* Drawer Header */}
  <div className="p-4 border-b border-slate-800/80 flex items-center justify-between shrink-0 bg-[#131313]/80">
  <div className="flex items-center space-x-2.5">
- <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"/>
+ <div className="w-2 h-2 rounded-full bg-cyan-400"/>
  <h2 className="font-display font-bold text-sm tracking-wide text-slate-100 uppercase">
  Telemetry & ML Risk Stream
  </h2>
  </div>
  <div className="flex items-center space-x-2">
- <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
+ <span className="text-[10px] font-mono px-2 py-0.5 text-slate-300">
  WELL: {selectedWell.replace('OIL-','')}
  </span>
  <SourceTag source={selectedWell} compact={true} />
@@ -2398,9 +2346,7 @@ function App() {
  </div>
  <div className="flex items-center space-x-2">
  <span className="text-[11px] text-slate-400 font-mono">Composite:</span>
- <span className={`text-xs font-bold font-mono px-2.5 py-0.5 rounded-full transition-colors ${
- (predictionData?.risk_probability || 0.15) >= 0.75 ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40':
- (predictionData?.risk_probability || 0.15) >= 0.40 ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40': 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'}`}>
+ <span className={`text-xs font-bold font-mono px-2.5 py-0.5 transition-colors ${ (predictionData?.risk_probability || 0.15) >= 0.75 ? ' text-rose-300': (predictionData?.risk_probability || 0.15) >= 0.40 ? ' text-amber-300': ' text-emerald-300'}`}>
  {Math.round((predictionData?.risk_probability || 0.15) * 100)}% ({predictionData?.risk_level ||'LOW'})
  </span>
  </div>
@@ -2410,7 +2356,7 @@ function App() {
  {predictionData?.statistical_anomaly && (
  <div className={`p-2.5 rounded-sm border font-mono text-xs transition ${
  predictionData.statistical_anomaly.anomaly_detected
- ? 'bg-amber-950/30 border-amber-500/50 text-amber-200': 'bg-slate-950/50 border-slate-800/80 text-slate-400'}`}>
+ ? 'bg-amber-950/30 border-amber-500/50 text-amber-200': ' border-slate-800/80 text-slate-400'}`}>
  <div className="flex items-center justify-between mb-1.5">
  <div className="flex items-center space-x-1.5">
  <Sliders size={13} className={predictionData.statistical_anomaly.anomaly_detected ? 'text-amber-400 animate-pulse': 'text-slate-500'} />
@@ -2425,19 +2371,19 @@ function App() {
  </span>
  </div>
  <div className="grid grid-cols-3 gap-1.5 text-[10px] text-center my-1.5">
- <div className="bg-slate-900/80 p-1 rounded border border-slate-800">
+ <div className=" p-1 rounded border border-slate-800">
  <span className="text-slate-400 block text-[9px]">Torque Z</span>
  <span className={`font-bold ${Math.abs(predictionData.statistical_anomaly.z_scores?.torque || 0) >= 2.5 ? 'text-amber-400': 'text-slate-200'}`}>
  {predictionData.statistical_anomaly.z_scores?.torque !== undefined ? predictionData.statistical_anomaly.z_scores.torque.toFixed(2) : '0.00'}σ
  </span>
  </div>
- <div className="bg-slate-900/80 p-1 rounded border border-slate-800">
+ <div className=" p-1 rounded border border-slate-800">
  <span className="text-slate-400 block text-[9px]">ROP Z</span>
  <span className={`font-bold ${Math.abs(predictionData.statistical_anomaly.z_scores?.rop || 0) >= 2.5 ? 'text-amber-400': 'text-slate-200'}`}>
  {predictionData.statistical_anomaly.z_scores?.rop !== undefined ? predictionData.statistical_anomaly.z_scores.rop.toFixed(2) : '0.00'}σ
  </span>
  </div>
- <div className="bg-slate-900/80 p-1 rounded border border-slate-800">
+ <div className=" p-1 rounded border border-slate-800">
  <span className="text-slate-400 block text-[9px]">Flow Return Z</span>
  <span className={`font-bold ${Math.abs(predictionData.statistical_anomaly.z_scores?.flow_out_pct || 0) >= 2.5 ? 'text-amber-400': 'text-slate-200'}`}>
  {predictionData.statistical_anomaly.z_scores?.flow_out_pct !== undefined ? predictionData.statistical_anomaly.z_scores.flow_out_pct.toFixed(2) : '0.00'}σ
@@ -2481,15 +2427,15 @@ function App() {
 
           {/* Physics Parameters Footer */}
  <div className="pt-2 border-t border-slate-800/80 grid grid-cols-3 gap-2 text-[11px] font-mono text-slate-400">
- <div className="bg-slate-950/50 p-2 rounded-lg border border-slate-850">
+ <div className=" p-2 rounded-none border border-slate-850">
  <span className="text-slate-500 text-[10px] block uppercase">MSE</span>
  <span className="text-white font-semibold">{predictionData?.mse_kpsi ||'---'} <span className="text-[9px] text-slate-400">kpsi</span></span>
  </div>
- <div className="bg-slate-950/50 p-2 rounded-lg border border-slate-850">
+ <div className=" p-2 rounded-none border border-slate-850">
  <span className="text-slate-500 text-[10px] block uppercase">d-exponent</span>
  <span className="text-white font-semibold">{predictionData?.d_xc ||'---'}</span>
  </div>
- <div className="bg-slate-950/50 p-2 rounded-lg border border-slate-850">
+ <div className=" p-2 rounded-none border border-slate-850">
  <span className="text-slate-500 text-[10px] block uppercase">FG Margin</span>
  <span className="text-emerald-400 font-semibold">
  {predictionData?.fracture_margin_ppg ?`${predictionData.fracture_margin_ppg > 0 ? '+': ''}${predictionData.fracture_margin_ppg} ppg`: '---'}
@@ -2507,14 +2453,14 @@ function App() {
  Rig Physical Telemetry
  </h3>
  </div>
- <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/30">
+ <span className="text-[10px] font-mono text-emerald-400 px-2 py-0.5-emerald-500/30">
  Active Feed
  </span>
  </div>
 
  <div className="grid grid-cols-3 gap-2 text-center">
  {/* WOB */}
- <div className="bg-slate-950/60 border border-slate-800/80 p-2 rounded-sm">
+ <div className=" border border-slate-800/80 p-2 rounded-sm">
  <span className="text-[10px] uppercase font-mono text-slate-400 block">WOB</span>
  <span className="text-base font-mono font-bold text-white">
  {telemetryData?.wob ? telemetryData.wob.toFixed(1) : '14.0'}
@@ -2523,7 +2469,7 @@ function App() {
  </div>
 
  {/* RPM */}
- <div className="bg-slate-950/60 border border-slate-800/80 p-2 rounded-sm">
+ <div className=" border border-slate-800/80 p-2 rounded-sm">
  <span className="text-[10px] uppercase font-mono text-slate-400 block">Rotary</span>
  <span className="text-base font-mono font-bold text-cyan-400">
  {telemetryData?.rpm ? telemetryData.rpm.toFixed(0) : '105'}
@@ -2532,7 +2478,7 @@ function App() {
  </div>
 
  {/* SPP */}
- <div className="bg-slate-950/60 border border-slate-800/80 p-2 rounded-sm">
+ <div className=" border border-slate-800/80 p-2 rounded-sm">
  <span className="text-[10px] uppercase font-mono text-slate-400 block">SPP</span>
  <span className="text-base font-mono font-bold text-white">
  {telemetryData?.spp_psi ? telemetryData.spp_psi.toFixed(0) : '2,800'}
@@ -2541,7 +2487,7 @@ function App() {
  </div>
 
  {/* Flow Out % */}
- <div className="bg-slate-950/60 border border-slate-800/80 p-2 rounded-sm">
+ <div className=" border border-slate-800/80 p-2 rounded-sm">
  <span className="text-[10px] uppercase font-mono text-slate-400 block">Flow Out</span>
  <span className={`text-base font-mono font-bold ${
  (telemetryData?.flow_out_pct || 100) > 105 ? 'text-amber-400':
@@ -2552,7 +2498,7 @@ function App() {
  </div>
 
  {/* Pit Gain */}
- <div className="bg-slate-950/60 border border-slate-800/80 p-2 rounded-sm">
+ <div className=" border border-slate-800/80 p-2 rounded-sm">
  <span className="text-[10px] uppercase font-mono text-slate-400 block">Pit Delta</span>
  <span className={`text-base font-mono font-bold ${
  (telemetryData?.pit_gain_bbl || 0) > 0 ? 'text-amber-400':
@@ -2563,7 +2509,7 @@ function App() {
  </div>
 
  {/* ECD */}
- <div className="bg-slate-950/60 border border-slate-800/80 p-2 rounded-sm">
+ <div className=" border border-slate-800/80 p-2 rounded-sm">
  <span className="text-[10px] uppercase font-mono text-slate-400 block">ECD</span>
  <span className="text-base font-mono font-bold text-white">
  {telemetryData?.ecd ? telemetryData.ecd.toFixed(1) : '11.6'}
@@ -2626,7 +2572,7 @@ function App() {
  <div className="flex items-center justify-between">
  <div className="flex items-center space-x-2">
  <h3 className="text-xs uppercase font-mono font-bold text-slate-300 tracking-wider">Offset Incidents & Memory</h3>
- <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">
+ <span className="text-[11px] font-mono px-2 py-0.5 text-cyan-300">
  {recentEvents.length} Recorded
  </span>
  </div>
@@ -2656,7 +2602,7 @@ function App() {
  <div className="flex items-start justify-between gap-2">
  <div className="flex items-center space-x-2">
  <div className={`w-2 h-2 rounded-full shrink-0 ${
- isNewlyAdded ? 'bg-emerald-400 animate-ping':
+ isNewlyAdded ? 'bg-emerald-400':
  severity === 'CRITICAL'? 'bg-status-danger': 
  severity === 'HIGH'? 'bg-status-warning': 'bg-status-fluid'}`} />
  <span className={`px-1.5 py-0.5 rounded text-[10px] font-mono font-bold border ${getWellColor(event.well_id || selectedWell).badge}`}>
@@ -2667,11 +2613,11 @@ function App() {
  </div>
  <div className="flex items-center space-x-1.5 shrink-0">
  {isNewlyAdded && (
- <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 animate-pulse">
+ <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
  INGESTED
  </span>
  )}
- <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-bold border ${sevColor}`}>
+ <span className={`px-2 py-0.5 text-[10px] font-mono font-bold ${sevColor}`}>
  {severity}
  </span>
  </div>
@@ -2688,7 +2634,7 @@ function App() {
  {isExpanded && (
  <div className="mt-3 pt-3 border-t border-slate-800/80 text-xs space-y-2 animate-in fade-in duration-150">
  {event.root_cause && (
- <div className="p-2.5 rounded-lg bg-rose-950/25 border border-rose-500/30 text-rose-200">
+ <div className="p-2.5 rounded-none bg-rose-950/25 border border-rose-500/30 text-rose-200">
  <span className="text-[10px] font-bold text-rose-400 uppercase tracking-wider block font-mono flex items-center gap-1.5 mb-1">
  <span className="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
  Cause / Root Failure
@@ -2699,7 +2645,7 @@ function App() {
  </div>
  )}
  {event.mitigation_applied && (
- <div className="p-2.5 rounded-lg bg-emerald-950/25 border border-emerald-500/30 text-emerald-200">
+ <div className="p-2.5 rounded-none bg-emerald-950/25 border border-emerald-500/30 text-emerald-200">
  <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block font-mono flex items-center gap-1.5 mb-1">
  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
  Mitigation Applied & Operational Reason
@@ -2720,7 +2666,7 @@ function App() {
  </div>
  );
  }) : (
- <div className="text-xs text-slate-400 p-4 text-center bg-slate-950/40 rounded-sm border border-slate-800/60">
+ <div className="text-xs text-slate-400 p-4 text-center rounded-sm border border-slate-800/60">
  No offset events recorded for this well yet. Upload a DDR or WCR PDF to ingest incidents.
  </div>
  )}
@@ -2764,7 +2710,7 @@ function App() {
  </main>
 
  {/* Desktop Permanent Status & Transparency Footer Bar (Tier 1 Mandate) */}
- <footer className="hidden lg:flex h-8 bg-[#0D0D0D] border-t border-slate-800/80 px-4 items-center justify-between text-xs text-slate-400 z-30 shrink-0 font-mono text-[11px]">
+ <footer className="hidden lg:flex h-8 border-t border-slate-800/80 px-4 items-center justify-between text-xs text-slate-400 z-30 shrink-0 font-mono text-[11px]">
  <div className="flex items-center space-x-3">
  <span className="flex items-center space-x-1.5">
  <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block"/>
@@ -2787,7 +2733,7 @@ function App() {
  </footer>
 
  {/* Fixed Mobile Bottom Navigation Bar (< lg) */}
- <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0a0d12]/95 backdrop-blur-xl border-t border-slate-800 px-2 py-1 flex items-center justify-around h-16 shadow-[0_-4px_25px_rgba(0,0,0,0.6)]">
+ <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#07090e] border-t border-slate-800 px-2 py-1 flex items-center justify-around h-16">
  <button
  onClick={() => setMobileActiveTab('map')}
  className={`flex flex-col items-center justify-center flex-1 py-1 rounded-sm transition min-h-[44px] relative ${
@@ -2809,7 +2755,7 @@ function App() {
  <span className="absolute -top-1 w-8 h-1 rounded-full bg-cyan-400"/>
  )}
  {showAlerts && alertState.active && (
- <span className="absolute top-1.5 right-4 w-2 h-2 rounded-full bg-status-danger animate-ping"/>
+ <span className="absolute top-1.5 right-4 w-2 h-2 rounded-full bg-status-danger"/>
  )}
  <Activity size={18} />
  <span className="text-[10px] mt-1 font-medium font-mono">Telemetry</span>
@@ -2824,7 +2770,7 @@ function App() {
  <span className="absolute -top-1 w-8 h-1 rounded-full bg-cyan-400"/>
  )}
  {simStatus.is_running && (
- <span className="absolute top-1.5 right-4 w-2 h-2 rounded-full bg-emerald-400 animate-pulse"/>
+ <span className="absolute top-1.5 right-4 w-2 h-2 rounded-full bg-emerald-400"/>
  )}
  <Sliders size={18} />
  <span className="text-[10px] mt-1 font-medium font-mono">Simulator</span>
@@ -2857,9 +2803,9 @@ function App() {
 
  {/* Floating Ingestion / Institutional Memory Toast Notification */}
  {uploadToast && (
- <div className={`fixed top-16 right-6 z-50 max-w-md bg-slate-900/95 backdrop-blur-md border rounded-sm p-4 shadow-2xl animate-in slide-in-from-top-4 flex items-start space-x-3.5 ${
+ <div className={`fixed top-16 right-6 z-50 max-w-md backdrop-blur-md border rounded-sm p-4 shadow-2xl animate-in slide-in-from-top-4 flex items-start space-x-3.5 ${
  uploadToast.variant === 'error'? 'border-rose-500/50 shadow-rose-950/60': 'border-emerald-500/50 shadow-emerald-950/60'}`}>
- <div className={`p-2 rounded-lg shrink-0 mt-0.5 ${
+ <div className={`p-2 rounded-none shrink-0 mt-0.5 ${
  uploadToast.variant === 'error'? 'bg-rose-500/10 border border-rose-500/30 text-rose-400': 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-400'}`}>
  {uploadToast.variant === 'error'? <AlertTriangle size={20} /> : <Sparkles size={20} />}
  </div>

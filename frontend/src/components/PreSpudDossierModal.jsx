@@ -100,12 +100,12 @@ const PreSpudDossierModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', 
 
   return (
     <div className={`fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm animate-in fade-in duration-200 print:p-0 print:bg-white print:static ${isFullScreen ? 'p-0 w-screen h-screen' : 'p-2 sm:p-4'}`}>
-      <div className={`bg-slate-900 border border-slate-700 shadow-2xl overflow-hidden flex flex-col print:max-h-none print:border-none print:shadow-none print:bg-white print:text-black ${isFullScreen ? 'w-screen h-screen rounded-none border-none max-h-none h-full' : 'w-full max-w-5xl rounded-sm max-h-[96vh] sm:max-h-[94vh]'}`}>
+      <div className={` border border-slate-700 shadow-2xl overflow-hidden flex flex-col print:max-h-none print:border-none print:shadow-none print:bg-white print:text-black ${isFullScreen ? 'w-screen h-screen rounded-none border-none max-h-none h-full' : 'w-full max-w-5xl rounded-sm max-h-[96vh] sm:max-h-[94vh]'}`}>
         
         {/* Header - Screen only */}
-        <div className="px-3 sm:px-6 py-3 sm:py-4 bg-slate-950 border-b border-slate-800 flex justify-between items-center gap-2 print:hidden">
+        <div className="px-3 sm:px-6 py-3 sm:py-4 border-b border-slate-800 flex justify-between items-center gap-2 print:hidden">
           <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
-            <div className="p-2 bg-cyan-500/10 rounded-lg border border-cyan-500/20 text-cyan-400 shrink-0">
+            <div className="p-2 bg-cyan-500/10 rounded-none border border-cyan-500/20 text-cyan-400 shrink-0">
               <FileText size={20} />
             </div>
             <div className="min-w-0">
@@ -113,7 +113,7 @@ const PreSpudDossierModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', 
                 <h2 className="text-sm sm:text-lg font-bold text-white tracking-wide truncate">
                   Pre-Spud Offset Dossier
                 </h2>
-                <span className={`text-[11px] px-2.5 py-0.5 rounded-full font-mono font-bold border ${getWellColor(activeWellId).badge}`}>
+                <span className={`text-[11px] px-2.5 py-0.5 font-mono font-bold ${getWellColor(activeWellId).badge}`}>
                   {activeWellId}
                 </span>
                 <SourceTag source={activeWellId} compact={true} />
@@ -130,7 +130,7 @@ const PreSpudDossierModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', 
           <div className="flex items-center space-x-1.5 sm:space-x-2 shrink-0">
             <button 
               onClick={handlePrint}
-              className="px-2.5 sm:px-3.5 py-1.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs flex items-center space-x-1 sm:space-x-1.5 transition shadow-lg shadow-cyan-500/20 min-h-[36px] cursor-pointer"
+              className="px-2.5 sm:px-3.5 py-1.5 rounded-none bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs flex items-center space-x-1 sm:space-x-1.5 transition shadow-lg shadow-cyan-500/20 min-h-[36px] cursor-pointer"
             >
               <Printer size={14} />
               <span className="hidden sm:inline">Print / Save PDF</span>
@@ -138,7 +138,7 @@ const PreSpudDossierModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', 
             </button>
             <button 
               onClick={fetchDossier}
-              className="p-1.5 rounded-lg border border-slate-700 hover:bg-slate-800 text-slate-400 hover:text-white transition min-h-[36px] min-w-[36px] flex items-center justify-center cursor-pointer"
+              className="p-1.5 rounded-none border border-slate-700 hover:bg-slate-800 text-slate-400 hover:text-white transition min-h-[36px] min-w-[36px] flex items-center justify-center cursor-pointer"
               title="Reload Dossier"
             >
               <RefreshCw size={15} className={loading ? 'animate-spin' : ''} />
@@ -147,7 +147,7 @@ const PreSpudDossierModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', 
             {/* Toggle Fullscreen */}
             <button
               onClick={handleToggleFullscreen}
-              className="p-1.5 rounded-lg border border-slate-700 hover:bg-slate-800 text-slate-400 hover:text-white transition min-h-[36px] min-w-[36px] flex items-center justify-center cursor-pointer"
+              className="p-1.5 rounded-none border border-slate-700 hover:bg-slate-800 text-slate-400 hover:text-white transition min-h-[36px] min-w-[36px] flex items-center justify-center cursor-pointer"
               title={isFullScreen ? "Window Mode" : "Full Screen"}
             >
               {isFullScreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
@@ -156,7 +156,7 @@ const PreSpudDossierModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', 
             {/* Pop out to New Tab */}
             <button
               onClick={() => window.open(`${window.location.origin}${window.location.pathname}?module=dossier&well=${encodeURIComponent(activeWellId)}&fullscreen=true`, '_blank')}
-              className="p-1.5 rounded-lg border border-slate-700 hover:bg-slate-800 text-slate-400 hover:text-white transition min-h-[36px] min-w-[36px] flex items-center justify-center cursor-pointer"
+              className="p-1.5 rounded-none border border-slate-700 hover:bg-slate-800 text-slate-400 hover:text-white transition min-h-[36px] min-w-[36px] flex items-center justify-center cursor-pointer"
               title="Open in Dedicated Browser Tab (Full Screen)"
             >
               <ExternalLink size={16} />
@@ -169,7 +169,7 @@ const PreSpudDossierModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', 
                 }
                 onClose();
               }}
-              className="p-1.5 rounded-lg border border-slate-700 hover:bg-slate-800 text-slate-400 hover:text-white transition min-h-[36px] min-w-[36px] flex items-center justify-center cursor-pointer"
+              className="p-1.5 rounded-none border border-slate-700 hover:bg-slate-800 text-slate-400 hover:text-white transition min-h-[36px] min-w-[36px] flex items-center justify-center cursor-pointer"
               title="Close View"
             >
               <X size={18} />
@@ -203,7 +203,7 @@ const PreSpudDossierModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', 
           </div>
 
           {/* Section 1: Target Well Operational Summary */}
-          <div className="p-4 rounded-sm bg-slate-950/80 border border-slate-800 print:bg-slate-50 print:border-slate-300">
+          <div className="p-4 rounded-sm border border-slate-800 print:bg-slate-50 print:border-slate-300">
             <h3 className="text-xs font-bold uppercase tracking-wider text-cyan-400 print:text-cyan-800 mb-3 flex items-center space-x-1.5">
               <MapPin size={14} />
               <span>Section 1: Target Well Specifications</span>
@@ -265,9 +265,9 @@ const PreSpudDossierModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', 
               <span>Section 2: Offset-Derived Casing & Mud Weight Program</span>
             </h3>
 
-            <div className="overflow-x-auto border border-slate-800 rounded-lg print:border-slate-300">
+            <div className="overflow-x-auto border border-slate-800 rounded-none print:border-slate-300">
               <table className="w-full text-left text-xs border-collapse">
-                <thead className="bg-slate-950 text-slate-400 print:bg-slate-100 print:text-black border-b border-slate-800 print:border-slate-300 font-mono">
+                <thead className=" text-slate-400 print:bg-slate-100 print:text-black border-b border-slate-800 print:border-slate-300 font-mono">
                   <tr>
                     <th className="py-2.5 px-3">Casing String</th>
                     <th className="py-2.5 px-3">Planned Shoe TVD</th>
@@ -298,9 +298,9 @@ const PreSpudDossierModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', 
               <span>Section 3: Directional Borehole Anti-Collision Clearance</span>
             </h3>
 
-            <div className="overflow-x-auto border border-slate-800 rounded-lg print:border-slate-300">
+            <div className="overflow-x-auto border border-slate-800 rounded-none print:border-slate-300">
               <table className="w-full text-left text-xs border-collapse">
-                <thead className="bg-slate-950 text-slate-400 print:bg-slate-100 print:text-black border-b border-slate-800 print:border-slate-300 font-mono">
+                <thead className=" text-slate-400 print:bg-slate-100 print:text-black border-b border-slate-800 print:border-slate-300 font-mono">
                   <tr>
                     <th className="py-2.5 px-3">Offset Well</th>
                     <th className="py-2.5 px-3">Minimum Distance</th>
@@ -352,7 +352,7 @@ const PreSpudDossierModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', 
               {Object.entries(formBreakdown).map(([formName, evList]) => {
                 if (!evList || evList.length === 0) return null;
                 return (
-                  <div key={formName} className="border border-slate-800 rounded-lg p-3.5 bg-slate-950/40 print:bg-slate-50 print:border-slate-300">
+                  <div key={formName} className="border border-slate-800 rounded-none p-3.5 print:bg-slate-50 print:border-slate-300">
                     <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                       <span className="font-bold text-sm text-cyan-300 print:text-cyan-900">{formName}</span>
                       <div className="flex items-center space-x-2">
@@ -371,7 +371,7 @@ const PreSpudDossierModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', 
                       {evList.map((ev, idx) => {
                         const wellTheme = getWellColor(ev.well_id);
                         return (
-                          <div key={idx} className="p-3 rounded-lg bg-slate-900/90 border border-slate-800 text-xs print:bg-white print:border-slate-300">
+                          <div key={idx} className="p-3 rounded-none border border-slate-800 text-xs print:bg-white print:border-slate-300">
                             <div className="flex flex-wrap items-center justify-between gap-2 font-mono text-[11px] mb-2.5">
                               <div className="flex items-center space-x-2">
                                 <span className={`px-2 py-0.5 rounded text-[11px] font-bold font-mono border ${wellTheme.badge}`}>
@@ -439,11 +439,11 @@ const PreSpudDossierModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', 
         </div>
 
         {/* Footer - Screen only */}
-        <div className="px-6 py-3 bg-slate-950 border-t border-slate-800 flex justify-between items-center text-xs text-slate-400 print:hidden">
+        <div className="px-6 py-3 border-t border-slate-800 flex justify-between items-center text-xs text-slate-400 print:hidden">
           <span>Official AGATE Decision Support Document.</span>
           <button
             onClick={onClose}
-            className="px-4 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-medium transition"
+            className="px-4 py-1.5 rounded-none bg-slate-800 hover:bg-slate-700 text-white font-medium transition"
           >
             Close Dossier
           </button>

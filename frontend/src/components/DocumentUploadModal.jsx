@@ -136,12 +136,12 @@ const DocumentUploadModal = ({
 
  return (
  <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm p-2 sm:p-4 animate-in fade-in">
- <div className="bg-slate-900 border border-slate-700 w-full max-w-3xl rounded-sm shadow-2xl overflow-hidden animate-in zoom-in-95 flex flex-col max-h-[96vh] sm:max-h-[90vh]">
+ <div className=" border border-slate-700 w-full max-w-3xl rounded-sm shadow-2xl overflow-hidden animate-in zoom-in-95 flex flex-col max-h-[96vh] sm:max-h-[90vh]">
  
  {/* Header */}
- <div className="flex justify-between items-center px-3 sm:px-6 py-3 sm:py-4 border-b border-slate-800 bg-slate-950 gap-2">
+ <div className="flex justify-between items-center px-3 sm:px-6 py-3 sm:py-4 border-b border-slate-800 gap-2">
  <div className="flex items-center space-x-2 sm:space-x-2.5 min-w-0">
- <div className="p-2 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 shrink-0">
+ <div className="p-2 rounded-none bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 shrink-0">
  <UploadCloud size={18} />
  </div>
  <div className="min-w-0">
@@ -153,7 +153,7 @@ const DocumentUploadModal = ({
  </p>
  </div>
  </div>
- <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-white transition rounded-lg hover:bg-slate-800 min-h-[36px] min-w-[36px] flex items-center justify-center">
+ <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-white transition rounded-none hover:bg-slate-800 min-h-[36px] min-w-[36px] flex items-center justify-center">
  <X size={18} />
  </button>
  </div>
@@ -190,9 +190,9 @@ const DocumentUploadModal = ({
  </div>
  ) : (
  <div className="space-y-3">
- <div className="flex items-center justify-between p-4 bg-slate-950 rounded-sm border border-slate-800">
+ <div className="flex items-center justify-between p-4 rounded-sm border border-slate-800">
  <div className="flex items-center space-x-3">
- <div className="p-2.5 rounded-lg bg-slate-800 text-cyan-400">
+ <div className="p-2.5 rounded-none bg-slate-800 text-cyan-400">
  {isLas ? <FileSpreadsheet size={24} /> : <File size={24} />}
  </div>
  <div>
@@ -210,7 +210,7 @@ const DocumentUploadModal = ({
  </div>
 
  {/* Target Well Selector */}
- <div className="p-3 bg-slate-950 rounded-sm border border-slate-800 flex items-center justify-between">
+ <div className="p-3 rounded-sm border border-slate-800 flex items-center justify-between">
  <div>
  <p className="text-xs font-semibold text-slate-200">Associate Incidents with Well:</p>
  <p className="text-[11px] text-slate-500">Target institutional offset well memory</p>
@@ -218,7 +218,7 @@ const DocumentUploadModal = ({
  <select
  value={targetWell}
  onChange={(e) => setTargetWell(e.target.value)}
- className="bg-slate-900 text-cyan-300 border border-slate-700 text-xs rounded-lg px-3 py-1.5 outline-none font-medium focus:border-cyan-500">
+ className="bg-slate-900 text-cyan-300 border border-slate-700 text-xs rounded-none px-3 py-1.5 outline-none font-medium focus:border-cyan-500">
  {availableWells.map(w => (
  <option key={w} value={w}>{w}</option>
  ))}
@@ -228,7 +228,7 @@ const DocumentUploadModal = ({
  )}
 
  {errorMsg && (
- <div className="p-3 bg-red-950/40 border border-red-800/60 rounded-lg text-red-300 text-xs flex items-center space-x-2">
+ <div className="p-3 bg-red-950/40 border border-red-800/60 rounded-none text-red-300 text-xs flex items-center space-x-2">
  <AlertTriangle size={16} className="text-red-400 flex-shrink-0"/>
  <span>{errorMsg}</span>
  </div>
@@ -298,9 +298,9 @@ const DocumentUploadModal = ({
  )}
  </div>
 
- <div className="overflow-x-auto border border-slate-800 rounded-lg max-h-60 overflow-y-auto">
+ <div className="overflow-x-auto border border-slate-800 rounded-none max-h-60 overflow-y-auto">
  <table className="w-full text-left text-xs border-collapse">
- <thead className="bg-slate-950 text-slate-400 border-b border-slate-800 sticky top-0 font-mono">
+ <thead className=" text-slate-400 border-b border-slate-800 sticky top-0 font-mono">
  <tr>
  <th className="py-2 px-3">Event Type</th>
  <th className="py-2 px-3">Formation</th>
@@ -335,13 +335,13 @@ const DocumentUploadModal = ({
  </div>
 
  {/* Footer */}
- <div className="px-6 py-4 border-t border-slate-800 bg-slate-950 flex justify-between items-center text-xs">
+ <div className="px-6 py-4 border-t border-slate-800 flex justify-between items-center text-xs">
  <span className="text-slate-400">Target well: <strong className="text-white font-mono">{activeWellId}</strong></span>
  
  <div className="flex items-center space-x-3">
  <button 
  onClick={uploadResult ? handleReset : onClose}
- className="px-4 py-2 rounded-lg text-slate-300 hover:bg-slate-800 transition font-medium">
+ className="px-4 py-2 rounded-none text-slate-300 hover:bg-slate-800 transition font-medium">
  {uploadResult ? 'Upload Another': 'Cancel'}
  </button>
 
@@ -349,7 +349,7 @@ const DocumentUploadModal = ({
  <button 
  onClick={handleUpload}
  disabled={!file || isUploading}
- className={`px-5 py-2 rounded-lg font-bold text-slate-950 flex items-center space-x-2 transition ${
+ className={`px-5 py-2 rounded-none font-bold text-slate-950 flex items-center space-x-2 transition ${
  !file || isUploading 
  ? 'bg-slate-700 cursor-not-allowed opacity-70 text-slate-400': 'bg-cyan-500 hover:bg-cyan-400 shadow-lg shadow-cyan-500/20'}`}
  >
@@ -372,7 +372,7 @@ const DocumentUploadModal = ({
  }
  onClose();
  }}
- className="px-5 py-2 rounded-lg font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition shadow-lg shadow-emerald-500/20 flex items-center space-x-2">
+ className="px-5 py-2 rounded-none font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition shadow-lg shadow-emerald-500/20 flex items-center space-x-2">
  <CheckCircle size={16} />
  <span>Apply & View on Dashboard</span>
  </button>

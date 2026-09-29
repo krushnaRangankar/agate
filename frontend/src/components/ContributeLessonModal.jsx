@@ -123,12 +123,12 @@ const ContributeLessonModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1'
 
   return (
     <div className={`fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm animate-in fade-in duration-200 ${isFullScreen ? 'p-0 w-screen h-screen' : 'p-2 sm:p-4'}`}>
-      <div className={`bg-slate-900 border border-slate-700 shadow-2xl overflow-hidden flex flex-col ${isFullScreen ? 'w-screen h-screen rounded-none border-none max-h-none h-full' : 'w-full max-w-2xl rounded-sm max-h-[96vh] sm:max-h-[92vh]'}`}>
+      <div className={` border border-slate-700 shadow-2xl overflow-hidden flex flex-col ${isFullScreen ? 'w-screen h-screen rounded-none border-none max-h-none h-full' : 'w-full max-w-2xl rounded-sm max-h-[96vh] sm:max-h-[92vh]'}`}>
         
         {/* Header */}
-        <div className="px-3 sm:px-6 py-3 sm:py-4 bg-slate-950 border-b border-slate-800 flex justify-between items-center gap-2">
+        <div className="px-3 sm:px-6 py-3 sm:py-4 border-b border-slate-800 flex justify-between items-center gap-2">
           <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
-            <div className="p-2 bg-purple-500/10 rounded-lg border border-purple-500/20 text-purple-400 shrink-0">
+            <div className="p-2 bg-purple-500/10 rounded-none border border-purple-500/20 text-purple-400 shrink-0">
               <Brain size={20} />
             </div>
             <div className="min-w-0">
@@ -136,7 +136,7 @@ const ContributeLessonModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1'
                 <h2 className="text-sm sm:text-lg font-bold text-white tracking-wide truncate">
                   Contribute Field Lesson
                 </h2>
-                <span className="text-[11px] px-2 py-0.5 rounded-full bg-cyan-950 border border-cyan-800 text-cyan-300 font-mono">
+                <span className="text-[11px] px-2 py-0.5-cyan-800 text-cyan-300 font-mono">
                   {activeWellId}
                 </span>
               </div>
@@ -150,7 +150,7 @@ const ContributeLessonModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1'
             {/* Toggle Fullscreen */}
             <button
               onClick={handleToggleFullscreen}
-              className="p-1.5 rounded-lg border border-slate-700 hover:bg-slate-800 text-slate-400 hover:text-white transition min-h-[36px] min-w-[36px] flex items-center justify-center cursor-pointer"
+              className="p-1.5 rounded-none border border-slate-700 hover:bg-slate-800 text-slate-400 hover:text-white transition min-h-[36px] min-w-[36px] flex items-center justify-center cursor-pointer"
               title={isFullScreen ? "Window Mode" : "Full Screen"}
             >
               {isFullScreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
@@ -159,7 +159,7 @@ const ContributeLessonModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1'
             {/* Pop out to New Tab */}
             <button
               onClick={() => window.open(`${window.location.origin}${window.location.pathname}?module=contribute&well=${encodeURIComponent(activeWellId)}&fullscreen=true`, '_blank')}
-              className="p-1.5 rounded-lg border border-slate-700 hover:bg-slate-800 text-slate-400 hover:text-white transition min-h-[36px] min-w-[36px] flex items-center justify-center cursor-pointer"
+              className="p-1.5 rounded-none border border-slate-700 hover:bg-slate-800 text-slate-400 hover:text-white transition min-h-[36px] min-w-[36px] flex items-center justify-center cursor-pointer"
               title="Open in Dedicated Browser Tab (Full Screen)"
             >
               <ExternalLink size={16} />
@@ -172,7 +172,7 @@ const ContributeLessonModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1'
                 }
                 onClose();
               }}
-              className="p-1.5 rounded-lg border border-slate-700 hover:bg-slate-800 text-slate-400 hover:text-white transition min-h-[36px] min-w-[36px] flex items-center justify-center cursor-pointer"
+              className="p-1.5 rounded-none border border-slate-700 hover:bg-slate-800 text-slate-400 hover:text-white transition min-h-[36px] min-w-[36px] flex items-center justify-center cursor-pointer"
               title="Close View"
             >
               <X size={18} />
@@ -194,7 +194,7 @@ const ContributeLessonModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1'
                 </p>
               </div>
 
-              <div className="p-4 bg-slate-950 rounded-sm border border-slate-800 max-w-md mx-auto text-left text-xs font-mono space-y-2">
+              <div className="p-4 rounded-sm border border-slate-800 max-w-md mx-auto text-left text-xs font-mono space-y-2">
                 <div className="flex justify-between">
                   <span className="text-slate-400">Event Record ID:</span>
                   <span className="text-white">#{result.event_id}</span>
@@ -219,13 +219,13 @@ const ContributeLessonModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1'
               <div className="pt-4 flex justify-center space-x-3">
                 <button
                   onClick={handleReset}
-                  className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-medium text-xs transition"
+                  className="px-4 py-2 rounded-none bg-slate-800 hover:bg-slate-700 text-white font-medium text-xs transition"
                 >
                   Log Another Event
                 </button>
                 <button
                   onClick={onClose}
-                  className="px-5 py-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs transition shadow-lg shadow-cyan-500/20"
+                  className="px-5 py-2 rounded-none bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs transition shadow-lg shadow-cyan-500/20"
                 >
                   Done
                 </button>
@@ -235,7 +235,7 @@ const ContributeLessonModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1'
             <form onSubmit={handleSubmit} className="space-y-4 text-xs">
               
               {error && (
-                <div className="p-3 bg-red-950/40 border border-red-800/60 rounded-lg text-red-200 flex items-center space-x-2">
+                <div className="p-3 bg-red-950/40 border border-red-800/60 rounded-none text-red-200 flex items-center space-x-2">
                   <AlertCircle size={16} className="text-red-400 flex-shrink-0" />
                   <span>{error}</span>
                 </div>
@@ -248,7 +248,7 @@ const ContributeLessonModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1'
                   <select
                     value={formData.event_type}
                     onChange={(e) => setFormData({ ...formData, event_type: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white focus:border-cyan-500 outline-none"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-none text-white focus:border-cyan-500 outline-none"
                   >
                     <option value="Lost Circulation">Lost Circulation (Partial/Total)</option>
                     <option value="Gas Kick">Gas Kick / Formation Influx</option>
@@ -266,7 +266,7 @@ const ContributeLessonModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1'
                   <select
                     value={formData.formation}
                     onChange={(e) => setFormData({ ...formData, formation: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white focus:border-cyan-500 outline-none"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-none text-white focus:border-cyan-500 outline-none"
                   >
                     <option value="Tipam Sandstone">Tipam Sandstone (Freshwater / Thief)</option>
                     <option value="Girujan Clay">Girujan Clay (Swelling Clay)</option>
@@ -286,7 +286,7 @@ const ContributeLessonModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1'
                     step="0.5"
                     value={formData.depth_tvd}
                     onChange={(e) => setFormData({ ...formData, depth_tvd: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white font-mono focus:border-cyan-500 outline-none"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-none text-white font-mono focus:border-cyan-500 outline-none"
                     required
                   />
                 </div>
@@ -297,7 +297,7 @@ const ContributeLessonModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1'
                   <select
                     value={formData.severity}
                     onChange={(e) => setFormData({ ...formData, severity: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white focus:border-cyan-500 outline-none"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-none text-white focus:border-cyan-500 outline-none"
                   >
                     <option value="LOW">Low</option>
                     <option value="MEDIUM">Medium</option>
@@ -318,7 +318,7 @@ const ContributeLessonModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1'
                     min="0"
                     value={formData.npt_hours}
                     onChange={(e) => setFormData({ ...formData, npt_hours: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white font-mono focus:border-cyan-500 outline-none"
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-none text-white font-mono focus:border-cyan-500 outline-none"
                   />
                 </div>
               </div>
@@ -333,7 +333,7 @@ const ContributeLessonModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1'
                   placeholder="e.g. Drilling through depleted sandstone reservoir at 2,450m with 11.8 ppg mud weight. Differential pressure exceeded 2,200 psi causing pipe sticking during survey connection."
                   value={formData.root_cause}
                   onChange={(e) => setFormData({ ...formData, root_cause: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white placeholder-slate-600 focus:border-cyan-500 outline-none resize-none"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-none text-white placeholder-slate-600 focus:border-cyan-500 outline-none resize-none"
                   required
                 />
               </div>
@@ -348,13 +348,13 @@ const ContributeLessonModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1'
                   placeholder="e.g. Spotted 35 bbl pipe-lax surfactant soaking pill across BHA. Worked pipe with 40 klbs overpull and rotated slowly at 15 RPM. Freed in 3.5 hrs. Maintained 50 gpm circulation."
                   value={formData.mitigation_applied}
                   onChange={(e) => setFormData({ ...formData, mitigation_applied: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white placeholder-slate-600 focus:border-cyan-500 outline-none resize-none"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-none text-white placeholder-slate-600 focus:border-cyan-500 outline-none resize-none"
                   required
                 />
               </div>
 
               {/* Info notice */}
-              <div className="p-3 bg-purple-950/20 border border-purple-900/30 rounded-lg text-[11px] text-purple-200/90 flex items-center space-x-2">
+              <div className="p-3 bg-purple-950/20 border border-purple-900/30 rounded-none text-[11px] text-purple-200/90 flex items-center space-x-2">
                 <Sparkles size={14} className="text-purple-400 flex-shrink-0" />
                 <span>
                   This entry will be embedded using BAAI/bge-small-en-v1.5 and added to the semantic RAG index for immediate offset well look-ahead retrieval across nearby rigs.
@@ -366,14 +366,14 @@ const ContributeLessonModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1'
                 <button
                   type="button"
                   onClick={onClose}
-                  className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium transition"
+                  className="px-4 py-2 rounded-none bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium transition"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-5 py-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold flex items-center space-x-1.5 transition shadow-lg shadow-cyan-500/20 disabled:opacity-50"
+                  className="px-5 py-2 rounded-none bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold flex items-center space-x-1.5 transition shadow-lg shadow-cyan-500/20 disabled:opacity-50"
                 >
                   {submitting ? (
                     <>

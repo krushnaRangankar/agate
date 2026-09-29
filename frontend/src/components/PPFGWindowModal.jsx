@@ -202,12 +202,12 @@ const PPFGWindowModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', isFu
 
   return (
     <div className={`fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm animate-in fade-in duration-200 ${isFullScreen ? 'p-0 w-screen h-screen' : 'p-2 sm:p-4'}`}>
-      <div className={`bg-slate-900 border border-slate-700 shadow-2xl overflow-hidden flex flex-col ${isFullScreen ? 'w-screen h-screen rounded-none border-none max-h-none h-full' : 'w-full max-w-6xl rounded-sm max-h-[96vh] sm:max-h-[92vh]'}`}>
+      <div className={` border border-slate-700 shadow-2xl overflow-hidden flex flex-col ${isFullScreen ? 'w-screen h-screen rounded-none border-none max-h-none h-full' : 'w-full max-w-6xl rounded-sm max-h-[96vh] sm:max-h-[92vh]'}`}>
         
         {/* Header */}
-        <div className="px-3 sm:px-6 py-3 sm:py-4 bg-slate-950 border-b border-slate-800 flex justify-between items-center gap-2">
+        <div className="px-3 sm:px-6 py-3 sm:py-4 border-b border-slate-800 flex justify-between items-center gap-2">
           <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
-            <div className="p-2 bg-emerald-500/10 rounded-lg border border-emerald-500/20 text-emerald-400 shrink-0">
+            <div className="p-2 bg-emerald-500/10 rounded-none border border-emerald-500/20 text-emerald-400 shrink-0">
               <Gauge size={20} />
             </div>
             <div className="min-w-0">
@@ -215,11 +215,11 @@ const PPFGWindowModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', isFu
                 <h2 className="text-sm sm:text-lg font-bold text-white tracking-wide truncate">
                   Safe Operating Mud Weight Window
                 </h2>
-                <span className="text-[11px] px-2 py-0.5 rounded-full bg-cyan-950 border border-cyan-800 text-cyan-300 font-mono">
+                <span className="text-[11px] px-2 py-0.5-cyan-800 text-cyan-300 font-mono">
                   {activeWellId}
                 </span>
                 <SourceTag source={activeWellId} compact={true} />
-                <span className="text-[11px] px-2 py-0.5 rounded-full bg-slate-800 border border-slate-700 text-slate-300 font-mono">
+                <span className="text-[11px] px-2 py-0.5-slate-700 text-slate-300 font-mono">
                   Depth: {act.current_tvd || 2240}m
                 </span>
               </div>
@@ -231,7 +231,7 @@ const PPFGWindowModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', isFu
 
           <div className="flex items-center space-x-2 shrink-0">
             {/* Unit Switcher */}
-            <div className="flex items-center space-x-1 bg-slate-900 border border-slate-800 rounded-lg p-0.5 text-xs font-mono">
+            <div className="flex items-center space-x-1 border border-slate-800 rounded-none p-0.5 text-xs font-mono">
               <button
                 onClick={() => setUnit('ppg')}
                 className={`px-2 py-1 rounded text-xs transition cursor-pointer ${unit === 'ppg' ? 'bg-cyan-500 text-slate-950 font-bold' : 'text-slate-400 hover:text-white'}`}
@@ -248,7 +248,7 @@ const PPFGWindowModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', isFu
 
             <button 
               onClick={fetchPPFG}
-              className="p-1.5 rounded-lg border border-slate-700 hover:bg-slate-800 text-slate-400 hover:text-white transition cursor-pointer"
+              className="p-1.5 rounded-none border border-slate-700 hover:bg-slate-800 text-slate-400 hover:text-white transition cursor-pointer"
               title="Refresh PPFG Window"
             >
               <RefreshCw size={15} className={loading ? 'animate-spin' : ''} />
@@ -257,7 +257,7 @@ const PPFGWindowModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', isFu
             {/* Toggle Fullscreen */}
             <button
               onClick={handleToggleFullscreen}
-              className="p-1.5 rounded-lg border border-slate-700 hover:bg-slate-800 text-slate-400 hover:text-white transition cursor-pointer"
+              className="p-1.5 rounded-none border border-slate-700 hover:bg-slate-800 text-slate-400 hover:text-white transition cursor-pointer"
               title={isFullScreen ? "Window Mode" : "Full Screen"}
             >
               {isFullScreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
@@ -266,7 +266,7 @@ const PPFGWindowModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', isFu
             {/* Pop out to New Tab */}
             <button
               onClick={() => window.open(`${window.location.origin}${window.location.pathname}?module=ppfg&well=${encodeURIComponent(activeWellId)}&fullscreen=true`, '_blank')}
-              className="p-1.5 rounded-lg border border-slate-700 hover:bg-slate-800 text-slate-400 hover:text-white transition cursor-pointer"
+              className="p-1.5 rounded-none border border-slate-700 hover:bg-slate-800 text-slate-400 hover:text-white transition cursor-pointer"
               title="Open in Dedicated Browser Tab (Full Screen)"
             >
               <ExternalLink size={16} />
@@ -279,7 +279,7 @@ const PPFGWindowModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', isFu
                 }
                 onClose();
               }}
-              className="p-1.5 rounded-lg border border-slate-700 hover:bg-slate-800 text-slate-400 hover:text-white transition cursor-pointer"
+              className="p-1.5 rounded-none border border-slate-700 hover:bg-slate-800 text-slate-400 hover:text-white transition cursor-pointer"
               title="Close View"
             >
               <X size={18} />
@@ -322,7 +322,7 @@ const PPFGWindowModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', isFu
         <div className="flex-1 flex flex-col md:flex-row overflow-y-auto md:overflow-hidden">
           
           {/* Main Plotly Log View */}
-          <div className="w-full flex-1 bg-slate-950 relative p-2 min-h-[360px] md:min-h-[420px]">
+          <div className="w-full flex-1 relative p-2 min-h-[360px] md:min-h-[420px]">
             {loading ? (
               <div className="absolute inset-0 flex items-center justify-center text-slate-400">
                 <RefreshCw size={28} className="animate-spin text-cyan-400 mb-2" />
@@ -368,7 +368,7 @@ const PPFGWindowModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', isFu
           </div>
 
           {/* Casing & Formations Sidebar */}
-          <div className="w-full md:w-80 bg-slate-900 border-t md:border-t-0 md:border-l border-slate-800 p-5 overflow-y-auto space-y-5">
+          <div className="w-full md:w-80 border-t md:border-t-0 md:border-l border-slate-800 p-5 overflow-y-auto space-y-5">
             
             {/* Casing Seat Program */}
             <div>
@@ -381,7 +381,7 @@ const PPFGWindowModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', isFu
 
               <div className="space-y-2">
                 {data?.casing_shoes?.map((shoe, idx) => (
-                  <div key={idx} className="p-2.5 rounded-lg bg-slate-950/70 border border-slate-800 text-xs">
+                  <div key={idx} className="p-2.5 rounded-none border border-slate-800 text-xs">
                     <div className="flex items-center justify-between mb-1">
                       <span className="font-bold text-white flex items-center space-x-1.5">
                         <span className="w-2.5 h-2.5 rounded-full inline-block" style={{ backgroundColor: shoe.color }}></span>
@@ -406,7 +406,7 @@ const PPFGWindowModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', isFu
 
               <div className="space-y-2">
                 {data?.formations?.map((form, idx) => (
-                  <div key={idx} className="p-2.5 rounded-lg bg-slate-950/70 border border-slate-800 text-xs">
+                  <div key={idx} className="p-2.5 rounded-none border border-slate-800 text-xs">
                     <div className="flex items-center justify-between mb-1">
                       <span className="font-bold text-white flex items-center space-x-1.5">
                         <span className="w-2.5 h-2.5 rounded-full inline-block" style={{ backgroundColor: form.color }}></span>
@@ -425,7 +425,7 @@ const PPFGWindowModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', isFu
             </div>
 
             {/* Engineering Note - Eaton's Method Technical Methodology */}
-            <div className="p-3 rounded-lg bg-cyan-950/30 border border-cyan-700/50 text-[11px] text-cyan-200 space-y-2">
+            <div className="p-3 rounded-none bg-cyan-950/30 border border-cyan-700/50 text-[11px] text-cyan-200 space-y-2">
               <div className="flex items-start space-x-2">
                 <Info size={16} className="text-cyan-400 flex-shrink-0 mt-0.5" />
                 <span className="font-semibold text-white">Methodology & Transparency:</span>
@@ -437,7 +437,7 @@ const PPFGWindowModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', isFu
                 <strong className="text-cyan-300 font-semibold block mb-0.5">Estimated Uncertainty Range (±5–8%):</strong>
                 Shaded band around pore pressure reflects confidence bounds from using a synthetic sonic-log proxy rather than real acoustic log data. Narrows to ±5% in shallow hydrostatic intervals and widens to ±8% in the Barail overpressure transition (2,200m–2,800m).
               </div>
-              <div className="bg-slate-950/80 p-2 rounded border border-slate-800 text-[10px] font-mono text-slate-400 space-y-1">
+              <div className=" p-2 rounded border border-slate-800 text-[10px] font-mono text-slate-400 space-y-1">
                 <div><span className="text-cyan-400">• Trend:</span> Δtn(z) = 185 · exp(-0.0003 · z) μs/ft</div>
                 <div><span className="text-cyan-400">• Exponent:</span> N = 3.0 (Eaton shale acoustic)</div>
                 <div><span className="text-cyan-400">• Overburden:</span> σv = 19.2 ppg (1.0 psi/ft constant)</div>
@@ -450,11 +450,11 @@ const PPFGWindowModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', isFu
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-3 bg-slate-950 border-t border-slate-800 flex justify-between items-center text-xs text-slate-400">
+        <div className="px-6 py-3 border-t border-slate-800 flex justify-between items-center text-xs text-slate-400">
           <span>Safe operating corridor: Keep ECD at least +0.5 ppg over pore pressure and -0.8 ppg below fracture limit.</span>
           <button
             onClick={onClose}
-            className="px-4 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-medium transition"
+            className="px-4 py-1.5 rounded-none bg-slate-800 hover:bg-slate-700 text-white font-medium transition"
           >
             Close PPFG Window
           </button>

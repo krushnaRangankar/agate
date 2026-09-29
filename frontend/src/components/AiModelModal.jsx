@@ -98,9 +98,9 @@ export default function AiModelModal({ isOpen, onClose, aiStatus, onRefreshStatu
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in">
-      <div className="bg-slate-900 border border-slate-700 rounded shadow-2xl w-full max-w-xl max-h-[90vh] overflow-hidden flex flex-col">
+      <div className=" border border-slate-700 rounded shadow-2xl w-full max-w-xl max-h-[90vh] overflow-hidden flex flex-col">
         {/* Header */}
-        <div className="px-5 py-4 border-b border-slate-800 bg-slate-950/80 flex items-center justify-between">
+        <div className="px-5 py-4 border-b border-slate-800 flex items-center justify-between">
           <div className="flex items-center space-x-2.5">
             <div className="p-2 rounded-sm bg-cyan-500/10 border border-cyan-500/30 text-cyan-400">
               <Bot size={18} />
@@ -108,7 +108,7 @@ export default function AiModelModal({ isOpen, onClose, aiStatus, onRefreshStatu
             <div>
               <h3 className="font-display font-bold text-sm text-white flex items-center gap-2">
                 AI & LLM Model Architecture
-                <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/30 uppercase">
+                <span className="text-[10px] font-mono font-semibold px-2 py-0.5 text-cyan-300 uppercase">
                   Multi-Provider
                 </span>
               </h3>
@@ -119,7 +119,7 @@ export default function AiModelModal({ isOpen, onClose, aiStatus, onRefreshStatu
           </div>
           <button 
             onClick={onClose} 
-            className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition"
+            className="text-slate-400 hover:text-white p-1 rounded-none hover:bg-slate-800 transition"
           >
             <X size={18} />
           </button>
@@ -130,7 +130,7 @@ export default function AiModelModal({ isOpen, onClose, aiStatus, onRefreshStatu
           {/* Active Model Banner */}
           <div className={`p-3.5 rounded-sm border flex items-center justify-between ${getProviderColor(aiStatus?.active_provider)}`}>
             <div className="flex items-center space-x-3">
-              <div className="p-2 rounded-lg bg-slate-900/80 border border-current">
+              <div className="p-2 rounded-none border border-current">
                 {getProviderIcon(aiStatus?.active_provider)}
               </div>
               <div>
@@ -143,12 +143,12 @@ export default function AiModelModal({ isOpen, onClose, aiStatus, onRefreshStatu
             <div className="flex items-center space-x-2">
               <button 
                 onClick={onRefreshStatus}
-                className="p-1.5 rounded-lg bg-slate-900/60 hover:bg-slate-800 border border-slate-700 text-slate-300 transition"
+                className="p-1.5 rounded-none bg-slate-900/60 hover:bg-slate-800 border border-slate-700 text-slate-300 transition"
                 title="Refresh Status"
               >
                 <RefreshCw size={13} />
               </button>
-              <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold border ${aiStatus?.is_connected ? 'bg-emerald-950 text-emerald-300 border-emerald-500/30' : 'bg-slate-800 text-slate-400 border-slate-700'}`}>
+              <span className={`px-2 py-0.5 text-[10px] font-mono font-semibold ${aiStatus?.is_connected ? ' text-emerald-300' : ' text-slate-400'}`}>
                 {aiStatus?.is_connected ? '● CONNECTED' : '○ STANDALONE ENGINE'}
               </span>
             </div>
@@ -171,7 +171,7 @@ export default function AiModelModal({ isOpen, onClose, aiStatus, onRefreshStatu
                 return (
                   <div 
                     key={item.id} 
-                    className={`p-2.5 rounded-sm border transition ${isActive ? 'bg-slate-800/90 border-cyan-500/50 shadow-inner' : isReady ? 'bg-slate-900/70 border-emerald-500/30' : 'bg-slate-900/40 border-slate-800 opacity-75'}`}
+                    className={`p-2.5 rounded-sm border transition ${isActive ? 'bg-slate-800/90 border-cyan-500/50 shadow-inner' : isReady ? ' border-emerald-500/30' : ' border-slate-800 opacity-75'}`}
                   >
                     <div className="flex items-center justify-between mb-1">
                       <span className="font-semibold text-slate-200 flex items-center gap-1.5">
@@ -193,14 +193,14 @@ export default function AiModelModal({ isOpen, onClose, aiStatus, onRefreshStatu
           </div>
 
           {/* Quick Setup Instructions */}
-          <div className="bg-slate-950/80 rounded-sm p-3 border border-slate-800 space-y-2">
+          <div className=" rounded-sm p-3 border border-slate-800 space-y-2">
             <span className="text-[11px] font-bold text-slate-300 flex items-center gap-1.5">
               <Key size={13} className="text-cyan-400" /> How to Connect Your API Key
             </span>
             <p className="text-slate-400 text-[11px] leading-relaxed">
               Simply copy <code className="text-cyan-300 font-mono">.env.example</code> to <code className="text-cyan-300 font-mono">.env</code> in the project root and provide your preferred key:
             </p>
-            <pre className="p-2 bg-slate-900 rounded-lg text-[10px] font-mono text-cyan-200 border border-slate-800 overflow-x-auto">
+            <pre className="p-2 bg-slate-900 rounded-none text-[10px] font-mono text-cyan-200 border border-slate-800 overflow-x-auto">
 {`# Choose one in your .env:
 GEMINI_API_KEY=AIzaSy...       # For Google Gemini
 ANTHROPIC_API_KEY=sk-ant-...   # For Anthropic Claude
@@ -210,7 +210,7 @@ OLLAMA_ENDPOINT=http://localhost:11434/v1 # For Ollama`}
           </div>
 
           {/* Live Test Synthesis Box */}
-          <div className="border border-slate-800 rounded-sm p-3 bg-slate-950/40 space-y-2">
+          <div className="border border-slate-800 rounded-sm p-3 space-y-2">
             <span className="text-[11px] font-bold text-slate-300 block">
               Test Live Model Synthesis
             </span>
@@ -220,12 +220,12 @@ OLLAMA_ENDPOINT=http://localhost:11434/v1 # For Ollama`}
                 value={testQuery}
                 onChange={(e) => setTestQuery(e.target.value)}
                 placeholder="Ask drilling hazard question..."
-                className="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-500"
+                className="flex-1 bg-slate-900 border border-slate-700 rounded-none px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-500"
               />
               <button
                 onClick={handleTestSynthesis}
                 disabled={isTesting}
-                className="px-3 py-1.5 bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/40 rounded-lg font-medium transition flex items-center gap-1.5 disabled:opacity-50"
+                className="px-3 py-1.5 bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/40 rounded-none font-medium transition flex items-center gap-1.5 disabled:opacity-50"
               >
                 {isTesting ? <RefreshCw size={12} className="animate-spin" /> : <Sparkles size={12} />}
                 <span>Test</span>
@@ -237,7 +237,7 @@ OLLAMA_ENDPOINT=http://localhost:11434/v1 # For Ollama`}
               const isError = testResult.status === 'error';
               const violations = testResult.guardrail_violations || [];
               return (
-              <div className={`mt-2 p-2.5 rounded-lg border text-[11px] space-y-1.5 ${guardrail.boxClass}`}>
+              <div className={`mt-2 p-2.5 rounded-none border text-[11px] space-y-1.5 ${guardrail.boxClass}`}>
                 <div className="flex items-center justify-between gap-2 text-[10px] text-slate-400 font-mono">
                   {isError ? (
                     <span className="text-rose-300">Synthesis request failed</span>
@@ -270,11 +270,11 @@ OLLAMA_ENDPOINT=http://localhost:11434/v1 # For Ollama`}
         </div>
 
         {/* Footer */}
-        <div className="px-5 py-3 border-t border-slate-800 bg-slate-950/60 flex items-center justify-between text-[11px] text-slate-400">
+        <div className="px-5 py-3 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
           <span>Deterministic Guardrails Active</span>
           <button 
             onClick={onClose}
-            className="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition"
+            className="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-none transition"
           >
             Close
           </button>
