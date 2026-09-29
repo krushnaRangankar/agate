@@ -158,7 +158,7 @@ const LookAheadRadar = ({ isOpen, onClose, activeWellId ='OIL-BAGHJAN-1', curren
 
  return (
  <div className={`fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm animate-in fade-in duration-200 ${isFullScreen ? 'p-0 w-screen h-screen': 'p-2 sm:p-4'}`}>
- <div className={`bg-slate-900 border border-slate-700 shadow-2xl overflow-hidden flex flex-col ${isFullScreen ? 'w-screen h-screen rounded-none border-none max-h-none h-full': 'w-full max-w-5xl rounded-xl max-h-[96vh] sm:max-h-[92vh]'}`}>
+ <div className={`bg-slate-900 border border-slate-700 shadow-2xl overflow-hidden flex flex-col ${isFullScreen ? 'w-screen h-screen rounded-none border-none max-h-none h-full': 'w-full max-w-5xl rounded-sm max-h-[96vh] sm:max-h-[92vh]'}`}>
  
  {/* Header */}
  <div className="px-3 sm:px-6 py-3 sm:py-4 bg-slate-950 border-b border-slate-800 flex justify-between items-center gap-2">
@@ -334,7 +334,7 @@ const LookAheadRadar = ({ isOpen, onClose, activeWellId ='OIL-BAGHJAN-1', curren
  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
  
  {/* Horizon Threat Gauge */}
- <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800 flex flex-col justify-between">
+ <div className="p-4 rounded-sm bg-slate-950/80 border border-slate-800 flex flex-col justify-between">
  <div>
  <span className="text-xs uppercase tracking-wider text-slate-400 font-medium">Unified ML Hazard Forecast</span>
  <div className="flex items-baseline justify-between mt-2">
@@ -358,7 +358,7 @@ const LookAheadRadar = ({ isOpen, onClose, activeWellId ='OIL-BAGHJAN-1', curren
  </div>
 
  {/* Upcoming Formation Top */}
- <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800 flex flex-col justify-between">
+ <div className="p-4 rounded-sm bg-slate-950/80 border border-slate-800 flex flex-col justify-between">
  <div>
  <span className="text-xs uppercase tracking-wider text-slate-400 font-medium flex items-center space-x-1.5">
  <Layers size={14} className="text-amber-400"/>
@@ -398,7 +398,7 @@ const LookAheadRadar = ({ isOpen, onClose, activeWellId ='OIL-BAGHJAN-1', curren
  </div>
 
  {/* Historical Incident Breakdown */}
- <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800 flex flex-col justify-between">
+ <div className="p-4 rounded-sm bg-slate-950/80 border border-slate-800 flex flex-col justify-between">
  <div>
  <span className="text-xs uppercase tracking-wider text-slate-400 font-medium flex items-center space-x-1.5">
  <Compass size={14} className="text-cyan-400"/>
@@ -429,7 +429,7 @@ const LookAheadRadar = ({ isOpen, onClose, activeWellId ='OIL-BAGHJAN-1', curren
  </div>
 
  {/* Driller Proactive Advisory Action Plan */}
- <div className="p-5 rounded-xl bg-slate-950/90 border border-slate-800">
+ <div className="p-5 rounded-sm bg-slate-950/90 border border-slate-800">
  <div className="flex items-center space-x-2 mb-4">
  <Zap size={18} className="text-amber-400"/>
  <h3 className="text-sm font-bold text-white uppercase tracking-wider">
@@ -475,7 +475,7 @@ const LookAheadRadar = ({ isOpen, onClose, activeWellId ='OIL-BAGHJAN-1', curren
  </div>
 
  {/* Correlated Historical Incidents in the Upcoming Horizon */}
- <div className="p-5 rounded-xl bg-slate-950/90 border border-slate-800">
+ <div className="p-5 rounded-sm bg-slate-950/90 border border-slate-800">
  <div className="flex items-center justify-between mb-4">
  <div className="flex items-center space-x-2">
  <AlertTriangle size={18} className="text-cyan-400"/>

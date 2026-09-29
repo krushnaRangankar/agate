@@ -11,13 +11,13 @@ const DataTransparencyModal = ({ isOpen, onClose }) => {
       onClick={onClose}
     >
       <div 
-        className="bg-slate-900 border border-slate-700/80 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh] animate-in zoom-in-95 duration-150"
+        className="bg-slate-900 border border-slate-700/80 w-full max-w-2xl rounded shadow-2xl overflow-hidden flex flex-col max-h-[92vh] animate-in zoom-in-95 duration-150"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
         <div className="px-5 py-4 bg-slate-950 border-b border-slate-800 flex justify-between items-center">
           <div className="flex items-center space-x-3">
-            <div className="p-2 bg-cyan-500/10 rounded-xl border border-cyan-500/20 text-cyan-400">
+            <div className="p-2 bg-cyan-500/10 rounded-sm border border-cyan-500/20 text-cyan-400">
               <ShieldCheck size={20} />
             </div>
             <div>
@@ -42,7 +42,7 @@ const DataTransparencyModal = ({ isOpen, onClose }) => {
         <div className="p-5 overflow-y-auto space-y-4 custom-scrollbar">
           
           {/* Section 1: Physics & Engineering */}
-          <div className="p-4 rounded-xl bg-slate-950/70 border border-slate-800/90 space-y-2 hover:border-cyan-500/30 transition">
+          <div className="p-4 rounded-sm bg-slate-950/70 border border-slate-800/90 space-y-2 hover:border-cyan-500/30 transition">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <BookOpen size={16} className="text-cyan-400" />
@@ -74,7 +74,7 @@ const DataTransparencyModal = ({ isOpen, onClose }) => {
           </div>
 
           {/* Section 2: Data Sources & Regional Portfolio Calibration */}
-          <div className="p-4 rounded-xl bg-slate-950/70 border border-slate-800/90 space-y-3 hover:border-emerald-500/30 transition">
+          <div className="p-4 rounded-sm bg-slate-950/70 border border-slate-800/90 space-y-3 hover:border-emerald-500/30 transition">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <Database size={16} className="text-emerald-400" />
@@ -148,7 +148,7 @@ const DataTransparencyModal = ({ isOpen, onClose }) => {
           </div>
 
           {/* Section 3: Machine Learning & Hybrid Architecture */}
-          <div className="p-4 rounded-xl bg-slate-950/70 border border-slate-800/90 space-y-2 hover:border-purple-500/30 transition">
+          <div className="p-4 rounded-sm bg-slate-950/70 border border-slate-800/90 space-y-2 hover:border-purple-500/30 transition">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <Cpu size={16} className="text-purple-400" />
@@ -170,8 +170,8 @@ const DataTransparencyModal = ({ isOpen, onClose }) => {
                 <span>LightGBM ML Classifier (20%)</span>
               </div>
               <div className="w-full h-3 bg-slate-800 rounded-full overflow-hidden flex">
-                <div className="h-full bg-cyan-500 shadow-glow-cyan" style={{ width: '80%' }} title="80% Deterministic Physics"></div>
-                <div className="h-full bg-purple-500 shadow-glow-purple" style={{ width: '20%' }} title="20% Machine Learning Signal"></div>
+                <div className="h-full bg-cyan-500" style={{ width: '80%' }} title="80% Deterministic Physics"></div>
+                <div className="h-full bg-purple-500" style={{ width: '20%' }} title="20% Machine Learning Signal"></div>
               </div>
             </div>
           </div>

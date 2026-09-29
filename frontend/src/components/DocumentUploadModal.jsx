@@ -136,7 +136,7 @@ const DocumentUploadModal = ({
 
  return (
  <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm p-2 sm:p-4 animate-in fade-in">
- <div className="bg-slate-900 border border-slate-700 w-full max-w-3xl rounded-xl shadow-2xl overflow-hidden animate-in zoom-in-95 flex flex-col max-h-[96vh] sm:max-h-[90vh]">
+ <div className="bg-slate-900 border border-slate-700 w-full max-w-3xl rounded-sm shadow-2xl overflow-hidden animate-in zoom-in-95 flex flex-col max-h-[96vh] sm:max-h-[90vh]">
  
  {/* Header */}
  <div className="flex justify-between items-center px-3 sm:px-6 py-3 sm:py-4 border-b border-slate-800 bg-slate-950 gap-2">
@@ -165,7 +165,7 @@ const DocumentUploadModal = ({
  <>
  {!file ? (
  <div 
- className="border-2 border-dashed border-slate-700 rounded-xl h-48 flex flex-col items-center justify-center cursor-pointer hover:border-cyan-500/60 hover:bg-slate-800/40 transition-all text-center px-4" onDragOver={handleDragOver}
+ className="border-2 border-dashed border-slate-700 rounded-sm h-48 flex flex-col items-center justify-center cursor-pointer hover:border-cyan-500/60 hover:bg-slate-800/40 transition-all text-center px-4" onDragOver={handleDragOver}
  onDrop={handleDrop}
  onClick={() => fileInputRef.current?.click()}
  >
@@ -190,7 +190,7 @@ const DocumentUploadModal = ({
  </div>
  ) : (
  <div className="space-y-3">
- <div className="flex items-center justify-between p-4 bg-slate-950 rounded-xl border border-slate-800">
+ <div className="flex items-center justify-between p-4 bg-slate-950 rounded-sm border border-slate-800">
  <div className="flex items-center space-x-3">
  <div className="p-2.5 rounded-lg bg-slate-800 text-cyan-400">
  {isLas ? <FileSpreadsheet size={24} /> : <File size={24} />}
@@ -210,7 +210,7 @@ const DocumentUploadModal = ({
  </div>
 
  {/* Target Well Selector */}
- <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 flex items-center justify-between">
+ <div className="p-3 bg-slate-950 rounded-sm border border-slate-800 flex items-center justify-between">
  <div>
  <p className="text-xs font-semibold text-slate-200">Associate Incidents with Well:</p>
  <p className="text-[11px] text-slate-500">Target institutional offset well memory</p>
@@ -239,7 +239,7 @@ const DocumentUploadModal = ({
  <div className="space-y-4">
  
  {/* Extraction Banner */}
- <div className="p-4 bg-emerald-950/20 border border-emerald-800/40 rounded-xl flex items-start justify-between">
+ <div className="p-4 bg-emerald-950/20 border border-emerald-800/40 rounded-sm flex items-start justify-between">
  <div className="flex items-start space-x-3">
  <CheckCircle size={22} className="text-emerald-400 flex-shrink-0 mt-0.5"/>
  <div>

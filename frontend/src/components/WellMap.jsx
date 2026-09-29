@@ -613,7 +613,7 @@ export default function WellMap({
  closeButton={false}
  closeOnClick={false}
  className="cyber-well-popup">
- <div className="bg-[#141414]/95 border border-cyan-400/80 rounded-xl p-3.5 text-slate-100 font-mono text-[11px] leading-relaxed shadow-[0_12px_36px_rgba(0,0,0,0.9)] min-w-[270px] max-w-[340px] select-text backdrop-blur-md">
+ <div className="bg-[#141414]/95 border border-cyan-400/80 rounded-sm p-3.5 text-slate-100 font-mono text-[11px] leading-relaxed shadow-[0_12px_36px_rgba(0,0,0,0.9)] min-w-[270px] max-w-[340px] select-text backdrop-blur-md">
  {/* Header */}
  <div className="flex items-start justify-between pb-2 border-b border-cyan-500/30 mb-2.5">
  <div className="min-w-0 pr-2">
@@ -693,7 +693,7 @@ export default function WellMap({
 
  {/* Floating Control Card (Draggable / Mobile Responsive) */}
  <div 
- className={`absolute w-80 max-w-[calc(100vw-32px)] glass-panel border border-slate-750 shadow-glass rounded-2xl p-3.5 sm:p-4 z-10 transition-all ${isDragging ? 'cursor-grabbing': 'cursor-grab'}`}
+ className={`absolute w-80 max-w-[calc(100vw-32px)] glass-panel border border-slate-750 rounded p-3.5 sm:p-4 z-10 transition-all ${isDragging ? 'cursor-grabbing': 'cursor-grab'}`}
  style={{ top: Math.max(60, position.y), left: Math.max(12, position.x), touchAction: 'none'}}
  onPointerDown={handlePointerDown}
  onPointerMove={handlePointerMove}
@@ -763,7 +763,7 @@ export default function WellMap({
  type="button" onClick={() => setRadius(preset.val)}
  className={`text-[10px] py-1 px-1.5 rounded-lg border font-mono transition-all text-center ${
  Math.abs(radius - preset.val) < 2
- ? 'bg-cyan-500/25 border-cyan-400 text-cyan-200 font-bold shadow-[0_0_8px_rgba(166, 166, 166,0.4)]': 'bg-slate-800/80 border-slate-700 text-slate-400 hover:text-slate-200 hover:border-slate-600'}`}
+ ? 'bg-cyan-500/25 border-cyan-400 text-cyan-200 font-bold': 'bg-slate-800/80 border-slate-700 text-slate-400 hover:text-slate-200 hover:border-slate-600'}`}
  >
  {preset.label}
  </button>
@@ -777,7 +777,7 @@ export default function WellMap({
  className="w-full accent-cyan-400 bg-slate-800 rounded-lg appearance-none cursor-pointer h-1.5 mt-1"/>
 
  {/* Live Dynamic Inspection HUD */}
- <div className="bg-slate-900/90 border border-slate-750 rounded-xl p-2 space-y-1 text-[11px] font-mono">
+ <div className="bg-slate-900/90 border border-slate-750 rounded-sm p-2 space-y-1 text-[11px] font-mono">
  <div className="flex items-center justify-between">
  <span className="text-slate-400 flex items-center">
  <span className="w-2 h-2 rounded-full bg-[#34d399] shadow-[0_0_6px_rgba(52,211,153,0.8)] mr-1.5"></span>
@@ -814,14 +814,14 @@ export default function WellMap({
 
  <button 
  onClick={setAsActiveRig}
- className="w-full bg-slate-850 hover:bg-slate-800 active:bg-slate-750 text-slate-200 text-xs font-medium py-2.5 rounded-xl transition-colors border border-slate-700/80 flex items-center justify-center min-h-[40px] shadow-sm">
+ className="w-full bg-slate-850 hover:bg-slate-800 active:bg-slate-750 text-slate-200 text-xs font-medium py-2.5 rounded-sm transition-colors border border-slate-700/80 flex items-center justify-center min-h-[40px] shadow-sm">
  <MapPin size={14} className="mr-2 text-emerald-400"/>
  Fly to Active Wellhead ({activeWellId ? activeWellId.replace('OIL-','') : 'None'})
  </button>
  
  <button 
  onClick={() => setIs3DViewerOpen(true)}
- className="w-full bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-cyan-500/20 hover:from-cyan-500/30 hover:to-blue-500/30 active:scale-[0.99] text-cyan-300 text-xs font-semibold py-2.5 rounded-xl transition-all border border-cyan-500/40 shadow-glow-cyan flex items-center justify-center min-h-[40px]">
+ className="w-full bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-cyan-500/20 hover:from-cyan-500/30 hover:to-blue-500/30 active:scale-[0.99] text-cyan-300 text-xs font-semibold py-2.5 rounded-sm transition-all border border-cyan-500/40 flex items-center justify-center min-h-[40px]">
  <Box size={15} className="mr-2 text-cyan-400"/>
  View 3D Subsurface Trajectory
  </button>

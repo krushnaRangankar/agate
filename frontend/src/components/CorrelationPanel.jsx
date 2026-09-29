@@ -271,7 +271,7 @@ const CorrelationPanel = ({ isOpen, onClose, activeWell, offsetWell, isFullScree
 
     return (
         <div className={`fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm animate-in fade-in duration-200 ${isFullScreen ? 'p-0 w-screen h-screen' : 'p-2 sm:p-4'}`}>
-            <div className={`bg-slate-900 border border-slate-700 shadow-2xl overflow-hidden flex flex-col ${isFullScreen ? 'w-screen h-screen rounded-none border-none max-h-none h-full' : 'w-full max-w-6xl h-[96vh] sm:h-[92vh] rounded-xl'}`}>
+            <div className={`bg-slate-900 border border-slate-700 shadow-2xl overflow-hidden flex flex-col ${isFullScreen ? 'w-screen h-screen rounded-none border-none max-h-none h-full' : 'w-full max-w-6xl h-[96vh] sm:h-[92vh] rounded-sm'}`}>
                 
                 {/* Header with Navigation Tabs */}
                 <div className="px-3 sm:px-6 py-2.5 sm:py-3.5 bg-slate-950 border-b border-slate-800 flex flex-wrap justify-between items-center gap-3">
@@ -335,7 +335,7 @@ const CorrelationPanel = ({ isOpen, onClose, activeWell, offsetWell, isFullScree
                                     onClick={() => setIsAligned(!isAligned)}
                                     className={`px-2 sm:px-3 py-1.5 rounded text-[11px] sm:text-xs font-medium border transition flex items-center space-x-1 sm:space-x-1.5 ${
                                         isAligned 
-                                            ? 'bg-cyan-950 border-cyan-500/60 text-cyan-300 shadow-[0_0_12px_rgba(166, 166, 166,0.3)]' 
+                                            ? 'bg-cyan-950 border-cyan-500/60 text-cyan-300' 
                                             : 'bg-slate-800 border-slate-700 text-slate-300 hover:border-slate-600'
                                     }`}
                                 >
@@ -394,13 +394,13 @@ const CorrelationPanel = ({ isOpen, onClose, activeWell, offsetWell, isFullScree
                                 <div className="bg-slate-950/70 border-b border-slate-800/80 px-5 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs">
                                     <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
                                         <div className="flex items-center space-x-2">
-                                            <span className="w-3.5 h-1 rounded bg-[#A6A6A6] inline-block shadow-[0_0_8px_rgba(166, 166, 166,0.6)]"></span>
+                                            <span className="w-3.5 h-1 rounded bg-[#A6A6A6] inline-block"></span>
                                             <span className="text-slate-400">Active Well:</span>
                                             <span className="font-semibold text-cyan-300 font-mono">{activeWell}</span>
                                             <SourceTag source={activeWell} compact={true} />
                                         </div>
                                         <div className="flex items-center space-x-2">
-                                            <span className="w-3.5 h-1 rounded bg-[#B1B1B1] inline-block shadow-[0_0_8px_rgba(177, 177, 177,0.6)]"></span>
+                                            <span className="w-3.5 h-1 rounded bg-[#B1B1B1] inline-block"></span>
                                             <span className="text-slate-400">Offset Well:</span>
                                             <select
                                                 value={currentOffset}
@@ -487,22 +487,22 @@ const CorrelationPanel = ({ isOpen, onClose, activeWell, offsetWell, isFullScree
                                             xaxis: { 
                                                 domain: [0, 0.45],
                                                 title: 'Active Well GR (API)', 
-                                                gridcolor: '#404040', 
-                                                zerolinecolor: '#404040', 
+                                                gridcolor: '#2b2b2b', 
+                                                zerolinecolor: '#3a3a3a', 
                                                 color: '#A6A6A6'
                                             },
                                             xaxis2: { 
                                                 domain: [0.55, 1],
                                                 title: 'Offset Well GR (API)', 
-                                                gridcolor: '#404040', 
-                                                zerolinecolor: '#404040', 
+                                                gridcolor: '#2b2b2b', 
+                                                zerolinecolor: '#3a3a3a', 
                                                 color: '#B1B1B1'
                                             },
                                             yaxis: { 
                                                 title: 'Depth TVD (m)', 
                                                 autorange: 'reversed', 
-                                                gridcolor: '#404040', 
-                                                zerolinecolor: '#404040', 
+                                                gridcolor: '#2b2b2b', 
+                                                zerolinecolor: '#3a3a3a', 
                                                 color: '#A2A2A2',
                                                 spikemode: 'across',
                                                 spikedash: 'solid',
@@ -533,7 +533,7 @@ const CorrelationPanel = ({ isOpen, onClose, activeWell, offsetWell, isFullScree
                         ) : casingData ? (
                             <>
                                 {/* Recommended Engineering Best Practices Box */}
-                                <div className="p-4 rounded-xl bg-cyan-950/30 border border-cyan-800/50">
+                                <div className="p-4 rounded-sm bg-cyan-950/30 border border-cyan-800/50">
                                     <div className="flex items-center space-x-2 text-cyan-300 font-bold text-sm mb-2">
                                         <Wrench size={16} />
                                         <span>Engineering Casing & Cementing Guidelines for {activeWell}</span>
@@ -551,7 +551,7 @@ const CorrelationPanel = ({ isOpen, onClose, activeWell, offsetWell, isFullScree
                                 {/* Comparison across wells */}
                                 <div className="space-y-6">
                                     {casingData.comparison?.map((well, wIdx) => (
-                                        <div key={wIdx} className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+                                        <div key={wIdx} className="bg-slate-900 border border-slate-800 rounded-sm overflow-hidden">
                                             <div className="px-5 py-3 bg-slate-800/60 border-b border-slate-700/60 flex items-center justify-between">
                                                 <div className="flex items-center space-x-3">
                                                     <span className={`w-3 h-3 rounded-full ${well.role.includes('Active') ? 'bg-cyan-400' : 'bg-amber-400'}`}></span>
@@ -621,7 +621,7 @@ const CorrelationPanel = ({ isOpen, onClose, activeWell, offsetWell, isFullScree
                         ) : stratData ? (
                             <>
                                 {/* Geological Summary Banner */}
-                                <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-800 text-xs flex items-center justify-between">
+                                <div className="p-3.5 rounded-sm bg-slate-900 border border-slate-800 text-xs flex items-center justify-between">
                                     <div className="flex items-center space-x-2 text-slate-300">
                                         <Info size={15} className="text-cyan-400 shrink-0" />
                                         <span>{stratData.geological_summary}</span>
@@ -632,7 +632,7 @@ const CorrelationPanel = ({ isOpen, onClose, activeWell, offsetWell, isFullScree
                                 </div>
 
                                 {/* Fence Diagram Visual Canvas */}
-                                <div className="flex-1 bg-slate-900 border border-slate-800 rounded-xl p-6 flex flex-col">
+                                <div className="flex-1 bg-slate-900 border border-slate-800 rounded-sm p-6 flex flex-col">
                                     {/* Well Headers */}
                                     <div className="grid grid-cols-3 gap-8 mb-4 border-b border-slate-800 pb-3">
                                         {stratData.wells?.map((w, i) => (

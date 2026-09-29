@@ -802,8 +802,8 @@ const Trajectory3DViewer = ({ isOpen, onClose, activeWellId, offsetWells = [], c
  scene: {
  xaxis: { 
  title: 'East (m)', 
- gridcolor: isGeo ? '#545454': '#404040', 
- zerolinecolor: isGeo ? '#404040': '#545454', 
+ gridcolor: isGeo ? '#545454': '#2b2b2b', 
+ zerolinecolor: isGeo ? '#2b2b2b': '#545454', 
  color: isGeo ? '#171717': '#A2A2A2',
  backgroundcolor: isGeo ? '#E9E9E9': 'transparent',
  showbackground: isGeo,
@@ -811,8 +811,8 @@ const Trajectory3DViewer = ({ isOpen, onClose, activeWellId, offsetWells = [], c
  },
  yaxis: { 
  title: 'North (m)', 
- gridcolor: isGeo ? '#545454': '#404040', 
- zerolinecolor: isGeo ? '#404040': '#545454', 
+ gridcolor: isGeo ? '#545454': '#2b2b2b', 
+ zerolinecolor: isGeo ? '#2b2b2b': '#545454', 
  color: isGeo ? '#171717': '#A2A2A2',
  backgroundcolor: isGeo ? '#E9E9E9': 'transparent',
  showbackground: isGeo,
@@ -821,8 +821,8 @@ const Trajectory3DViewer = ({ isOpen, onClose, activeWellId, offsetWells = [], c
  zaxis: { 
  title: 'TVD Depth (m)', 
  autorange: 'reversed', 
- gridcolor: isGeo ? '#545454': '#404040', 
- zerolinecolor: isGeo ? '#404040': '#545454', 
+ gridcolor: isGeo ? '#545454': '#2b2b2b', 
+ zerolinecolor: isGeo ? '#2b2b2b': '#545454', 
  color: isGeo ? '#171717': '#A2A2A2',
  backgroundcolor: isGeo ? '#E9E9E9': 'transparent',
  showbackground: isGeo
@@ -852,7 +852,7 @@ const Trajectory3DViewer = ({ isOpen, onClose, activeWellId, offsetWells = [], c
 
  return (
  <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 backdrop-blur-md animate-in fade-in p-1 sm:p-4">
- <div className="bg-slate-900 border border-slate-700/80 w-full max-w-7xl h-[96vh] sm:h-[92vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95">
+ <div className="bg-slate-900 border border-slate-700/80 w-full max-w-7xl h-[96vh] sm:h-[92vh] rounded shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95">
  
  {/* Header Bar with Controls */}
  <div className="flex flex-wrap justify-between items-center px-3 sm:px-6 py-2.5 sm:py-3.5 border-b border-slate-800 bg-slate-900/90 gap-2">
@@ -962,7 +962,7 @@ const Trajectory3DViewer = ({ isOpen, onClose, activeWellId, offsetWells = [], c
  onMouseDown={handleMouseDown}
  >
  {/* Regional Hazard Card */}
- <div className="absolute top-4 left-4 z-20 w-72 glass-panel border border-slate-700/80 p-3 rounded-xl shadow-2xl bg-slate-900/85 backdrop-blur-md">
+ <div className="absolute top-4 left-4 z-20 w-72 glass-panel border border-slate-700/80 p-3 rounded-sm shadow-2xl bg-slate-900/85 backdrop-blur-md">
  <div className="flex items-center justify-between border-b border-slate-700 pb-2 mb-2">
  <div className="flex items-center space-x-1.5">
  <Layers size={15} className="text-amber-400"/>

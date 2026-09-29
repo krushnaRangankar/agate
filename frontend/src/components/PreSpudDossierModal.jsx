@@ -100,7 +100,7 @@ const PreSpudDossierModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', 
 
   return (
     <div className={`fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm animate-in fade-in duration-200 print:p-0 print:bg-white print:static ${isFullScreen ? 'p-0 w-screen h-screen' : 'p-2 sm:p-4'}`}>
-      <div className={`bg-slate-900 border border-slate-700 shadow-2xl overflow-hidden flex flex-col print:max-h-none print:border-none print:shadow-none print:bg-white print:text-black ${isFullScreen ? 'w-screen h-screen rounded-none border-none max-h-none h-full' : 'w-full max-w-5xl rounded-xl max-h-[96vh] sm:max-h-[94vh]'}`}>
+      <div className={`bg-slate-900 border border-slate-700 shadow-2xl overflow-hidden flex flex-col print:max-h-none print:border-none print:shadow-none print:bg-white print:text-black ${isFullScreen ? 'w-screen h-screen rounded-none border-none max-h-none h-full' : 'w-full max-w-5xl rounded-sm max-h-[96vh] sm:max-h-[94vh]'}`}>
         
         {/* Header - Screen only */}
         <div className="px-3 sm:px-6 py-3 sm:py-4 bg-slate-950 border-b border-slate-800 flex justify-between items-center gap-2 print:hidden">
@@ -203,7 +203,7 @@ const PreSpudDossierModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', 
           </div>
 
           {/* Section 1: Target Well Operational Summary */}
-          <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800 print:bg-slate-50 print:border-slate-300">
+          <div className="p-4 rounded-sm bg-slate-950/80 border border-slate-800 print:bg-slate-50 print:border-slate-300">
             <h3 className="text-xs font-bold uppercase tracking-wider text-cyan-400 print:text-cyan-800 mb-3 flex items-center space-x-1.5">
               <MapPin size={14} />
               <span>Section 1: Target Well Specifications</span>
@@ -230,7 +230,7 @@ const PreSpudDossierModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', 
           </div>
 
           {/* Section 2: Executive Risk Summary Callout */}
-          <div className="p-4 rounded-xl bg-amber-950/20 border border-amber-900/40 text-xs print:bg-amber-50 print:border-amber-300">
+          <div className="p-4 rounded-sm bg-amber-950/20 border border-amber-900/40 text-xs print:bg-amber-50 print:border-amber-300">
             <div className="flex items-start space-x-3">
               <ShieldAlert size={20} className="text-amber-400 flex-shrink-0 mt-0.5" />
               <div>

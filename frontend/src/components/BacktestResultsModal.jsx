@@ -386,17 +386,17 @@ export default function BacktestResultsModal({ isOpen, onClose, isFullScreen: pr
     height: 280,
     margin: { l: 48, r: 24, t: 36, b: 40 },
     paper_bgcolor: 'transparent',
-    plot_bgcolor: '#131313',
+    plot_bgcolor: 'transparent',
     font: { color: '#A2A2A2', family: 'Inter, sans-serif', size: 11 },
     xaxis: {
       title: { text: 'Drilling Depth TVD (meters)', font: { size: 11, color: '#A2A2A2' } },
-      gridcolor: 'rgba(255, 255, 255, 0.05)',
+      gridcolor: '#2b2b2b',
       zeroline: false
     },
     yaxis: {
       title: { text: 'Hazard Probability / Match %', font: { size: 11, color: '#A2A2A2' } },
       range: [0, 1.08],
-      gridcolor: 'rgba(255, 255, 255, 0.05)',
+      gridcolor: '#2b2b2b',
       zeroline: false
     },
     legend: {
@@ -413,12 +413,12 @@ export default function BacktestResultsModal({ isOpen, onClose, isFullScreen: pr
 
   return (
     <div className={`fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md animate-in fade-in duration-200 ${isFullScreen ? 'p-0 w-screen h-screen' : 'p-3 sm:p-5'}`}>
-      <div className={`relative flex flex-col bg-[#0B0B0B]/98 border border-slate-750 shadow-2xl overflow-hidden ${isFullScreen ? 'w-screen h-screen rounded-none border-none max-h-none h-full' : 'w-full max-w-5xl max-h-[92vh] rounded-2xl'}`}>
+      <div className={`relative flex flex-col bg-[#0B0B0B]/98 border border-slate-750 shadow-2xl overflow-hidden ${isFullScreen ? 'w-screen h-screen rounded-none border-none max-h-none h-full' : 'w-full max-w-5xl max-h-[92vh] rounded'}`}>
         
         {/* Header with Mode Toggles */}
         <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-800/80 bg-slate-900/60">
           <div className="flex items-center space-x-2.5">
-            <div className="p-2 rounded-xl bg-indigo-500/15 border border-indigo-500/30 text-indigo-400">
+            <div className="p-2 rounded-sm bg-indigo-500/15 border border-indigo-500/30 text-indigo-400">
               <History size={20} />
             </div>
             <div>
@@ -506,9 +506,9 @@ export default function BacktestResultsModal({ isOpen, onClose, isFullScreen: pr
             <div className="space-y-4 animate-in fade-in duration-200">
               
               {/* Prominent Headline Statement Card */}
-              <div className="p-4 rounded-xl border bg-gradient-to-r from-slate-900 via-indigo-950/30 to-slate-900 border-indigo-500/30 shadow-lg">
+              <div className="p-4 rounded-sm border bg-gradient-to-r from-slate-900 via-indigo-950/30 to-slate-900 border-indigo-500/30 shadow-lg">
                 <div className="flex items-start space-x-3.5">
-                  <div className="p-2.5 rounded-xl bg-indigo-500/15 border border-indigo-500/30 text-indigo-400 shrink-0 mt-0.5">
+                  <div className="p-2.5 rounded-sm bg-indigo-500/15 border border-indigo-500/30 text-indigo-400 shrink-0 mt-0.5">
                     <ShieldCheck size={22} />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -534,7 +534,7 @@ export default function BacktestResultsModal({ isOpen, onClose, isFullScreen: pr
               {/* Wilson Confidence Interval KPI Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {/* Metric 1: Point Estimate */}
-                <div className="p-3.5 rounded-xl bg-slate-900/70 border border-slate-800 flex flex-col justify-between">
+                <div className="p-3.5 rounded-sm bg-slate-900/70 border border-slate-800 flex flex-col justify-between">
                   <span className="text-[11px] font-mono text-slate-400">Actionable Warning Rate</span>
                   <div className="my-1.5">
                     <div className="text-2xl font-bold font-mono text-cyan-300">
@@ -548,7 +548,7 @@ export default function BacktestResultsModal({ isOpen, onClose, isFullScreen: pr
                 </div>
 
                 {/* Metric 2: Wilson 95% Interval */}
-                <div className="p-3.5 rounded-xl bg-slate-900/70 border border-indigo-500/25 flex flex-col justify-between">
+                <div className="p-3.5 rounded-sm bg-slate-900/70 border border-indigo-500/25 flex flex-col justify-between">
                   <span className="text-[11px] font-mono text-indigo-300">Wilson 95% CI</span>
                   <div className="my-1.5">
                     <div className="text-lg font-bold font-mono text-indigo-200">
@@ -562,7 +562,7 @@ export default function BacktestResultsModal({ isOpen, onClose, isFullScreen: pr
                 </div>
 
                 {/* Metric 3: Average Lead Distance */}
-                <div className="p-3.5 rounded-xl bg-slate-900/70 border border-slate-800 flex flex-col justify-between">
+                <div className="p-3.5 rounded-sm bg-slate-900/70 border border-slate-800 flex flex-col justify-between">
                   <span className="text-[11px] font-mono text-slate-400">Avg Advance Warning</span>
                   <div className="my-1.5">
                     <div className="text-2xl font-bold font-mono text-emerald-300">
@@ -576,7 +576,7 @@ export default function BacktestResultsModal({ isOpen, onClose, isFullScreen: pr
                 </div>
 
                 {/* Metric 4: Precursor Alert Coverage */}
-                <div className="p-3.5 rounded-xl bg-slate-900/70 border border-slate-800 flex flex-col justify-between">
+                <div className="p-3.5 rounded-sm bg-slate-900/70 border border-slate-800 flex flex-col justify-between">
                   <span className="text-[11px] font-mono text-slate-400">Precursor Detection</span>
                   <div className="my-1.5">
                     <div className="text-2xl font-bold font-mono text-amber-300">
@@ -591,7 +591,7 @@ export default function BacktestResultsModal({ isOpen, onClose, isFullScreen: pr
               </div>
 
               {/* Tested Incidents Table */}
-              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
+              <div className="p-4 rounded-sm bg-slate-900/60 border border-slate-800">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center space-x-2">
                     <FileText size={15} className="text-cyan-400" />
@@ -618,7 +618,7 @@ export default function BacktestResultsModal({ isOpen, onClose, isFullScreen: pr
                           setSelectedCaseId(inc.case_id || inc.well_id);
                           setViewMode("detail");
                         }}
-                        className="group p-3.5 rounded-xl bg-slate-900/90 border border-slate-800/80 hover:border-cyan-500/40 hover:bg-slate-850 cursor-pointer transition flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                        className="group p-3.5 rounded-sm bg-slate-900/90 border border-slate-800/80 hover:border-cyan-500/40 hover:bg-slate-850 cursor-pointer transition flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                       >
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center space-x-2 mb-1">
@@ -673,7 +673,7 @@ export default function BacktestResultsModal({ isOpen, onClose, isFullScreen: pr
               </div>
 
               {/* Statistical Integrity Callout */}
-              <div className="p-3.5 rounded-xl bg-slate-900/40 border border-slate-800/80 text-xs text-slate-400 flex items-center justify-between">
+              <div className="p-3.5 rounded-sm bg-slate-900/40 border border-slate-800/80 text-xs text-slate-400 flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <ShieldAlert size={14} className="text-cyan-400 shrink-0" />
                   <span>
@@ -700,7 +700,7 @@ export default function BacktestResultsModal({ isOpen, onClose, isFullScreen: pr
             <div className="space-y-4 animate-in fade-in duration-200">
               
               {/* Back to Aggregate & Incident Selector Bar */}
-              <div className="flex flex-wrap items-center justify-between gap-2.5 p-3 rounded-xl bg-slate-900/50 border border-slate-800">
+              <div className="flex flex-wrap items-center justify-between gap-2.5 p-3 rounded-sm bg-slate-900/50 border border-slate-800">
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={() => setViewMode("aggregate")}
@@ -736,12 +736,12 @@ export default function BacktestResultsModal({ isOpen, onClose, isFullScreen: pr
 
               {/* Headline Result Banner */}
               {activeResult && (
-                <div className={`p-4 rounded-xl border backdrop-blur-md shadow-lg flex items-start space-x-3.5 transition-all ${
+                <div className={`p-4 rounded-sm border backdrop-blur-md shadow-lg flex items-start space-x-3.5 transition-all ${
                   hasAnyAdvanceWarning
-                    ? "bg-gradient-to-r from-emerald-950/40 via-cyan-950/30 to-slate-900/60 border-emerald-500/40 shadow-glow-emerald"
+                    ? "bg-gradient-to-r from-emerald-950/40 via-cyan-950/30 to-slate-900/60 border-emerald-500/40"
                     : "bg-slate-900/60 border-slate-750"
                 }`}>
-                  <div className={`p-2 rounded-xl mt-0.5 shrink-0 ${
+                  <div className={`p-2 rounded-sm mt-0.5 shrink-0 ${
                     hasAnyAdvanceWarning 
                       ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30" 
                       : "bg-amber-500/20 text-amber-400 border border-amber-500/30"
@@ -766,7 +766,7 @@ export default function BacktestResultsModal({ isOpen, onClose, isFullScreen: pr
 
               {/* Incident Selection Rationale */}
               {(activeResult?.incident_selection_rationale || caseMeta?.incident_selection_rationale) && (
-                <div className="p-3.5 rounded-xl bg-slate-900/70 border border-cyan-500/25 shadow-sm flex items-start space-x-3">
+                <div className="p-3.5 rounded-sm bg-slate-900/70 border border-cyan-500/25 shadow-sm flex items-start space-x-3">
                   <div className="p-1.5 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 shrink-0 mt-0.5">
                     <FileText size={15} />
                   </div>
@@ -789,7 +789,7 @@ export default function BacktestResultsModal({ isOpen, onClose, isFullScreen: pr
               {/* Milestone Cards Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {/* 1. Precursor Warning */}
-                <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 flex flex-col justify-between">
+                <div className="p-3 rounded-sm bg-slate-900/60 border border-slate-800 flex flex-col justify-between">
                   <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
                     <span>Precursor Alert</span>
                     <span className="w-2 h-2 rounded-full bg-yellow-400"></span>
@@ -810,7 +810,7 @@ export default function BacktestResultsModal({ isOpen, onClose, isFullScreen: pr
                 </div>
 
                 {/* 2. Sequence Match */}
-                <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 flex flex-col justify-between">
+                <div className="p-3 rounded-sm bg-slate-900/60 border border-slate-800 flex flex-col justify-between">
                   <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
                     <span>DTW Match</span>
                     <span className="w-2 h-2 rounded-full bg-purple-400"></span>
@@ -831,7 +831,7 @@ export default function BacktestResultsModal({ isOpen, onClose, isFullScreen: pr
                 </div>
 
                 {/* 3. Elevated Risk */}
-                <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 flex flex-col justify-between">
+                <div className="p-3 rounded-sm bg-slate-900/60 border border-slate-800 flex flex-col justify-between">
                   <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
                     <span>Caution Alert</span>
                     <span className="w-2 h-2 rounded-full bg-amber-400"></span>
@@ -852,7 +852,7 @@ export default function BacktestResultsModal({ isOpen, onClose, isFullScreen: pr
                 </div>
 
                 {/* 4. Critical Alert */}
-                <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 flex flex-col justify-between">
+                <div className="p-3 rounded-sm bg-slate-900/60 border border-slate-800 flex flex-col justify-between">
                   <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
                     <span>Critical Alert</span>
                     <span className="w-2 h-2 rounded-full bg-red-400"></span>
@@ -874,7 +874,7 @@ export default function BacktestResultsModal({ isOpen, onClose, isFullScreen: pr
               </div>
 
               {/* Depth vs Risk Score Chart */}
-              <div className="p-4 rounded-xl bg-slate-900/70 border border-slate-800">
+              <div className="p-4 rounded-sm bg-slate-900/70 border border-slate-800">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center space-x-2">
                     <Activity size={15} className="text-cyan-400" />
@@ -908,7 +908,7 @@ export default function BacktestResultsModal({ isOpen, onClose, isFullScreen: pr
 
               {/* Real Incident Dossier Context */}
               {caseMeta && (
-                <div className="p-3.5 rounded-xl bg-slate-900/40 border border-slate-800/80 text-xs space-y-1.5">
+                <div className="p-3.5 rounded-sm bg-slate-900/40 border border-slate-800/80 text-xs space-y-1.5">
                   <div className="flex items-center justify-between text-slate-400 font-mono text-[11px]">
                     <span>Source: <strong className="text-slate-300">{caseMeta.source_document || caseMeta.source}</strong></span>
                     <span>Formation: <strong className="text-cyan-400">{caseMeta.formation}</strong></span>

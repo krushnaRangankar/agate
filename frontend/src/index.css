@@ -32,34 +32,35 @@
    map's values in WellMap.jsx — otherwise markers and the search-radius circle
    render in colour on a grey basemap. The two move together. */
 
-/* Glassmorphism System */
+/* Instrument panel system.
+ *
+ * Replaces the previous glassmorphism set. The translucent fills, large drop
+ * shadows and soft glows are what gave panels a floating marketing-card cast.
+ * These are now opaque and flat, separated by a 1px solid border on the same
+ * slate-800 (#2b2b2b) that `border-slate-800` resolves to, so panels using these
+ * classes and panels using the utility directly read identically.
+ *
+ * backdrop-filter is gone rather than merely reduced: with an opaque fill a blur
+ * behind it has no visible effect, and leaving it would imply these are still
+ * translucent. The class names are kept so the ~12 call sites need no edit.
+ */
 .glass-panel {
-  background: rgba(18, 23, 33, 0.82);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+  background: #121721;
+  border: 1px solid #2b2b2b;
 }
 
 .glass-panel-glow {
-  background: rgba(18, 23, 33, 0.88);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(166, 166, 166, 0.25);
-  box-shadow: 0 0 25px -5px rgba(166, 166, 166, 0.18), 0 8px 32px 0 rgba(0, 0, 0, 0.55);
+  background: #121721;
+  border: 1px solid #3a3a3a;
 }
 
 .glass-card {
-  background: linear-gradient(135deg, rgba(26, 32, 45, 0.75) 0%, rgba(18, 23, 33, 0.85) 100%);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  background: #121721;
+  border: 1px solid #2b2b2b;
 }
 
 .glass-card:hover {
-  border-color: rgba(166, 166, 166, 0.35);
-  box-shadow: 0 4px 20px -2px rgba(166, 166, 166, 0.12);
+  border-color: #3a3a3a;
 }
 
 /* Custom Tactical Range Slider */

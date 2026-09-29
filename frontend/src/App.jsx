@@ -53,10 +53,6 @@ import DocumentUploadModal from'./components/DocumentUploadModal';
 import KnowledgeSearch from'./components/KnowledgeSearch';
 import CorrelationPanel from'./components/CorrelationPanel';
 import LookAheadRadar from'./components/LookAheadRadar';
-import PPFGWindowModal from'./components/PPFGWindowModal';
-import PreSpudDossierModal from'./components/PreSpudDossierModal';
-import BacktestResultsModal from'./components/BacktestResultsModal';
-import ContributeLessonModal from'./components/ContributeLessonModal';
 import DataTransparencyModal from'./components/DataTransparencyModal';
 import SourceTag, { getWellDataSource } from'./components/SourceTag';
 import MatrixRain from'./components/MatrixRain';
@@ -131,12 +127,14 @@ const HAZARD_CARDS = [
 
 function App() {
  const navigate = useNavigate();
- // URL Search Parameter Support for Standalone Fullscreen Module Tabs
+ // Legacy ?module=<name> deep-link support, kept only for the two modules that
+ // still render as in-page modals (radar, correlation). The ppfg / dossier /
+ // backtest / contribute branches went with those modals: they are sidebar routes
+ // now, and no click path had set their state true since the router landed.
  const getInitialModuleState = (modName) => {
  if (typeof window === 'undefined') return false;
  const p = new URLSearchParams(window.location.search);
  const m = (p.get('module') ||'').toLowerCase();
- if (modName === 'contribute') return m === 'contribute'|| m === 'lesson';
  return m === modName;
  };
 
@@ -195,10 +193,6 @@ function App() {
  // 6 Core Decision Support & Engineering Modules
  const [isCorrelationOpen, setIsCorrelationOpen] = useState(() => getInitialModuleState('correlation'));
  const [isRadarOpen, setIsRadarOpen] = useState(() => getInitialModuleState('radar'));
- const [isPPFGOpen, setIsPPFGOpen] = useState(() => getInitialModuleState('ppfg'));
- const [isDossierOpen, setIsDossierOpen] = useState(() => getInitialModuleState('dossier'));
- const [isBacktestOpen, setIsBacktestOpen] = useState(() => getInitialModuleState('backtest'));
- const [isContributeOpen, setIsContributeOpen] = useState(() => getInitialModuleState('contribute'));
 
  // Navigate to a module's route.
  //
@@ -482,16 +476,6 @@ function App() {
  wellId: wellToUse,
  isLas: isLas,
  ocrTriggered: result?.ocr_triggered,
- time: new Date().toLocaleTimeString()
- });
- };
-
- const handleLessonContributed = (lesson) => {
- fetchHistory(selectedWell);
- setUploadToast({
- title:`Institutional Lesson Contributed!`,
- description:`New mitigations and root causes synchronized for ${selectedWell}.`,
- wellId: selectedWell,
  time: new Date().toLocaleTimeString()
  });
  };
@@ -1171,7 +1155,7 @@ function App() {
  <header className={`h-13 sm:h-14 border-b ${dashboardTheme === 'terminal'? 'border-emerald-500/40 bg-[#0E0E0E]/95': 'border-slate-800/80 bg-[#131313]/95'} backdrop-blur-xl flex items-center justify-between px-3 sm:px-4 lg:px-5 z-40 shrink-0 shadow-[0_4px_25px_rgba(0,0,0,0.5)] relative w-full overflow-hidden`}>
  {/* Rig-edge link indicator (branding now lives in the sidebar) */}
  <div className="flex items-center shrink-0 mr-3">
- <div className="relative flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-cyan-500/20 via-blue-500/10 to-indigo-500/10 border border-cyan-500/40 text-cyan-400 shadow-glow-cyan shrink-0">
+ <div className="relative flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-sm bg-gradient-to-br from-cyan-500/20 via-blue-500/10 to-indigo-500/10 border border-cyan-500/40 text-cyan-400 shrink-0">
  <Activity size={18} className="text-cyan-400 animate-pulse-subtle"/>
  <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-[#131313] animate-ping"/>
  <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-[#131313]"/>
@@ -1392,13 +1376,13 @@ function App() {
  <div className="flex items-center border-l border-slate-800/80 pl-1.5 xl:pl-2 shrink-0">
  {isBackendConnected ? (
  <div 
- className="flex items-center space-x-1.5 px-2 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[11px] font-mono font-medium shadow-[0_0_10px_rgba(163, 163, 163,0.15)] whitespace-nowrap" title="Telemetry Live at 1.0Hz — Cloud & Edge Synchronized">
+ className="flex items-center space-x-1.5 px-2 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[11px] font-mono font-medium whitespace-nowrap" title="Telemetry Live at 1.0Hz — Cloud & Edge Synchronized">
  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
  <span>Cloud Sync 1.0Hz</span>
  </div>
  ) : (
  <div 
- className="flex items-center space-x-1.5 px-2 py-1 rounded-lg bg-cyan-500/15 border border-cyan-500/40 text-cyan-300 text-[11px] font-mono font-medium shadow-[0_0_10px_rgba(166, 166, 166,0.2)] whitespace-nowrap" title="Rig Edge Offline Mode Active — Continuous Physics & Hazard Monitoring Uninterrupted">
+ className="flex items-center space-x-1.5 px-2 py-1 rounded-lg bg-cyan-500/15 border border-cyan-500/40 text-cyan-300 text-[11px] font-mono font-medium whitespace-nowrap" title="Rig Edge Offline Mode Active — Continuous Physics & Hazard Monitoring Uninterrupted">
  <ShieldCheck size={12} className="text-cyan-400 animate-pulse"/>
  <span>Rig Edge (1.0Hz)</span>
  </div>
@@ -1427,7 +1411,7 @@ function App() {
  <button 
  onClick={() => setDashboardTheme(prev => prev === 'terminal'? 'standard': 'terminal')} 
  className={`p-1.5 rounded-lg transition-colors border shrink-0 flex items-center space-x-1 font-mono text-xs ${
- dashboardTheme === 'terminal'? 'text-emerald-300 bg-emerald-500/20 border-emerald-500/50 shadow-[0_0_12px_rgba(163, 163, 163,0.3)]': 'bg-slate-900/80 hover:bg-slate-800 border-slate-700/80 hover:text-white text-slate-400'}`}
+ dashboardTheme === 'terminal'? 'text-emerald-300 bg-emerald-500/20 border-emerald-500/50': 'bg-slate-900/80 hover:bg-slate-800 border-slate-700/80 hover:text-white text-slate-400'}`}
  title={dashboardTheme === 'terminal'? 'Terminal Mode: ON (Click to switch to Standard)': 'Switch to Terminal / Tiling-WM Visual Mode'}
  >
  <Terminal size={14} className={dashboardTheme === 'terminal'? 'text-emerald-400': ''} />
@@ -1440,9 +1424,9 @@ function App() {
  <div className="relative shrink-0 border-l border-slate-800/80 pl-1.5 xl:pl-2">
  <button 
  id="btn-system-settings" onClick={() => setIsSettingsOpen(!isSettingsOpen)} 
- className={`p-1.5 xl:p-2 rounded-xl transition-all border shrink-0 flex items-center justify-center cursor-pointer group shadow-sm ${
+ className={`p-1.5 xl:p-2 rounded-sm transition-all border shrink-0 flex items-center justify-center cursor-pointer group shadow-sm ${
  isSettingsOpen 
- ? 'text-cyan-300 bg-cyan-500/20 border-cyan-400 shadow-[0_0_15px_rgba(166, 166, 166,0.35)] ring-1 ring-cyan-400/50': 'bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-cyan-300 border-slate-750 hover:border-cyan-500/50 hover:shadow-[0_0_12px_rgba(166, 166, 166,0.2)]'}`}
+ ? 'text-cyan-300 bg-cyan-500/20 border-cyan-400 ring-1 ring-cyan-400/50': 'bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-cyan-300 border-slate-750 hover:border-cyan-500/50'}`}
  title="System Settings & Preferences" aria-label="System Settings">
  <Settings size={16} className={`transition-transform duration-500 ease-out group-hover:rotate-90 ${isSettingsOpen ? 'text-cyan-400 rotate-90': 'text-slate-300 group-hover:text-cyan-300'}`} />
  </button>
@@ -1453,7 +1437,7 @@ function App() {
  <div 
  className="fixed inset-0 z-40" onClick={() => setIsSettingsOpen(false)} 
  />
- <div className="absolute top-11 right-0 w-80 bg-slate-900/98 backdrop-blur-xl border border-slate-700/90 shadow-2xl rounded-2xl p-4 z-50 animate-in fade-in zoom-in-95">
+ <div className="absolute top-11 right-0 w-80 bg-slate-900/98 backdrop-blur-xl border border-slate-700/90 shadow-2xl rounded p-4 z-50 animate-in fade-in zoom-in-95">
  <div className="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
  <div className="flex items-center space-x-2">
  <div className="p-1.5 rounded-lg bg-cyan-500/15 border border-cyan-500/30">
@@ -1470,10 +1454,10 @@ function App() {
  </div>
  <div className="space-y-3.5">
  {/* Claude / AI Reasoning Engine Box */}
- <div className="p-3 rounded-xl bg-gradient-to-br from-amber-950/40 via-slate-900 to-slate-950 border border-amber-500/40 shadow-[0_0_15px_rgba(177, 177, 177,0.15)]">
+ <div className="p-3 rounded-sm bg-gradient-to-br from-amber-950/40 via-slate-900 to-slate-950 border border-amber-500/40">
  <div className="flex items-center justify-between mb-2">
  <div className="flex items-center space-x-2">
- <div className="p-1.5 rounded-lg bg-amber-500/20 border border-amber-500/40 shadow-glow-amber">
+ <div className="p-1.5 rounded-lg bg-amber-500/20 border border-amber-500/40">
  <Cpu size={15} className="text-amber-400"/>
  </div>
  <div>
@@ -1533,7 +1517,7 @@ function App() {
  <button
  onClick={() => setDashboardTheme(prev => prev === 'terminal'? 'standard': 'terminal')}
  className={`px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold transition border ${
- dashboardTheme === 'terminal'? 'bg-emerald-500 text-black border-emerald-400 shadow-glow-emerald': 'bg-slate-800 text-slate-300 border-slate-700 hover:text-white'}`}
+ dashboardTheme === 'terminal'? 'bg-emerald-500 text-black border-emerald-400': 'bg-slate-800 text-slate-300 border-slate-700 hover:text-white'}`}
  >
  {dashboardTheme === 'terminal'? 'ENABLED': 'DISABLED'}
  </button>
@@ -1556,7 +1540,7 @@ function App() {
  </div>
 
  {/* Operating Mode Status */}
- <div className="p-2.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between text-[11px] font-mono">
+ <div className="p-2.5 rounded-sm bg-slate-950 border border-slate-800 flex items-center justify-between text-[11px] font-mono">
  <span className="text-slate-400">System Mode:</span>
  <span className={`font-semibold ${isBackendConnected ? 'text-emerald-400': 'text-cyan-400'}`}>
  {isBackendConnected ? 'Cloud Sync Active': 'Rig Edge Autonomous'}
@@ -1574,7 +1558,7 @@ function App() {
  {isMobileMenuOpen && (
  <div className="lg:hidden fixed inset-x-0 top-14 z-40 bg-slate-900/98 backdrop-blur-xl border-b border-slate-800 shadow-2xl p-4 space-y-3 animate-in slide-in-from-top-3 max-h-[85vh] overflow-y-auto">
  {/* Status & Role in Mobile Menu */}
- <div className="flex items-center justify-between bg-slate-950 p-2.5 rounded-xl border border-slate-800">
+ <div className="flex items-center justify-between bg-slate-950 p-2.5 rounded-sm border border-slate-800">
  <div className="flex items-center space-x-2">
  <span className={`w-2 h-2 rounded-full ${isBackendConnected ? 'bg-emerald-400': 'bg-cyan-400'} animate-pulse`}></span>
  <span className="text-xs font-mono text-slate-300">{isBackendConnected ? 'Cloud Sync Active': 'Rig Edge Active'}</span>
@@ -1596,7 +1580,7 @@ function App() {
  {/* Data & Methodology in Mobile Menu */}
  <button 
  onClick={() => { setIsTransparencyOpen(true); setIsMobileMenuOpen(false); }}
- className="flex items-center space-x-3 p-3 rounded-xl bg-slate-850 active:bg-slate-800 text-slate-200 border border-slate-700/80 text-left font-medium text-xs min-h-[44px]">
+ className="flex items-center space-x-3 p-3 rounded-sm bg-slate-850 active:bg-slate-800 text-slate-200 border border-slate-700/80 text-left font-medium text-xs min-h-[44px]">
  <Info size={18} className="text-cyan-400 shrink-0"/>
  <div>
  <div className="font-bold text-white">Data & Methodology Transparency</div>
@@ -1606,7 +1590,7 @@ function App() {
 
  <button 
  onClick={() => { openModuleInNewTab('radar'); setIsMobileMenuOpen(false); }}
- className="flex items-center space-x-3 p-3 rounded-xl bg-amber-500/10 active:bg-amber-500/20 text-amber-300 border border-amber-500/30 text-left font-medium text-xs min-h-[44px]">
+ className="flex items-center space-x-3 p-3 rounded-sm bg-amber-500/10 active:bg-amber-500/20 text-amber-300 border border-amber-500/30 text-left font-medium text-xs min-h-[44px]">
  <Radar size={18} className="text-amber-400 shrink-0"/>
  <div>
  <div className="font-bold text-white flex items-center gap-1.5">
@@ -1619,7 +1603,7 @@ function App() {
 
  <button 
  onClick={() => { openModuleInNewTab('correlation'); setIsMobileMenuOpen(false); }}
- className="flex items-center space-x-3 p-3 rounded-xl bg-indigo-500/10 active:bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-left font-medium text-xs min-h-[44px]">
+ className="flex items-center space-x-3 p-3 rounded-sm bg-indigo-500/10 active:bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-left font-medium text-xs min-h-[44px]">
  <Layers size={18} className="text-indigo-400 shrink-0"/>
  <div>
  <div className="font-bold text-white flex items-center gap-1.5">
@@ -1632,7 +1616,7 @@ function App() {
 
  <button 
  onClick={() => { openModuleInNewTab('ppfg'); setIsMobileMenuOpen(false); }}
- className="flex items-center space-x-3 p-3 rounded-xl bg-emerald-500/10 active:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-left font-medium text-xs min-h-[44px]">
+ className="flex items-center space-x-3 p-3 rounded-sm bg-emerald-500/10 active:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-left font-medium text-xs min-h-[44px]">
  <Gauge size={18} className="text-emerald-400 shrink-0"/>
  <div>
  <div className="font-bold text-white flex items-center gap-1.5">
@@ -1645,7 +1629,7 @@ function App() {
 
  <button 
  onClick={() => { openModuleInNewTab('dossier'); setIsMobileMenuOpen(false); }}
- className="flex items-center space-x-3 p-3 rounded-xl bg-cyan-500/10 active:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 text-left font-medium text-xs min-h-[44px]">
+ className="flex items-center space-x-3 p-3 rounded-sm bg-cyan-500/10 active:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 text-left font-medium text-xs min-h-[44px]">
  <FileText size={18} className="text-cyan-400 shrink-0"/>
  <div>
  <div className="font-bold text-white flex items-center gap-1.5">
@@ -1658,7 +1642,7 @@ function App() {
 
  <button 
  onClick={() => { openModuleInNewTab('backtest'); setIsMobileMenuOpen(false); }}
- className="flex items-center space-x-3 p-3 rounded-xl bg-indigo-500/10 active:bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-left font-medium text-xs min-h-[44px]">
+ className="flex items-center space-x-3 p-3 rounded-sm bg-indigo-500/10 active:bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-left font-medium text-xs min-h-[44px]">
  <History size={18} className="text-indigo-400 shrink-0"/>
  <div>
  <div className="font-semibold text-slate-100 flex items-center gap-1.5">
@@ -1671,7 +1655,7 @@ function App() {
 
  <button 
  onClick={() => { openModuleInNewTab('contribute'); setIsMobileMenuOpen(false); }}
- className="flex items-center space-x-3 p-3 rounded-xl bg-purple-500/10 active:bg-purple-500/20 text-purple-300 border border-purple-500/30 text-left font-medium text-xs min-h-[44px]">
+ className="flex items-center space-x-3 p-3 rounded-sm bg-purple-500/10 active:bg-purple-500/20 text-purple-300 border border-purple-500/30 text-left font-medium text-xs min-h-[44px]">
  <Brain size={18} className="text-purple-400 shrink-0"/>
  <div>
  <div className="font-bold text-white flex items-center gap-1.5">
@@ -1687,13 +1671,13 @@ function App() {
  <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-800">
  <button 
  onClick={() => { setIsKnowledgeSearchOpen(true); setIsMobileMenuOpen(false); }}
- className="flex items-center justify-center space-x-2 py-2.5 px-3 bg-slate-800 active:bg-slate-700 border border-slate-700 text-slate-200 rounded-xl text-xs font-semibold">
+ className="flex items-center justify-center space-x-2 py-2.5 px-3 bg-slate-800 active:bg-slate-700 border border-slate-700 text-slate-200 rounded-sm text-xs font-semibold">
  <Search size={14} />
  <span>Search Memory</span>
  </button>
  <button 
  onClick={() => { exportWellData(); setIsMobileMenuOpen(false); }}
- className="flex items-center justify-center space-x-2 py-2.5 px-3 bg-slate-800 active:bg-slate-700 border border-slate-700 text-slate-200 rounded-xl text-xs font-semibold">
+ className="flex items-center justify-center space-x-2 py-2.5 px-3 bg-slate-800 active:bg-slate-700 border border-slate-700 text-slate-200 rounded-sm text-xs font-semibold">
  <Download size={14} />
  <span>Export CSV</span>
  </button>
@@ -1718,7 +1702,7 @@ function App() {
  
  {/* Proactive Depth-Proximity Lookahead Warning Banner (CORRECTION 3: Reuses /api/wells/{id}/lookahead) */}
  {proximityWarning?.active && (
- <div className="absolute top-2 left-2 right-2 sm:top-3 sm:left-4 sm:right-4 z-30 bg-gradient-to-r from-amber-950/95 via-amber-900/90 to-amber-950/95 border-2 border-amber-500/80 p-3 sm:p-3.5 rounded-xl shadow-2xl backdrop-blur-md flex items-center justify-between gap-3 animate-in slide-in-from-top-3">
+ <div className="absolute top-2 left-2 right-2 sm:top-3 sm:left-4 sm:right-4 z-30 bg-gradient-to-r from-amber-950/95 via-amber-900/90 to-amber-950/95 border-2 border-amber-500/80 p-3 sm:p-3.5 rounded-sm shadow-2xl backdrop-blur-md flex items-center justify-between gap-3 animate-in slide-in-from-top-3">
  <div className="flex items-center space-x-2.5 sm:space-x-3 min-w-0">
  <div className="p-2 sm:p-2.5 bg-amber-500/20 rounded-lg border border-amber-500/40 text-amber-300 animate-pulse shrink-0">
  <AlertTriangle size={20} />
@@ -1757,7 +1741,7 @@ function App() {
  )}
 
  {/* Mobile Compact Drilling HUD Bar (Visible only on < sm) */}
- <div className="absolute top-3 left-3 right-3 z-10 flex sm:hidden items-center justify-between bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-xl px-3 py-2 shadow-xl">
+ <div className="absolute top-3 left-3 right-3 z-10 flex sm:hidden items-center justify-between bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-sm px-3 py-2 shadow-xl">
  <div className="flex items-center space-x-3 text-xs">
  <div>
  <span className="text-[9px] text-slate-400 block font-mono uppercase">TVD</span>
@@ -1803,9 +1787,9 @@ function App() {
  </div>
 
  {/* Active Drilling Status Card overlay (Hidden on < sm) */}
- <div className="absolute top-4 left-4 z-10 hidden sm:flex gap-3 items-start flex-wrap">
+ <div className="absolute top-3 left-3 z-10 hidden sm:flex gap-2 items-start flex-wrap">
  {/* TVD */}
- <div className="glass-panel p-3.5 sm:p-4 rounded-xl shadow-glass border-slate-750 min-w-[180px] relative overflow-hidden group">
+ <div className="glass-panel p-2.5 rounded-sm border-slate-750 min-w-[180px] relative overflow-hidden group">
  <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent"/>
  <div className="flex items-center justify-between mb-1.5">
  <span className="text-[10px] uppercase text-white font-mono font-bold tracking-wider flex items-center gap-1.5">
@@ -1814,14 +1798,14 @@ function App() {
  </span>
  <span className="text-[10px] text-white font-mono">Bit Depth</span>
  </div>
- <div className="text-3xl font-mono font-semibold tracking-tight text-white flex items-baseline gap-1.5">
+ <div className="text-2xl font-mono font-semibold tracking-tight text-white flex items-baseline gap-1.5 whitespace-nowrap">
  {telemetryData ? telemetryData.depth_tvd.toFixed(1) : "---"}
  <span className="text-xs font-mono font-normal text-white">m</span>
  </div>
  </div>
  
  {/* ROP */}
- <div className="glass-panel p-3.5 sm:p-4 rounded-xl shadow-glass border-slate-750 min-w-[145px] relative overflow-hidden group">
+ <div className="glass-panel p-2.5 rounded-sm border-slate-750 min-w-[145px] relative overflow-hidden group">
  <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent"/>
  <div className="flex items-center justify-between mb-1.5">
  <span className="text-[10px] uppercase text-white font-mono font-bold tracking-wider flex items-center gap-1.5">
@@ -1830,16 +1814,16 @@ function App() {
  </span>
  <span className="text-[10px] text-white font-mono">Penetration</span>
  </div>
- <div className="text-3xl font-mono font-semibold tracking-tight text-white flex items-baseline gap-1.5">
+ <div className="text-2xl font-mono font-semibold tracking-tight text-white flex items-baseline gap-1.5 whitespace-nowrap">
  {telemetryData ? telemetryData.rop.toFixed(1) : "---"}
  <span className="text-xs font-mono font-normal text-white">m/h</span>
  </div>
  </div>
 
  {/* Torque */}
- <div className={`glass-panel p-3.5 sm:p-4 rounded-xl shadow-glass min-w-[165px] relative overflow-hidden transition-all duration-500 ${
+ <div className={`glass-panel p-2.5 rounded-sm min-w-[165px] relative overflow-hidden transition-all duration-500 ${
  showAlerts && alertState.active 
- ? 'border-status-danger/80 bg-rose-950/30 shadow-glow-danger': 'border-slate-750'}`}>
+ ? 'border-status-danger/80 bg-rose-950/30': 'border-slate-750'}`}>
  <div className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent ${
  showAlerts && alertState.active ? 'via-rose-500/80': 'via-amber-400/50'} to-transparent`} />
  <div className="flex items-center justify-between mb-1.5">
@@ -1849,7 +1833,7 @@ function App() {
  </span>
  <span className="text-[10px] text-white font-mono">Surface</span>
  </div>
- <div className={`text-3xl font-mono font-semibold tracking-tight flex items-baseline gap-1.5 ${
+ <div className={`text-2xl font-mono font-semibold tracking-tight flex items-baseline gap-1.5 whitespace-nowrap ${
  showAlerts && alertState.active ? 'text-white animate-pulse': 'text-white'}`}>
  {telemetryData ? telemetryData.torque.toFixed(0) : "---"}
  <span className="text-xs font-mono font-normal text-white">lbf-ft</span>
@@ -1864,7 +1848,7 @@ function App() {
  return (
  <button 
  onClick={() => openModuleInNewTab('radar')}
- className="glass-panel hover:border-amber-500/60 p-3.5 rounded-xl shadow-glass min-w-[230px] text-left transition-all duration-300 group cursor-pointer relative overflow-hidden border-amber-500/30" title="Open Ahead-of-the-Bit Radar in New Fullscreen Tab">
+ className="glass-panel hover:border-amber-500/60 p-2.5 rounded-sm min-w-[230px] text-left transition-all duration-300 group cursor-pointer relative overflow-hidden border-amber-500/30" title="Open Ahead-of-the-Bit Radar in New Fullscreen Tab">
  <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-amber-400/50 to-transparent"/>
  <div className="flex items-center justify-between text-xs uppercase text-white font-bold mb-1.5">
  <span className="flex items-center space-x-1.5 font-mono text-[11px]">
@@ -1888,7 +1872,7 @@ function App() {
 
  {/* Map Types / Basemap Switcher Card (Placed directly next to Lookahead Radar) */}
  <div 
- id="basemap-style-switcher" className="glass-panel p-3.5 rounded-xl shadow-glass border-slate-750 min-w-[215px] relative overflow-hidden group flex flex-col justify-between">
+ id="basemap-style-switcher" className="glass-panel p-2.5 rounded-sm border-slate-750 min-w-[215px] relative overflow-hidden group flex flex-col justify-between">
  <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent"/>
  <div className="flex items-center justify-between mb-1.5">
  <span className="text-[10px] uppercase text-cyan-400 font-mono font-bold tracking-wider flex items-center gap-1.5">
@@ -1923,13 +1907,13 @@ function App() {
  </div>
 
  {/* In-App Telemetry Feed Controller (Desktop Tactical Cyber-Console) */}
- <div className="absolute bottom-6 left-4 z-20 glass-panel border border-slate-700/80 p-3.5 rounded-2xl shadow-2xl hidden lg:flex flex-wrap items-center gap-3.5 max-w-[calc(100%-5rem)]">
+ <div className="absolute bottom-6 left-4 z-20 glass-panel border border-slate-700/80 p-3.5 rounded shadow-2xl hidden lg:flex flex-wrap items-center gap-3.5 max-w-[calc(100%-5rem)]">
  <div className="flex items-center space-x-2 border-r border-slate-800 pr-3.5">
  <button
  onClick={() => handleSimControl(simStatus.is_running ? 'pause': 'play')}
- className={`px-3.5 py-1.5 rounded-xl font-bold text-xs flex items-center space-x-1.5 transition-all shadow-md active:scale-95 ${
+ className={`px-3.5 py-1.5 rounded-sm font-bold text-xs flex items-center space-x-1.5 transition-all shadow-md active:scale-95 ${
  simStatus.is_running
- ? 'bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-glow-amber': 'bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-glow-emerald'}`}
+ ? 'bg-amber-500 hover:bg-amber-400 text-slate-950': 'bg-emerald-500 hover:bg-emerald-400 text-slate-950'}`}
  >
  {simStatus.is_running ? <Pause size={14} /> : <Play size={14} />}
  <span>{simStatus.is_running ? 'Pause Sim': 'Play Simulator'}</span>
@@ -1950,7 +1934,7 @@ function App() {
  onClick={() => handleSpeedChange(speed)}
  className={`px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition ${
  simSpeed === speed
- ? 'bg-cyan-500 text-slate-950 shadow-glow-cyan': 'bg-slate-900/80 text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-700/60'}`}
+ ? 'bg-cyan-500 text-slate-950': 'bg-slate-900/80 text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-700/60'}`}
  title={`${speed}x Simulation Speed`}
  >
  {speed}x
@@ -1982,7 +1966,7 @@ function App() {
  <button
  onClick={() => handleScenarioInject('normal')}
  className={`px-2.5 py-1 rounded-lg text-xs font-medium transition border ${
- simStatus.active_scenario === 'normal'? 'bg-emerald-500/20 border-emerald-500/70 text-emerald-300 shadow-glow-emerald': 'bg-slate-900/80 border-slate-700/60 text-slate-400 hover:text-white'}`}
+ simStatus.active_scenario === 'normal'? 'bg-emerald-500/20 border-emerald-500/70 text-emerald-300': 'bg-slate-900/80 border-slate-700/60 text-slate-400 hover:text-white'}`}
  title="Nominal baseline circulating parameters">
  Normal
  </button>
@@ -1990,7 +1974,7 @@ function App() {
  <button
  onClick={() => handleScenarioInject('gas_kick')}
  className={`px-2.5 py-1 rounded-lg text-xs font-medium transition border flex items-center space-x-1 ${
- simStatus.active_scenario === 'gas_kick'? 'bg-amber-500/25 border-amber-500/80 text-amber-300 shadow-glow-amber': 'bg-amber-950/20 border-amber-800/40 text-amber-400 hover:bg-amber-900/30'}`}
+ simStatus.active_scenario === 'gas_kick'? 'bg-amber-500/25 border-amber-500/80 text-amber-300': 'bg-amber-950/20 border-amber-800/40 text-amber-400 hover:bg-amber-900/30'}`}
  title="Simulate formation gas influx (flow-out increase, pit gain, SPP drop)">
  <Flame size={12} className="text-amber-400"/>
  <span>Gas Kick</span>
@@ -1999,7 +1983,7 @@ function App() {
  <button
  onClick={() => handleScenarioInject('lost_circulation')}
  className={`px-2.5 py-1 rounded-lg text-xs font-medium transition border flex items-center space-x-1 ${
- simStatus.active_scenario === 'lost_circulation'? 'bg-cyan-500/25 border-cyan-500/80 text-cyan-300 shadow-glow-cyan': 'bg-cyan-950/20 border-cyan-800/40 text-cyan-400 hover:bg-cyan-900/30'}`}
+ simStatus.active_scenario === 'lost_circulation'? 'bg-cyan-500/25 border-cyan-500/80 text-cyan-300': 'bg-cyan-950/20 border-cyan-800/40 text-cyan-400 hover:bg-cyan-900/30'}`}
  title="Simulate mud loss (flow-out deficit, pit volume drop, ECD decrease)">
  <Droplets size={12} className="text-cyan-400"/>
  <span>Lost Circ</span>
@@ -2008,7 +1992,7 @@ function App() {
  <button
  onClick={() => handleScenarioInject('stuck_pipe')}
  className={`px-2.5 py-1 rounded-lg text-xs font-medium transition border flex items-center space-x-1 ${
- simStatus.active_scenario === 'stuck_pipe'? 'bg-rose-500/25 border-rose-500/80 text-rose-300 shadow-glow-danger': 'bg-rose-950/20 border-rose-800/40 text-rose-400 hover:bg-rose-900/30'}`}
+ simStatus.active_scenario === 'stuck_pipe'? 'bg-rose-500/25 border-rose-500/80 text-rose-300': 'bg-rose-950/20 border-rose-800/40 text-rose-400 hover:bg-rose-900/30'}`}
  title="Simulate mechanical packoff (torque spike, zero ROP, motor stall)">
  <Anchor size={12} className="text-rose-400"/>
  <span>Stuck Pipe</span>
@@ -2031,7 +2015,7 @@ function App() {
  onClick={() => handleSelectDemoScenario(sc)}
  className={`px-2 py-1 rounded-lg text-[10px] font-bold tracking-tight transition border flex items-center space-x-1 ${
  isActive
- ? 'bg-amber-500/30 border-amber-400 text-amber-200 shadow-glow-amber': 'bg-slate-900/90 border-slate-700/80 text-slate-300 hover:border-amber-500/50 hover:text-white'}`}
+ ? 'bg-amber-500/30 border-amber-400 text-amber-200': 'bg-slate-900/90 border-slate-700/80 text-slate-300 hover:border-amber-500/50 hover:text-white'}`}
  title={`${sc.title}\nWell: ${sc.well_id} | Depth: ${sc.depth}m | Formation: ${sc.formation}\nClick to load scenario in 1 click`}
  >
  <span>{sc.id === "1"? "Stuck (2832m)": sc.id === "2"? "Losses (1540m)": "Kick (3105m)"}</span>
@@ -2081,7 +2065,7 @@ function App() {
  {/* Dedicated Mobile Simulator Screen (Visible when mobileActiveTab === 'simulator'on < lg) */}
  {mobileActiveTab === 'simulator'&& (
  <div className="lg:hidden flex-1 w-full bg-slate-950 p-4 overflow-y-auto space-y-4">
- <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl">
+ <div className="bg-slate-900 border border-slate-800 rounded p-4 shadow-xl">
  <div className="flex items-center justify-between pb-3 border-b border-slate-800">
  <div className="flex items-center space-x-2">
  <Sliders size={18} className="text-cyan-400"/>
@@ -2099,7 +2083,7 @@ function App() {
  <div className="grid grid-cols-2 gap-3 mt-4">
  <button
  onClick={() => handleSimControl(simStatus.is_running ? 'pause': 'play')}
- className={`py-3 px-4 rounded-xl font-bold text-sm flex items-center justify-center space-x-2 shadow-lg min-h-[48px] active:scale-[0.98] transition ${
+ className={`py-3 px-4 rounded-sm font-bold text-sm flex items-center justify-center space-x-2 shadow-lg min-h-[48px] active:scale-[0.98] transition ${
  simStatus.is_running
  ? 'bg-amber-500 text-slate-950 shadow-amber-500/20': 'bg-emerald-500 text-slate-950 shadow-emerald-500/20'}`}
  >
@@ -2109,7 +2093,7 @@ function App() {
 
  <button
  onClick={() => handleSimControl('reset')}
- className="py-3 px-4 rounded-xl font-bold text-sm bg-slate-800 active:bg-slate-700 text-slate-200 border border-slate-700 flex items-center justify-center space-x-2 min-h-[48px] transition">
+ className="py-3 px-4 rounded-sm font-bold text-sm bg-slate-800 active:bg-slate-700 text-slate-200 border border-slate-700 flex items-center justify-center space-x-2 min-h-[48px] transition">
  <RotateCcw size={18} />
  <span>Reset TVD</span>
  </button>
@@ -2123,7 +2107,7 @@ function App() {
  <button
  key={speed}
  onClick={() => handleSpeedChange(speed)}
- className={`py-2 rounded-xl text-xs font-bold transition min-h-[44px] ${
+ className={`py-2 rounded-sm text-xs font-bold transition min-h-[44px] ${
  simSpeed === speed
  ? 'bg-cyan-500 text-slate-900 shadow-md shadow-cyan-500/20': 'bg-slate-800 text-slate-300 border border-slate-700'}`}
  >
@@ -2159,14 +2143,14 @@ function App() {
  </div>
 
  {/* Scenario Injection Section */}
- <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl">
+ <div className="bg-slate-900 border border-slate-800 rounded p-4 shadow-xl">
  <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
  Inject Hazard Scenarios (ML Risk Engine)
  </div>
  <div className="grid grid-cols-1 gap-2.5">
  <button
  onClick={() => handleScenarioInject('normal')}
- className={`p-3 rounded-xl text-left border transition min-h-[44px] flex items-center justify-between ${
+ className={`p-3 rounded-sm text-left border transition min-h-[44px] flex items-center justify-between ${
  simStatus.active_scenario === 'normal'? 'bg-emerald-500/20 border-emerald-500 text-emerald-300': 'bg-slate-950/60 border-slate-800 text-slate-300 active:bg-slate-800'}`}
  >
  <div>
@@ -2178,7 +2162,7 @@ function App() {
 
  <button
  onClick={() => handleScenarioInject('gas_kick')}
- className={`p-3 rounded-xl text-left border transition min-h-[44px] flex items-center justify-between ${
+ className={`p-3 rounded-sm text-left border transition min-h-[44px] flex items-center justify-between ${
  simStatus.active_scenario === 'gas_kick'? 'bg-amber-500/20 border-amber-500 text-amber-300': 'bg-slate-950/60 border-slate-800 text-slate-300 active:bg-slate-800'}`}
  >
  <div className="flex items-center space-x-3">
@@ -2193,7 +2177,7 @@ function App() {
 
  <button
  onClick={() => handleScenarioInject('lost_circulation')}
- className={`p-3 rounded-xl text-left border transition min-h-[44px] flex items-center justify-between ${
+ className={`p-3 rounded-sm text-left border transition min-h-[44px] flex items-center justify-between ${
  simStatus.active_scenario === 'lost_circulation'? 'bg-cyan-500/20 border-cyan-500 text-cyan-300': 'bg-slate-950/60 border-slate-800 text-slate-300 active:bg-slate-800'}`}
  >
  <div className="flex items-center space-x-3">
@@ -2208,7 +2192,7 @@ function App() {
 
  <button
  onClick={() => handleScenarioInject('stuck_pipe')}
- className={`p-3 rounded-xl text-left border transition min-h-[44px] flex items-center justify-between ${
+ className={`p-3 rounded-sm text-left border transition min-h-[44px] flex items-center justify-between ${
  simStatus.active_scenario === 'stuck_pipe'? 'bg-rose-500/20 border-rose-500 text-rose-300': 'bg-slate-950/60 border-slate-800 text-slate-300 active:bg-slate-800'}`}
  >
  <div className="flex items-center space-x-3">
@@ -2236,7 +2220,7 @@ function App() {
  <button
  key={sc.id}
  onClick={() => handleSelectDemoScenario(sc)}
- className={`p-2.5 rounded-xl text-left border transition flex items-start justify-between ${
+ className={`p-2.5 rounded-sm text-left border transition flex items-start justify-between ${
  activeDemoScenarioId === sc.id
  ? 'bg-amber-500/15 border-amber-500 text-amber-200': 'bg-slate-950/60 border-slate-800 text-slate-300 active:bg-slate-800'}`}
  >
@@ -2283,7 +2267,7 @@ function App() {
  
  {/* Sequence-Based Pattern Matching Precursor Banner (Prompt 5) */}
  {sequenceAlert && sequenceAlert.matched && (
- <div className="bg-gradient-to-r from-amber-950 via-amber-900 to-amber-950 text-white p-3.5 border-b-2 border-amber-500 shadow-[0_0_20px_rgba(177, 177, 177,0.3)] animate-in slide-in-from-top-4 relative z-30">
+ <div className="bg-gradient-to-r from-amber-950 via-amber-900 to-amber-950 text-white p-3.5 border-b-2 border-amber-500 animate-in slide-in-from-top-4 relative z-30">
  <button 
  onClick={() => setSequenceAlert(null)}
  className="absolute top-2.5 right-2.5 text-white/70 hover:text-white transition-colors p-1" title="Dismiss Pattern Alert">
@@ -2323,7 +2307,7 @@ function App() {
 
  {/* Hazard Alert Banner */}
  {showAlerts && alertState.active && (
- <div className="bg-gradient-to-r from-rose-950 via-rose-900 to-rose-950 text-white p-4 border-b-2 border-rose-500 shadow-glow-danger animate-in slide-in-from-top-4 relative z-30">
+ <div className="bg-gradient-to-r from-rose-950 via-rose-900 to-rose-950 text-white p-4 border-b-2 border-rose-500 animate-in slide-in-from-top-4 relative z-30">
  <button 
  onClick={dismissAlert}
  className="absolute top-3 right-3 text-white/70 hover:text-white transition-colors p-1">
@@ -2402,10 +2386,10 @@ function App() {
  </div>
  </div>
  
- <div className="flex-1 p-4 overflow-y-auto custom-scrollbar pb-10 space-y-4">
+ <div className="flex-1 p-2.5 overflow-y-auto custom-scrollbar pb-8 space-y-2">
  
  {/* Multi-Hazard Risk Engine Gauges (SIH 2026 Mandate) */}
- <div className="glass-card rounded-2xl p-4 shadow-glass space-y-3 relative overflow-hidden">
+ <div className="glass-card rounded p-2.5 space-y-2 relative overflow-hidden">
  <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent"/>
  <div className="flex items-center justify-between border-b border-slate-800/80 pb-2.5">
  <div className="flex items-center space-x-2">
@@ -2415,8 +2399,8 @@ function App() {
  <div className="flex items-center space-x-2">
  <span className="text-[11px] text-slate-400 font-mono">Composite:</span>
  <span className={`text-xs font-bold font-mono px-2.5 py-0.5 rounded-full transition-colors ${
- (predictionData?.risk_probability || 0.15) >= 0.75 ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40 shadow-glow-danger':
- (predictionData?.risk_probability || 0.15) >= 0.40 ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-glow-amber': 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-glow-emerald'}`}>
+ (predictionData?.risk_probability || 0.15) >= 0.75 ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40':
+ (predictionData?.risk_probability || 0.15) >= 0.40 ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40': 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'}`}>
  {Math.round((predictionData?.risk_probability || 0.15) * 100)}% ({predictionData?.risk_level ||'LOW'})
  </span>
  </div>
@@ -2424,7 +2408,7 @@ function App() {
 
  {/* Statistical Anomaly Layer (Prompt 7: Independent Baseline Z-Score & CUSUM Signal) */}
  {predictionData?.statistical_anomaly && (
- <div className={`p-2.5 rounded-xl border font-mono text-xs transition ${
+ <div className={`p-2.5 rounded-sm border font-mono text-xs transition ${
  predictionData.statistical_anomaly.anomaly_detected
  ? 'bg-amber-950/30 border-amber-500/50 text-amber-200': 'bg-slate-950/50 border-slate-800/80 text-slate-400'}`}>
  <div className="flex items-center justify-between mb-1.5">
@@ -2473,7 +2457,7 @@ function App() {
               const hazard = predictionData?.hazards?.[key] || { probability, key_indicator: indicator };
               const pct = Math.round(hazard.probability * 100);
               return (
-                <div key={key} className="p-2.5 rounded-xl bg-slate-950/70 border border-slate-800/80 hover:border-slate-600 transition flex flex-col justify-between">
+                <div key={key} className="p-2.5 rounded-sm bg-slate-950/70 border border-slate-800/80 hover:border-slate-600 transition flex flex-col justify-between">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-[11px] font-semibold text-slate-300 flex items-center space-x-1.5">
                       <Icon size={13} className="text-slate-400" />
@@ -2485,7 +2469,7 @@ function App() {
                   </div>
                   <div className="w-full bg-slate-800/80 h-1.5 rounded-full overflow-hidden mb-1.5">
                     <div
-                      className={`h-full transition-all duration-500 ${hazard.probability > 0.7 ? 'bg-rose-500 shadow-glow-danger' : hazard.probability > 0.35 ? 'bg-amber-500' : 'bg-emerald-500'}`}
+                      className={`h-full transition-all duration-500 ${hazard.probability > 0.7 ? 'bg-rose-500' : hazard.probability > 0.35 ? 'bg-amber-500' : 'bg-emerald-500'}`}
                       style={{ width: `${pct}%` }}
                     />
                   </div>
@@ -2515,7 +2499,7 @@ function App() {
  </div>
 
  {/* LIVE DRILLING TELEMETRY SENSOR MATRIX */}
- <div className="glass-card rounded-2xl p-4 shadow-glass space-y-3 relative overflow-hidden">
+ <div className="glass-card rounded p-2.5 space-y-2 relative overflow-hidden">
  <div className="flex items-center justify-between border-b border-slate-800/80 pb-2">
  <div className="flex items-center space-x-2">
  <Activity size={15} className="text-emerald-400"/>
@@ -2530,7 +2514,7 @@ function App() {
 
  <div className="grid grid-cols-3 gap-2 text-center">
  {/* WOB */}
- <div className="bg-slate-950/60 border border-slate-800/80 p-2.5 rounded-xl">
+ <div className="bg-slate-950/60 border border-slate-800/80 p-2 rounded-sm">
  <span className="text-[10px] uppercase font-mono text-slate-400 block">WOB</span>
  <span className="text-base font-mono font-bold text-white">
  {telemetryData?.wob ? telemetryData.wob.toFixed(1) : '14.0'}
@@ -2539,7 +2523,7 @@ function App() {
  </div>
 
  {/* RPM */}
- <div className="bg-slate-950/60 border border-slate-800/80 p-2.5 rounded-xl">
+ <div className="bg-slate-950/60 border border-slate-800/80 p-2 rounded-sm">
  <span className="text-[10px] uppercase font-mono text-slate-400 block">Rotary</span>
  <span className="text-base font-mono font-bold text-cyan-400">
  {telemetryData?.rpm ? telemetryData.rpm.toFixed(0) : '105'}
@@ -2548,7 +2532,7 @@ function App() {
  </div>
 
  {/* SPP */}
- <div className="bg-slate-950/60 border border-slate-800/80 p-2.5 rounded-xl">
+ <div className="bg-slate-950/60 border border-slate-800/80 p-2 rounded-sm">
  <span className="text-[10px] uppercase font-mono text-slate-400 block">SPP</span>
  <span className="text-base font-mono font-bold text-white">
  {telemetryData?.spp_psi ? telemetryData.spp_psi.toFixed(0) : '2,800'}
@@ -2557,7 +2541,7 @@ function App() {
  </div>
 
  {/* Flow Out % */}
- <div className="bg-slate-950/60 border border-slate-800/80 p-2.5 rounded-xl">
+ <div className="bg-slate-950/60 border border-slate-800/80 p-2 rounded-sm">
  <span className="text-[10px] uppercase font-mono text-slate-400 block">Flow Out</span>
  <span className={`text-base font-mono font-bold ${
  (telemetryData?.flow_out_pct || 100) > 105 ? 'text-amber-400':
@@ -2568,7 +2552,7 @@ function App() {
  </div>
 
  {/* Pit Gain */}
- <div className="bg-slate-950/60 border border-slate-800/80 p-2.5 rounded-xl">
+ <div className="bg-slate-950/60 border border-slate-800/80 p-2 rounded-sm">
  <span className="text-[10px] uppercase font-mono text-slate-400 block">Pit Delta</span>
  <span className={`text-base font-mono font-bold ${
  (telemetryData?.pit_gain_bbl || 0) > 0 ? 'text-amber-400':
@@ -2579,7 +2563,7 @@ function App() {
  </div>
 
  {/* ECD */}
- <div className="bg-slate-950/60 border border-slate-800/80 p-2.5 rounded-xl">
+ <div className="bg-slate-950/60 border border-slate-800/80 p-2 rounded-sm">
  <span className="text-[10px] uppercase font-mono text-slate-400 block">ECD</span>
  <span className="text-base font-mono font-bold text-white">
  {telemetryData?.ecd ? telemetryData.ecd.toFixed(1) : '11.6'}
@@ -2590,7 +2574,7 @@ function App() {
  </div>
 
  {/* Real-time Trajectory Widget */}
- <div className="glass-card rounded-2xl p-4 shadow-glass mb-4 space-y-3">
+ <div className="glass-card rounded p-2.5 mb-2 space-y-2">
  <div className="flex items-center justify-between">
  <h3 className="text-xs uppercase font-mono font-bold text-slate-300 tracking-wider">
  Torque vs Depth (TVD)
@@ -2598,7 +2582,7 @@ function App() {
  <span className="text-[10px] font-mono text-slate-400">Dynamic Trend</span>
  </div>
 
- <div className="h-60 w-full flex items-center justify-center rounded-xl overflow-hidden bg-[#0a0d12]/90 border border-slate-800/80">
+ <div className="h-60 w-full flex items-center justify-center rounded-sm overflow-hidden bg-[#0a0d12]/90 border border-slate-800/80">
  <Plot
  data={[
  {
@@ -2620,14 +2604,14 @@ function App() {
  font: { family: 'JetBrains Mono, monospace', color: '#A2A2A2', size: 10 },
  xaxis: { 
  title: { text: 'Torque (lbf-ft)', font: { size: 10 } }, 
- gridcolor: '#232323',
- zerolinecolor: '#232323',
+ gridcolor: '#2b2b2b',
+ zerolinecolor: '#3a3a3a',
  color: '#A2A2A2'},
  yaxis: { 
  title: { text: 'Depth (m)', font: { size: 10 } }, 
  autorange: 'reversed', 
- gridcolor: '#232323',
- zerolinecolor: '#232323',
+ gridcolor: '#2b2b2b',
+ zerolinecolor: '#3a3a3a',
  color: '#A2A2A2'}
  }}
  useResizeHandler={true}
@@ -2638,7 +2622,7 @@ function App() {
  </div>
 
  {/* Event Log & Institutional Memory */}
- <div className="glass-card rounded-2xl p-4 shadow-glass space-y-3">
+ <div className="glass-card rounded p-2.5 space-y-2">
  <div className="flex items-center justify-between">
  <div className="flex items-center space-x-2">
  <h3 className="text-xs uppercase font-mono font-bold text-slate-300 tracking-wider">Offset Incidents & Memory</h3>
@@ -2658,16 +2642,16 @@ function App() {
  const isNewlyAdded = newlyIngestedIds.has(event.id);
  const isExpanded = expandedEventId === event.id;
  const severity = (event.severity ||'HIGH').toUpperCase();
- const sevColor = severity === 'CRITICAL'? 'bg-rose-500/20 text-rose-300 border-rose-500/40 shadow-glow-danger':
- severity === 'HIGH'? 'bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-glow-amber': 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40 shadow-glow-cyan';
+ const sevColor = severity === 'CRITICAL'? 'bg-rose-500/20 text-rose-300 border-rose-500/40':
+ severity === 'HIGH'? 'bg-amber-500/20 text-amber-300 border-amber-500/40': 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40';
 
  return (
  <div 
  key={event.id || i} 
  onClick={() => setExpandedEventId(isExpanded ? null : event.id)}
- className={`p-3 rounded-xl border transition-all cursor-pointer ${
+ className={`p-3 rounded-sm border transition-all cursor-pointer ${
  isNewlyAdded 
- ? 'bg-emerald-950/30 border-emerald-500/60 shadow-glow-emerald': 'bg-slate-950/70 border-slate-800/90 hover:border-slate-700'}`}
+ ? 'bg-emerald-950/30 border-emerald-500/60': 'bg-slate-950/70 border-slate-800/90 hover:border-slate-700'}`}
  >
  <div className="flex items-start justify-between gap-2">
  <div className="flex items-center space-x-2">
@@ -2736,7 +2720,7 @@ function App() {
  </div>
  );
  }) : (
- <div className="text-xs text-slate-400 p-4 text-center bg-slate-950/40 rounded-xl border border-slate-800/60">
+ <div className="text-xs text-slate-400 p-4 text-center bg-slate-950/40 rounded-sm border border-slate-800/60">
  No offset events recorded for this well yet. Upload a DDR or WCR PDF to ingest incidents.
  </div>
  )}
@@ -2745,7 +2729,7 @@ function App() {
  {/* Action Buttons */}
  <button 
  onClick={() => openModuleInNewTab('correlation')}
- className="w-full mt-3 bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-cyan-500/20 hover:from-cyan-500/30 hover:to-blue-500/30 text-cyan-300 text-xs font-semibold py-2.5 rounded-xl transition border border-cyan-500/40 shadow-glow-cyan flex items-center justify-center space-x-2 cursor-pointer" title="Open Cross-Well Correlation in New Tab">
+ className="w-full mt-3 bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-cyan-500/20 hover:from-cyan-500/30 hover:to-blue-500/30 text-cyan-300 text-xs font-semibold py-2.5 rounded-sm transition border border-cyan-500/40 flex items-center justify-center space-x-2 cursor-pointer" title="Open Cross-Well Correlation in New Tab">
  <Layers size={15} />
  <span>Cross-Correlate with Offset Wells</span>
  <ExternalLink size={12} className="ml-1 opacity-70"/>
@@ -2754,14 +2738,14 @@ function App() {
  <div className="grid grid-cols-2 gap-2 mt-2">
  <button 
  onClick={() => openModuleInNewTab('ppfg')}
- className="bg-slate-900 hover:bg-slate-850 text-slate-200 text-xs font-medium py-2.5 px-2 rounded-xl border border-slate-700/80 flex items-center justify-center space-x-1.5 transition shadow-sm cursor-pointer" title="Safe Mud Weight Operating Window (New Tab)">
+ className="bg-slate-900 hover:bg-slate-850 text-slate-200 text-xs font-medium py-2.5 px-2 rounded-sm border border-slate-700/80 flex items-center justify-center space-x-1.5 transition shadow-sm cursor-pointer" title="Safe Mud Weight Operating Window (New Tab)">
  <Gauge size={14} className="text-emerald-400"/>
  <span>Safe Mud Window</span>
  <ExternalLink size={10} className="opacity-60"/>
  </button>
  <button 
  onClick={() => openModuleInNewTab('dossier')}
- className="bg-slate-900 hover:bg-slate-850 text-slate-200 text-xs font-medium py-2.5 px-2 rounded-xl border border-slate-700/80 flex items-center justify-center space-x-1.5 transition shadow-sm cursor-pointer" title="1-Click Pre-Spud Risk Dossier (New Tab)">
+ className="bg-slate-900 hover:bg-slate-850 text-slate-200 text-xs font-medium py-2.5 px-2 rounded-sm border border-slate-700/80 flex items-center justify-center space-x-1.5 transition shadow-sm cursor-pointer" title="1-Click Pre-Spud Risk Dossier (New Tab)">
  <FileText size={14} className="text-cyan-400"/>
  <span>Pre-Spud Report</span>
  <ExternalLink size={10} className="opacity-60"/>
@@ -2770,7 +2754,7 @@ function App() {
 
  <button 
  onClick={exportWellData}
- className="w-full mt-2 bg-slate-900 hover:bg-slate-850 text-slate-300 text-xs font-medium py-2.5 rounded-xl transition border border-slate-700/80 flex items-center justify-center shadow-sm">
+ className="w-full mt-2 bg-slate-900 hover:bg-slate-850 text-slate-300 text-xs font-medium py-2.5 rounded-sm transition border border-slate-700/80 flex items-center justify-center shadow-sm">
  <Download size={14} className="mr-2 text-slate-400"/>
  Export Well Logs & Events (CSV)
  </button>
@@ -2806,11 +2790,11 @@ function App() {
  <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0a0d12]/95 backdrop-blur-xl border-t border-slate-800 px-2 py-1 flex items-center justify-around h-16 shadow-[0_-4px_25px_rgba(0,0,0,0.6)]">
  <button
  onClick={() => setMobileActiveTab('map')}
- className={`flex flex-col items-center justify-center flex-1 py-1 rounded-xl transition min-h-[44px] relative ${
+ className={`flex flex-col items-center justify-center flex-1 py-1 rounded-sm transition min-h-[44px] relative ${
  mobileActiveTab === 'map'? 'text-cyan-400 font-bold bg-cyan-500/10': 'text-slate-400 hover:text-slate-200'}`}
  >
  {mobileActiveTab === 'map'&& (
- <span className="absolute -top-1 w-8 h-1 rounded-full bg-cyan-400 shadow-glow-cyan"/>
+ <span className="absolute -top-1 w-8 h-1 rounded-full bg-cyan-400"/>
  )}
  <MapIcon size={18} />
  <span className="text-[10px] mt-1 font-medium font-mono">Well Map</span>
@@ -2818,11 +2802,11 @@ function App() {
 
  <button
  onClick={() => setMobileActiveTab('telemetry')}
- className={`flex flex-col items-center justify-center flex-1 py-1 rounded-xl transition min-h-[44px] relative ${
+ className={`flex flex-col items-center justify-center flex-1 py-1 rounded-sm transition min-h-[44px] relative ${
  mobileActiveTab === 'telemetry'? 'text-cyan-400 font-bold bg-cyan-500/10': 'text-slate-400 hover:text-slate-200'}`}
  >
  {mobileActiveTab === 'telemetry'&& (
- <span className="absolute -top-1 w-8 h-1 rounded-full bg-cyan-400 shadow-glow-cyan"/>
+ <span className="absolute -top-1 w-8 h-1 rounded-full bg-cyan-400"/>
  )}
  {showAlerts && alertState.active && (
  <span className="absolute top-1.5 right-4 w-2 h-2 rounded-full bg-status-danger animate-ping"/>
@@ -2833,11 +2817,11 @@ function App() {
 
  <button
  onClick={() => setMobileActiveTab('simulator')}
- className={`flex flex-col items-center justify-center flex-1 py-1 rounded-xl transition min-h-[44px] relative ${
+ className={`flex flex-col items-center justify-center flex-1 py-1 rounded-sm transition min-h-[44px] relative ${
  mobileActiveTab === 'simulator'? 'text-cyan-400 font-bold bg-cyan-500/10': 'text-slate-400 hover:text-slate-200'}`}
  >
  {mobileActiveTab === 'simulator'&& (
- <span className="absolute -top-1 w-8 h-1 rounded-full bg-cyan-400 shadow-glow-cyan"/>
+ <span className="absolute -top-1 w-8 h-1 rounded-full bg-cyan-400"/>
  )}
  {simStatus.is_running && (
  <span className="absolute top-1.5 right-4 w-2 h-2 rounded-full bg-emerald-400 animate-pulse"/>
@@ -2848,14 +2832,14 @@ function App() {
 
  <button
  onClick={() => openModuleInNewTab('radar')}
- className="flex flex-col items-center justify-center flex-1 py-1 rounded-xl text-amber-400 hover:text-amber-300 transition min-h-[44px]">
+ className="flex flex-col items-center justify-center flex-1 py-1 rounded-sm text-amber-400 hover:text-amber-300 transition min-h-[44px]">
  <Radar size={18} />
  <span className="text-[10px] mt-1 font-medium font-mono">Radar</span>
  </button>
 
  <button
  onClick={() => openModuleInNewTab('correlation')}
- className="flex flex-col items-center justify-center flex-1 py-1 rounded-xl text-indigo-400 hover:text-indigo-300 transition min-h-[44px]">
+ className="flex flex-col items-center justify-center flex-1 py-1 rounded-sm text-indigo-400 hover:text-indigo-300 transition min-h-[44px]">
  <Layers size={18} />
  <span className="text-[10px] mt-1 font-medium font-mono">Offsets</span>
  </button>
@@ -2871,30 +2855,9 @@ function App() {
  isFullScreen={typeof window !== 'undefined'&& (new URLSearchParams(window.location.search).get('module') === 'radar'|| new URLSearchParams(window.location.search).get('fullscreen') === 'true')}
  />
 
- {/* Safe Operating Mud Weight Window (PPFG) Modal */}
- <PPFGWindowModal 
- isOpen={isPPFGOpen}
- onClose={() => handleCloseModule(setIsPPFGOpen)}
- activeWellId={selectedWell}
- isFullScreen={typeof window !== 'undefined'&& (new URLSearchParams(window.location.search).get('module') === 'ppfg'|| new URLSearchParams(window.location.search).get('fullscreen') === 'true')}
- />
-
- {/* 1-Click Pre-Spud Offset Hazard Dossier Modal */}
- <PreSpudDossierModal 
- isOpen={isDossierOpen}
- onClose={() => handleCloseModule(setIsDossierOpen)}
- activeWellId={selectedWell}
- isFullScreen={typeof window !== 'undefined'&& (new URLSearchParams(window.location.search).get('module') === 'dossier'|| new URLSearchParams(window.location.search).get('fullscreen') === 'true')}
- />
- <BacktestResultsModal 
- isOpen={isBacktestOpen}
- onClose={() => handleCloseModule(setIsBacktestOpen)}
- isFullScreen={typeof window !== 'undefined'&& (new URLSearchParams(window.location.search).get('module') === 'backtest'|| new URLSearchParams(window.location.search).get('fullscreen') === 'true')}
- />
-
  {/* Floating Ingestion / Institutional Memory Toast Notification */}
  {uploadToast && (
- <div className={`fixed top-16 right-6 z-50 max-w-md bg-slate-900/95 backdrop-blur-md border rounded-xl p-4 shadow-2xl animate-in slide-in-from-top-4 flex items-start space-x-3.5 ${
+ <div className={`fixed top-16 right-6 z-50 max-w-md bg-slate-900/95 backdrop-blur-md border rounded-sm p-4 shadow-2xl animate-in slide-in-from-top-4 flex items-start space-x-3.5 ${
  uploadToast.variant === 'error'? 'border-rose-500/50 shadow-rose-950/60': 'border-emerald-500/50 shadow-emerald-950/60'}`}>
  <div className={`p-2 rounded-lg shrink-0 mt-0.5 ${
  uploadToast.variant === 'error'? 'bg-rose-500/10 border border-rose-500/30 text-rose-400': 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-400'}`}>
@@ -2958,15 +2921,6 @@ function App() {
  </div>
  </div>
  )}
-
- {/* Institutional Memory Contribution Modal (Two-Way Feedback) */}
- <ContributeLessonModal 
- isOpen={isContributeOpen}
- onClose={() => handleCloseModule(setIsContributeOpen)}
- activeWellId={selectedWell}
- onLessonContributed={handleLessonContributed}
- isFullScreen={typeof window !== 'undefined'&& (new URLSearchParams(window.location.search).get('module') === 'contribute'|| new URLSearchParams(window.location.search).get('module') === 'lesson'|| new URLSearchParams(window.location.search).get('fullscreen') === 'true')}
- />
 
  {/* Document Upload Modal */}
  <DocumentUploadModal 

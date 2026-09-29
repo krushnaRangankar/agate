@@ -16,9 +16,15 @@
  *      NOT routed through here — 26 wells distinguished only by shade number
  *      would all render identical. They use explicit arbitrary-value greys.
  *
- * Fonts: everything is one sans stack. `display` and `mono` previously resolved
- * to Space Grotesk and JetBrains Mono; both now alias to the sans stack, so
- * monospace spans in the dashboard render as proportional text.
+ * Fonts: Inter for prose, JetBrains Mono for every numerical readout. `display`
+ * aliases to the sans stack. `mono` is a REAL monospace stack — it previously
+ * aliased to sans, which silently made the ~280 `font-mono` usages in the tree
+ * render as proportional text. A control-room UI needs depths, pressures and
+ * coordinates to align in columns, so mono must not be a no-op here.
+ *
+ * Shadows: the `glow-*` and `glass` utilities were removed. Soft glow is what gave
+ * the UI a marketing/SaaS cast. Containers now separate by 1px borders and by the
+ * slate ramp — depth is tonal, not luminous.
  */
 
 /** Single neutral ramp. Shade N is the same grey for every family. */
@@ -46,6 +52,20 @@ const slate = {
 
 const SANS = ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'];
 
+/**
+ * Real monospace. The web font is loaded in index.html; everything after it is a
+ * fallback so an offline or air-gapped rig still gets fixed-pitch numerals rather
+ * than silently falling back to proportional text.
+ */
+const MONO = [
+  'JetBrains Mono',
+  'ui-monospace',
+  'SFMono-Regular',
+  'Consolas',
+  'Menlo',
+  'monospace',
+];
+
 /** Every family here is now greyscale. */
 const CHROMATIC = [
   'cyan', 'teal', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia',
@@ -64,7 +84,7 @@ export default {
       fontFamily: {
         sans: SANS,
         display: SANS,
-        mono: SANS,
+        mono: MONO,
       },
       colors: {
         slate,
@@ -79,14 +99,6 @@ export default {
           fluid: grey[400],
           stratigraphy: grey[500],
         },
-      },
-      boxShadow: {
-        'glow-cyan': '0 0 20px -5px rgba(255, 255, 255, 0.18)',
-        'glow-amber': '0 0 20px -5px rgba(255, 255, 255, 0.20)',
-        'glow-emerald': '0 0 20px -5px rgba(255, 255, 255, 0.18)',
-        'glow-danger': '0 0 20px -5px rgba(255, 255, 255, 0.28)',
-        'glow-purple': '0 0 20px -5px rgba(255, 255, 255, 0.18)',
-        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.5)',
       },
       spacing: {
         13: '3.25rem',

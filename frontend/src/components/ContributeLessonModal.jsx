@@ -123,7 +123,7 @@ const ContributeLessonModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1'
 
   return (
     <div className={`fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm animate-in fade-in duration-200 ${isFullScreen ? 'p-0 w-screen h-screen' : 'p-2 sm:p-4'}`}>
-      <div className={`bg-slate-900 border border-slate-700 shadow-2xl overflow-hidden flex flex-col ${isFullScreen ? 'w-screen h-screen rounded-none border-none max-h-none h-full' : 'w-full max-w-2xl rounded-xl max-h-[96vh] sm:max-h-[92vh]'}`}>
+      <div className={`bg-slate-900 border border-slate-700 shadow-2xl overflow-hidden flex flex-col ${isFullScreen ? 'w-screen h-screen rounded-none border-none max-h-none h-full' : 'w-full max-w-2xl rounded-sm max-h-[96vh] sm:max-h-[92vh]'}`}>
         
         {/* Header */}
         <div className="px-3 sm:px-6 py-3 sm:py-4 bg-slate-950 border-b border-slate-800 flex justify-between items-center gap-2">
@@ -194,7 +194,7 @@ const ContributeLessonModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1'
                 </p>
               </div>
 
-              <div className="p-4 bg-slate-950 rounded-xl border border-slate-800 max-w-md mx-auto text-left text-xs font-mono space-y-2">
+              <div className="p-4 bg-slate-950 rounded-sm border border-slate-800 max-w-md mx-auto text-left text-xs font-mono space-y-2">
                 <div className="flex justify-between">
                   <span className="text-slate-400">Event Record ID:</span>
                   <span className="text-white">#{result.event_id}</span>

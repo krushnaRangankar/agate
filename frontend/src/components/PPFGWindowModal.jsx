@@ -202,7 +202,7 @@ const PPFGWindowModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', isFu
 
   return (
     <div className={`fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm animate-in fade-in duration-200 ${isFullScreen ? 'p-0 w-screen h-screen' : 'p-2 sm:p-4'}`}>
-      <div className={`bg-slate-900 border border-slate-700 shadow-2xl overflow-hidden flex flex-col ${isFullScreen ? 'w-screen h-screen rounded-none border-none max-h-none h-full' : 'w-full max-w-6xl rounded-xl max-h-[96vh] sm:max-h-[92vh]'}`}>
+      <div className={`bg-slate-900 border border-slate-700 shadow-2xl overflow-hidden flex flex-col ${isFullScreen ? 'w-screen h-screen rounded-none border-none max-h-none h-full' : 'w-full max-w-6xl rounded-sm max-h-[96vh] sm:max-h-[92vh]'}`}>
         
         {/* Header */}
         <div className="px-3 sm:px-6 py-3 sm:py-4 bg-slate-950 border-b border-slate-800 flex justify-between items-center gap-2">
@@ -336,19 +336,19 @@ const PPFGWindowModal = ({ isOpen, onClose, activeWellId = 'OIL-BAGHJAN-1', isFu
                   autosize: true,
                   margin: { l: 60, r: 40, b: 50, t: 30 },
                   paper_bgcolor: 'transparent',
-                  plot_bgcolor: '#0F0F0F',
+                  plot_bgcolor: 'transparent',
                   xaxis: {
                     title: `Mud Weight / Pressure Gradient (${unitLabel})`,
                     range: isPpg ? [8.0, 17.5] : [0.95, 2.1],
-                    gridcolor: '#292929',
-                    zerolinecolor: '#404040',
+                    gridcolor: '#2b2b2b',
+                    zerolinecolor: '#3a3a3a',
                     color: '#A2A2A2'
                   },
                   yaxis: {
                     title: 'True Vertical Depth TVD (m)',
                     autorange: 'reversed',
-                    gridcolor: '#292929',
-                    zerolinecolor: '#404040',
+                    gridcolor: '#2b2b2b',
+                    zerolinecolor: '#3a3a3a',
                     color: '#A2A2A2'
                   },
                   legend: {

@@ -161,7 +161,7 @@ const KnowledgeSearch = ({ isOpen, onClose, suggestedQuery ='', activeWellId ='O
  <div className="flex-1 overflow-y-auto custom-scrollbar p-4 bg-slate-950 space-y-4">
  {/* AI Executive Synthesis Trigger & Card */}
  {results.length > 0 && (
- <div className="bg-gradient-to-r from-cyan-950/40 via-blue-950/30 to-purple-950/40 border border-cyan-500/30 rounded-xl p-3 shadow-glow-cyan">
+ <div className="bg-gradient-to-r from-cyan-950/40 via-blue-950/30 to-purple-950/40 border border-cyan-500/30 rounded-sm p-3">
  <div className="flex items-center justify-between mb-2">
  <div className="flex items-center space-x-2">
  <Sparkles size={15} className="text-cyan-400 animate-pulse"/>

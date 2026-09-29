@@ -98,11 +98,11 @@ export default function AiModelModal({ isOpen, onClose, aiStatus, onRefreshStatu
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in">
-      <div className="bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl w-full max-w-xl max-h-[90vh] overflow-hidden flex flex-col">
+      <div className="bg-slate-900 border border-slate-700 rounded shadow-2xl w-full max-w-xl max-h-[90vh] overflow-hidden flex flex-col">
         {/* Header */}
         <div className="px-5 py-4 border-b border-slate-800 bg-slate-950/80 flex items-center justify-between">
           <div className="flex items-center space-x-2.5">
-            <div className="p-2 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 shadow-glow-cyan">
+            <div className="p-2 rounded-sm bg-cyan-500/10 border border-cyan-500/30 text-cyan-400">
               <Bot size={18} />
             </div>
             <div>
@@ -128,7 +128,7 @@ export default function AiModelModal({ isOpen, onClose, aiStatus, onRefreshStatu
         {/* Content Body */}
         <div className="p-5 overflow-y-auto custom-scrollbar space-y-4 text-xs">
           {/* Active Model Banner */}
-          <div className={`p-3.5 rounded-xl border flex items-center justify-between ${getProviderColor(aiStatus?.active_provider)}`}>
+          <div className={`p-3.5 rounded-sm border flex items-center justify-between ${getProviderColor(aiStatus?.active_provider)}`}>
             <div className="flex items-center space-x-3">
               <div className="p-2 rounded-lg bg-slate-900/80 border border-current">
                 {getProviderIcon(aiStatus?.active_provider)}
@@ -171,7 +171,7 @@ export default function AiModelModal({ isOpen, onClose, aiStatus, onRefreshStatu
                 return (
                   <div 
                     key={item.id} 
-                    className={`p-2.5 rounded-xl border transition ${isActive ? 'bg-slate-800/90 border-cyan-500/50 shadow-inner' : isReady ? 'bg-slate-900/70 border-emerald-500/30' : 'bg-slate-900/40 border-slate-800 opacity-75'}`}
+                    className={`p-2.5 rounded-sm border transition ${isActive ? 'bg-slate-800/90 border-cyan-500/50 shadow-inner' : isReady ? 'bg-slate-900/70 border-emerald-500/30' : 'bg-slate-900/40 border-slate-800 opacity-75'}`}
                   >
                     <div className="flex items-center justify-between mb-1">
                       <span className="font-semibold text-slate-200 flex items-center gap-1.5">
@@ -193,7 +193,7 @@ export default function AiModelModal({ isOpen, onClose, aiStatus, onRefreshStatu
           </div>
 
           {/* Quick Setup Instructions */}
-          <div className="bg-slate-950/80 rounded-xl p-3 border border-slate-800 space-y-2">
+          <div className="bg-slate-950/80 rounded-sm p-3 border border-slate-800 space-y-2">
             <span className="text-[11px] font-bold text-slate-300 flex items-center gap-1.5">
               <Key size={13} className="text-cyan-400" /> How to Connect Your API Key
             </span>
@@ -210,7 +210,7 @@ OLLAMA_ENDPOINT=http://localhost:11434/v1 # For Ollama`}
           </div>
 
           {/* Live Test Synthesis Box */}
-          <div className="border border-slate-800 rounded-xl p-3 bg-slate-950/40 space-y-2">
+          <div className="border border-slate-800 rounded-sm p-3 bg-slate-950/40 space-y-2">
             <span className="text-[11px] font-bold text-slate-300 block">
               Test Live Model Synthesis
             </span>
